@@ -1,19 +1,30 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // Default styling
 
 const ChatGPT = () => {
   const [response, setResponse] = useState("");
-  const [prompt, setPrompt] = useState("");
-  const [analytics, setAnalytics] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [grade, setGrade] = useState("1");
+  const [pedagogicalApproach, setPedagogicalApproach] =
+    useState("Montessori Style");
+  const [subject, setSubject] = useState("");
 
-  const createStudyPlan = async () => {
+  const pedagogicalApproaches = [
+    "Montessori Style",
+    "Project-Based Learning",
+    "Mastery Learning",
+    "Inquiry-Based Learning",
+    "Direct Instruction",
+    "Collaborative Learning",
+    "Problem-Based Learning",
+  ];
+
+  const createPlan = async (type) => {
+    const customPrompt = `Create ${type} for Grade ${grade} for ${subject} using ${pedagogicalApproach}`;
     try {
       const result = await axios.post("http://localhost:5000/create-plan", {
-        prompt,
+        prompt: customPrompt,
       });
+      console.log(customPrompt);
       if (result.data.choices && result.data.choices.length > 0) {
         setResponse(result.data.choices[0].text);
       } else {
@@ -27,35 +38,68 @@ const ChatGPT = () => {
     }
   };
 
-  const fetchAnalytics = async () => {
-    try {
-      const result = await axios.get("http://localhost:5000/analytics");
-      setAnalytics(`Study plans created: ${result.data.study_plan_count}`);
-    } catch (error) {
-      console.error("Error fetching analytics:", error);
-      setAnalytics("Failed to fetch analytics.");
-    }
-  };
-
-  // Function to handle date change in the calendar
-  const onDateChange = (newDate) => {
-    setDate(newDate);
-    // Additional actions can be performed here when the date changes
-  };
-
   return (
-    <div>
-      <input
-        type="text"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Enter study topic"
-      />
-      <button onClick={createStudyPlan}>Create Study Plan</button>
-      <div className="response">{response}</div>
-      <button onClick={fetchAnalytics}>Fetch Analytics</button>
-      <div className="analytics">{analytics}</div>
-      <Calendar onChange={onDateChange} value={date} />
+    <div style={{ textAlign: "center" }}>
+      {/* Grade dropdown */}
+      <label>
+        Grade:
+        <select value={grade} onChange={(e) => setGrade(e.target.value)}>
+          {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
+            <option key={g} value={g}>
+              {g}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      {/* Subject textbox */}
+      <label>
+        Subject:
+        <input
+          type="text"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          placeholder="Enter Subject"
+        />
+      </label>
+
+      {/* Pedagogy dropdown */}
+      <label>
+        Pedagogical Approach:
+        <select
+          value={pedagogicalApproach}
+          onChange={(e) => setPedagogicalApproach(e.target.value)}
+        >
+          {pedagogicalApproaches.map((approach) => (
+            <option key={approach} value={approach}>
+              {approach}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      {/* Scrollable div for response */}
+      <div
+        className="response"
+        style={{
+          margin: "10px auto",
+          maxHeight: "200px",
+          overflowY: "auto",
+          border: "1px solid #ccc",
+          padding: "10px",
+          width: "50%",
+        }}
+      >
+        {response}
+      </div>
+
+      {/* Buttons */}
+      <button onClick={() => createPlan("Lesson Plan")}>
+        Create Lesson Plan
+      </button>
+      <button onClick={() => createPlan("Study Guide")}>
+        Create Study Guide
+      </button>
     </div>
   );
 };

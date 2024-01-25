@@ -90,7 +90,7 @@ const ChatGPT = () => {
   };
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div className="lesson-plan">
       {/* Grade dropdown */}
       <label>
         Grade:
@@ -174,8 +174,10 @@ const ChatGPT = () => {
         {response}
       </div>
 
-      {/* Button to trigger plan creation */}
-      <button onClick={createPlan}>Create Lesson Plan</button>
+      <div className="accent-one">
+        {/* Button to trigger plan creation */}
+        <button onClick={createPlan}>Generate</button>
+      </div>
     </div>
   );
 };

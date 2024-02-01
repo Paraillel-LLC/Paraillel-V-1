@@ -11,3 +11,60 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.lesson-plan {
+  text-align: center;
+}
+
+.lesson-plan label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--12, 12px);
+  color: var(--Secondary-color, #4B5563);
+  /*leading-trim: both;
+  text-edge: cap;*/
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 148.523%; /* 20.793px */
+}
+
+.lesson-plan select, input {
+  width: 257px;
+  height: var(--40, 40px);
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  background: var(--white-100, #FFF);
+  color: var(--Light-Foregrounds-fg-muted, #9CA3AF);
+  
+  /* Text Compact/txt-compact-medium */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+}
+
+.accent-one button {
+    display: inline-flex;
+    padding: 15px var(--16, 16px);
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--8, 8px);
+    border: 0;
+    background: #0496FF;
+    color: var(--white-100, #FFF);
+    /* leading-trim: both;
+    text-edge: cap; */
+    font-feature-settings: 'dlig' on, 'ss03' on, 'salt' on;
+    
+    /* Primary/base */
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

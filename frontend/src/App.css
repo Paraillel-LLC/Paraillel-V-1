@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: var(--white-100, #FFF);
+  background-color: var(--white-100, #fff);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
   font-size: calc(10px + 2vmin);
   font-style: normal;
   font-weight: 500;
-  color: var(--Secondary-color, #4B5563);
+  color: var(--Secondary-color, #4b5563);
 }
 
 .App-link {
@@ -38,4 +38,41 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.lesson-plan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px; /* Adjust based on your preference */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 48%; /* Adjust the width for spacing between two columns */
+  margin-bottom: 10px;
+}
+
+.lesson-plan input,
+.lesson-plan select,
+.lesson-plan button,
+.lesson-plan input[type="radio"] {
+  margin-top: 5px;
+}
+
+.response {
+  margin: 20px auto;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 80%;
 }

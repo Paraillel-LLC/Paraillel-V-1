@@ -32,7 +32,7 @@ def create_plan():
         headers=headers,
         json={
             'prompt': prompt,
-            'max_tokens': 150
+            'max_tokens': 2048
         }
     )
     print(response)

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Calendar from "react-calendar";
+import "./Calendar.css";
 
 const ChatGPT = () => {
   const [response, setResponse] = useState("");
@@ -12,6 +14,7 @@ const ChatGPT = () => {
   const [startDate, setStartDate] = useState("");
   const [theme, setTheme] = useState(""); // Added for theme
   const [experienceLevel, setExperienceLevel] = useState(""); // Added for experience level
+  const [date, setDate] = useState(new Date());
 
   const teachingStyles = [
     "Regular School Based",
@@ -102,142 +105,114 @@ const ChatGPT = () => {
   };
 
   return (
-    <div className="lesson-plan">
-      {/* Grade dropdown */}
-      <label>
-        Grade:
-        <select value={grade} onChange={(e) => setGrade(e.target.value)}>
-          {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-        </select>
-      </label>
+    <div
+      className="lesson-plan"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "start",
+      }}
+    >
+      {/* Left Section: Form Fields */}
+      <div style={{ width: "60%" }}>
+        <div className="form-row">
+          <label className="form-group">
+            Grade:
+            <select value={grade} onChange={(e) => setGrade(e.target.value)}>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="form-group">
+            Lesson Title:
+            <input
+              type="text"
+              value={lessonTitle}
+              onChange={(e) => setLessonTitle(e.target.value)}
+              placeholder="Enter Lesson Title"
+            />
+          </label>
+        </div>
 
-      {/* Lesson Title textbox */}
-      <label>
-        Lesson Title:
-        <input
-          type="text"
-          value={lessonTitle}
-          onChange={(e) => setLessonTitle(e.target.value)}
-          placeholder="Enter Lesson Title"
-        />
-      </label>
+        <div className="form-row">
+          <label className="form-group">
+            Subject:
+            <input
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Enter Subject"
+            />
+          </label>
+          <label className="form-group">
+            Teaching Style:
+            <select
+              value={teachingStyle}
+              onChange={(e) => setTeachingStyle(e.target.value)}
+            >
+              {teachingStyles.map((style) => (
+                <option key={style} value={style}>
+                  {style}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-      {/* Subject textbox */}
-      <label>
-        Subject:
-        <input
-          type="text"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          placeholder="Enter Subject"
-        />
-      </label>
-
-      {/* Teaching Style dropdown */}
-      <label>
-        Teaching Style:
-        <select
-          value={teachingStyle}
-          onChange={(e) => setTeachingStyle(e.target.value)}
-        >
-          {teachingStyles.map((style) => (
-            <option key={style} value={style}>
-              {style}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      {/* Plan Duration radio buttons */}
-      <label>
-        Plan Duration:
-        <label>
-          <input
-            type="radio"
-            name="planDuration"
-            value="1-4 hours"
-            checked={planDuration === "1-4 hours"}
-            onChange={(e) => setPlanDuration(e.target.value)}
-          />
-          1-4 hours
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="planDuration"
-            value="1-5 hours"
-            checked={planDuration === "1-5 hours"}
-            onChange={(e) => setPlanDuration(e.target.value)}
-          />
-          1-5 hours
-        </label>
-      </label>
-
-      {/* State Academic Standard textbox */}
-      <label>
-        State Academic Standard:
-        <input
-          type="text"
-          value={stateAcademicStandard}
-          onChange={(e) => setStateAcademicStandard(e.target.value)}
-          placeholder="Enter State Academic Standard"
-        />
-      </label>
-
-      {/* Start Date input */}
-      <label>
-        Start Date:
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-      </label>
-
-      {/* Theme textbox */}
-      <label>
-        Theme:
-        <input
-          type="text"
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-          placeholder="Enter Theme"
-        />
-      </label>
-
-      {/* Experience Level textbox */}
-      <label>
-        Experience Level:
-        <input
-          type="text"
-          value={experienceLevel}
-          onChange={(e) => setExperienceLevel(e.target.value)}
-          placeholder="Enter Experience Level"
-        />
-      </label>
-
-      {/* Scrollable div for response */}
-      <div
-        className="response"
-        style={{
-          margin: "10px auto",
-          maxHeight: "200px",
-          overflowY: "auto",
-          border: "1px solid #ccc",
-          padding: "10px",
-          width: "50%",
-        }}
-      >
-        {response}
+        <div className="form-row">
+          <label className="form-group">
+            Plan Duration:
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name="planDuration"
+                  value="1-4 hours"
+                  checked={planDuration === "1-4 hours"}
+                  onChange={(e) => setPlanDuration(e.target.value)}
+                />
+                1-4 hours
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="planDuration"
+                  value="1-5 hours"
+                  checked={planDuration === "1-5 hours"}
+                  onChange={(e) => setPlanDuration(e.target.value)}
+                />
+                1-5 hours
+              </label>
+            </div>
+          </label>
+          <label className="form-group">
+            State Academic Standard:
+            <input
+              type="text"
+              value={stateAcademicStandard}
+              onChange={(e) => setStateAcademicStandard(e.target.value)}
+              placeholder="Enter State Academic Standard"
+            />
+          </label>
+        </div>
       </div>
 
-      <div className="accent-one">
-        {/* Button to trigger plan creation */}
-        <button onClick={createPlan}>Generate</button>
+      {/* Generate button and response display positioned below the form and calendar */}
+      {/* Right Section: Calendar */}
+      <div style={{ width: "40%" }}>
+        <Calendar onChange={setDate} value={date} />
+      </div>
+      {/* Generate button and response display */}
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <button onClick={createPlan} className="accent-one">
+          Generate
+        </button>
+        <div className="response" style={{ marginTop: "10px" }}>
+          {response}
+        </div>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+
 # Counter for analytics
 study_plan_count = 0
 

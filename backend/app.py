@@ -4,6 +4,7 @@ from flask_cors import CORS
 import os
 import requests
 from dotenv import load_dotenv
+import mysql.connector
 
 load_dotenv()
 
@@ -43,13 +44,6 @@ def create_plan():
 def analytics():
     return jsonify({'study_plan_count': study_plan_count})
 
-@app.route('/add-event', methods=['POST'])
-def add_event():
-    # Here you can handle adding events to a database or processing calendar data
-    data = request.json
-    # Process data (e.g., store in a database)
-    # For now, just returning a success message
-    return jsonify({'message': 'Event added successfully'})
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,7 +3,8 @@ from flask_cors import CORS
 import os
 import requests
 from dotenv import load_dotenv
-import mysql.connector
+import pymysql
+
 load_dotenv()
 import boto3
 
@@ -32,12 +33,26 @@ def create_plan():
             'max_tokens': 2048
         }
     )
-    # Attempt to connect to the database
-    
+
+    # Attempt to connect to the database using pymysql
     conn = get_db_connection()
     if conn is not None:
         print("Connected to db!")
-        #conn.close()
+
+        cursor = conn.cursor()
+
+        # Execute a SQL query
+        cursor.execute('SELECT * FROM Roles')
+
+        # Fetch the results
+        results = cursor.fetchall()
+
+        #  Print the results
+        for result in results:
+            print(result)
+        conn.close()
+
+
     else:
         print("Failed to connect to the database.")
     print(response)
@@ -45,33 +60,22 @@ def create_plan():
 @app.route('/analytics', methods=['GET'])
 def analytics():
     return jsonify({'study_plan_count': study_plan_count})
-# Database connection function
+
+# Database connection function updated for pymysql
 def get_db_connection():
     try:
-        session = boto3.Session(region_name='us-east-1')
-        client = session.client('ssm')
-        instance_id = 'i-0de9186fc24cd6fbb'
-    
-        response = client.start_session(
-        Target=instance_id
+        conn = pymysql.connect(
+        host=os.getenv('DB_HOST'),  # e.g., 'dev-backend.cjewkge6mhd5.us-east-1.rds.amazonaws.com'
+        user=os.getenv('DB_USER'),  # e.g., 'admin'
+        password=os.getenv('DB_PASSWORD'),  # e.g., 'parallel'
+        database=os.getenv('DB_NAME'),  # Your database name
+        port=3306
         )
-    
-        session_id = response['SessionId']
-        token = response['Token']
-    
-        print("Session ID:", session_id)
-        print("Token:", token)
-        print("Connected to db!")
-       # conn = mysql.connector.connect(
-       #     host=os.getenv('DB_HOST'),  # e.g., 'dev-backend.cjewkge6mhd5.us-east-1.rds.amazonaws.com'
-       #     user=os.getenv('DB_USER'),  # e.g., 'admin'
-       #     password=os.getenv('DB_PASSWORD'),  # e.g., 'paraillel'
-       #     database=os.getenv('DB_NAME')  # Your database name
-       # )
-        print("Connected to db!")
-        return session
+        #print("Connected to db!")
+        return conn
     except Exception as e:
-        print(f"Failed to connect to db: {e}") 
+        print(f"Failed to connect to db: {e}")
         return None
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -5,7 +5,6 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Style adjustments for the calendar to fit well with the app's theme */
 .react-calendar__navigation button {
   color: #565656;
   background-color: #f0f0f0;
@@ -25,4 +24,3 @@
   color: white;
 }
 
-/* Add more custom styles as needed */

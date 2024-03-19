@@ -1,0 +1,56 @@
+.home-container {
+  display: flex;
+  height: 100vh;
+}
+
+.nav-bar {
+  background-color: #f2f2f2;
+  width: 200px;
+  padding-top: 100px; 
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+.nav-bar img {
+  position: absolute; 
+  top: 15px;
+
+}
+.nav-bar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-bar ul li {
+  padding: 5px 0;
+}
+
+.nav-bar ul li a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  padding-left: 20px;
+  transition: background-color 0.3s;
+}
+
+.nav-bar ul li a:hover {
+  background-color: #d9d9d9;
+  color: #333;
+}
+
+
+.topic-category {
+  font-size: 12px; 
+  color: #333; 
+  padding-left: 10px; 
+}
+
+.topic-name {
+  font-size: 14px; 
+  font-weight: bold; 
+  color: #000; 
+  padding-left: 30px; 
+}

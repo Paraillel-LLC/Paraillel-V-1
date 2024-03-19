@@ -108,7 +108,7 @@ import "./Calendar.css";
 
   return (
     <div className="lesson-plan-container" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#f0f0f0" }}>
-      <div className="lesson-plan" style={{ display: "flex", flexDirection: "column", maxWidth: "800px", width: "100%", padding: "20px", backgroundColor: "#fff", borderRadius: "8px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
+      <div className="lesson-plan" style={{ display: "flex", flexDirection: "column", maxWidth: "800px", width: "100%", padding: "80px", backgroundColor: "#fff", borderRadius: "8px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}>
         <h2 style={{ marginBottom: "20px", textAlign: "center" }}>Create Lesson Plan</h2>
         
       {/* Navigation buttons to switch pages */}

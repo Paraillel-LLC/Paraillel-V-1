@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import Home from './Home';
 import ChatGPT from './ChatGPT';
 import Cale from './Cale';
 
 function App() {
-  // State to determine which component to render
-  const [currentPage, setCurrentPage] = useState('chat');
+  const [currentPage, setCurrentPage] = useState('home');
 
-  // Function to render the appropriate component based on state
+  const handleNavigation = (page) => {
+    setCurrentPage(page, () => {
+      window.scrollTo(0, 0);
+    });
+  };
+
   const renderPage = () => {
-    if (currentPage === 'chat') {
-      return <ChatGPT setCurrentPage={setCurrentPage} />;
-    } else if (currentPage === 'cale') {
-      return <Cale />;
+    switch (currentPage) {
+      case 'chat':
+        return <ChatGPT />;
+      case 'cale':
+        return <Cale />;
+      case 'home':
+        return <div>Home Page Content</div>;
+      default:
+        return <div>Page not found</div>;
     }
   };
 
   return (
     <div className="App">
+      <Home setCurrentPage={handleNavigation} />
       {renderPage()}
     </div>
   );

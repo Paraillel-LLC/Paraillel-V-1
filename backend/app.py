@@ -45,7 +45,7 @@ def create_plan():
         cursor = conn.cursor()
 
         # Execute a SQL query
-        cursor.execute('SELECT * FROM Roles')
+        cursor.execute('Describe Quiz')
 
         # Fetch the results
         results = cursor.fetchall()

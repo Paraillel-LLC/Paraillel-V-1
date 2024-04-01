@@ -6,20 +6,23 @@ from dotenv import load_dotenv
 import pymysql
 
 load_dotenv()
-import boto3
-
 
 app = Flask(__name__)
 CORS(app)
+
+
 # Counter for analytics
 study_plan_count = 0
+
 @app.route('/')
 def index():
     return "Flask server is running!"
+
 @app.route('/create-plan', methods=['POST'])
 def create_plan():
     global study_plan_count
     study_plan_count += 1
+
     data = request.json
     prompt = data.get('prompt')
     headers = {
@@ -33,9 +36,54 @@ def create_plan():
             'max_tokens': 2048
         }
     )
+    
+    if response.status_code == 200:
+        lesson_data = response.json().get('choices', [{}])[0].get('text', '')
+
+        # Assuming that the lesson_data needs to be parsed or is directly usable
+        # If parsing is needed, implement it based on how the data is structured in lesson_data
+        learning_outcomes = "Extracted or whole lesson_data"
+        prerequisites = "Extracted or whole lesson_data"
+        objective = "Extracted or whole lesson_data"
+
+        # User-provided details from request
+        #user_id = 1  # Example: Assuming a known user ID for simplicity
+        district_id = data.get('district_id')
+        school_id = data.get('school_id')
+        grade_id = data.get('grade_id')
+        subject = data.get('subject')
+        pedagogy = data.get('pedagogy')
+        plan_length = data.get('plan_length')
+        experience_level = data.get('experience_level')
+        standard = data.get('standard')
+        difficulty_level = data.get('difficulty_level')
+
+        conn = get_db_connection()
+        if conn is not None:
+            try:
+                with conn.cursor() as cursor:
+                    insert_query = """
+                    INSERT INTO LessonPlan ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """
+                    # Adjust the values accordingly if you're parsing lesson_data
+                    cursor.execute(insert_query, ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective))
+                    conn.commit()
+                    return jsonify({"message": "Lesson plan created successfully"}), 200
+            except Exception as e:
+                conn.rollback()
+                print(f"Database error: {e}")
+                return jsonify({"error": "Failed to insert lesson plan into the database"}), 500
+            finally:
+                conn.close()
+        else:
+            return jsonify({"error": "Failed to connect to the database"}), 500
+    else:
+        return jsonify({"error": "Failed to generate lesson plan from OpenAI API"}), response.status_code
+    return jsonify(response.json())
 
     # Attempt to connect to the database using pymysql
-    conn = get_db_connection()
+"""conn = get_db_connection()
     if conn is not None:
         print("Connected to db!")
 
@@ -56,7 +104,8 @@ def create_plan():
     else:
         print("Failed to connect to the database.")
     print(response)
-    return jsonify(response.json())
+    return jsonify(response.json())"""
+
 @app.route('/analytics', methods=['GET'])
 def analytics():
     return jsonify({'study_plan_count': study_plan_count})
@@ -67,7 +116,7 @@ def get_db_connection():
         conn = pymysql.connect(
         host=os.getenv('DB_HOST'),  # e.g., 'dev-backend.cjewkge6mhd5.us-east-1.rds.amazonaws.com'
         user=os.getenv('DB_USER'),  # e.g., 'admin'
-        password=os.getenv('DB_PASSWORD'),  # e.g., 'paraillel'
+        password=os.getenv('DB_PASSWORD'),  # e.g., 'parallel'
         database=os.getenv('DB_NAME'),  # Your database name
         port=3306
         )

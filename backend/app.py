@@ -67,7 +67,7 @@ def get_db_connection():
         conn = pymysql.connect(
         host=os.getenv('DB_HOST'),  # e.g., 'dev-backend.cjewkge6mhd5.us-east-1.rds.amazonaws.com'
         user=os.getenv('DB_USER'),  # e.g., 'admin'
-        password=os.getenv('DB_PASSWORD'),  # e.g., 'parallel'
+        password=os.getenv('DB_PASSWORD'),  # e.g., 'paraillel'
         database=os.getenv('DB_NAME'),  # Your database name
         port=3306
         )

@@ -4,16 +4,20 @@ import Home from './Home';
 import ChatGPT from './ChatGPT';
 import Cale from './Cale';
 import TheSettings from './TheSettings';
-
+import Login from './Login';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleNavigation = (page) => {
     setCurrentPage(page, () => {
       window.scrollTo(0, 0);
     });
   };
+  const handleLogin = (status) => {
+    setIsLoggedIn(status);
+  };
+
 
   const renderPage = () => {
     switch (currentPage) {
@@ -32,10 +36,17 @@ function App() {
 
   return (
     <div className="App">
-      <Home setCurrentPage={handleNavigation} />
-      {renderPage()}
+      {!isLoggedIn ? (
+        <Login onLogin={handleLogin} />
+      ) : (
+        <>
+          <Home setCurrentPage={handleNavigation} />
+          {renderPage()}
+        </>
+      )}
     </div>
   );
 }
+
 
 export default App;

@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 const Cale = () => {
-  const [calendarView, setCalendarView] = useState('dayGridMonth'); // 
+  const [calendarView] = useState('dayGridMonth'); // 
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -19,10 +19,10 @@ const Cale = () => {
   };
 
   return (
-    <div>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        
-      </div>
+    <div style={{ paddingTop: 0 }}> 
+    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+    </div>
+    <div style={{ maxWidth: '800px', margin: '0 auto' , padding: "80px"}}>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}
         initialView={calendarView}
@@ -32,11 +32,13 @@ const Cale = () => {
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         }}
         nowIndicator
-        initialDate={getCurrentDate()} // Ensure the calendar opens to the current date
+        initialDate={getCurrentDate()}
         height="auto"
       />
     </div>
-  );
+  </div>
+);
 };
+
 
 export default Cale;

@@ -4,6 +4,11 @@ import os
 import requests
 from dotenv import load_dotenv
 import pymysql
+import spacy
+import nltk
+from nltk.tokenize import sent_tokenize
+from summa import summarizer
+
 
 load_dotenv()
 
@@ -18,6 +23,42 @@ study_plan_count = 0
 def index():
     return "Flask server is running!"
 
+
+@app.route('/login', methods = ['POST','GET'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    email = data.get('email')
+    role_id = 1
+    
+    conn = get_db_connection()
+    if conn is not None:
+        try:
+            with conn.cursor() as cursor:
+                insert_query = """
+                    INSERT INTO Users ( username, password, role_id, email) VALUES (%s,%s,%s,%s)
+                    """
+                    # Adjust the values accordingly if you're parsing lesson_data
+                cursor.execute(insert_query, ( username, password, role_id, email))
+                conn.commit()
+                return jsonify({"message": "User added successfully"}), 200
+        except Exception as e:
+            conn.rollback()
+            print(f"Database error: {e}")
+            return jsonify({"error": "Failed to insert user data into the database"}), 500
+        finally:
+            conn.close()
+    else:
+        return jsonify({"error": "Failed to connect to the database"}), 500
+    if username :
+        print(username)
+        print(email)
+        print(password)
+        return jsonify({"message": "Login successful", "user": username}), 200
+    else:
+        return jsonify({"error": "Invalid credentials"}), 401
+       
 @app.route('/create-plan', methods=['POST'])
 def create_plan():
     global study_plan_count
@@ -39,7 +80,53 @@ def create_plan():
     
     if response.status_code == 200:
         lesson_data = response.json().get('choices', [{}])[0].get('text', '')
+        
+        with open("output.txt", "w") as file:
+            file.write(lesson_data)
+        with open("output.txt", "r") as file:
+            file_content = file.read()
+        print(file_content)
+        
+        outcomes = []
+        nlp = spacy.load("en_core_web_sm")
+        doc = nlp(file_content)
+        summary = summarizer.summarize(file_content)
+    
+        for sent in doc.sents:
+            task_start = None
+            outcome_start = None
+        
+            for i, token in enumerate(sent):
+                if token.text.lower() in ['task', 'tasks', 'goal', 'goals', 'objective', 'objectives']:
+                    task_start = i
+                elif task_start is not None and outcome_start is None:
+                    if token.pos_ == 'NOUN' or token.pos_ == 'PROPN':
+                        outcome_start = i
+        
+            if task_start is not None and outcome_start is not None:
+                outcome = ' '.join([token.text for token in sent[outcome_start:]])
+                outcomes.append(outcome)
+        sentences = sent_tokenize(file_content)
+        objectives = []
+        objective_keywords = ["objective", "aim", "goal"]
 
+        for sentence in sentences:
+            if any(keyword in sentence.lower() for keyword in objective_keywords):
+                objectives.append(sentence)
+        #outcomes = extract_outcomes(file_content)
+        #objective = extract_objective(file_content)
+        
+        print("Learning Outcomes:")
+        for outcome in outcomes:
+            print("-", outcome)
+        print("\nPrerequisites:")
+        '''for prerequisite in prerequisites1:
+            print("-", prerequisite)'''
+        print("\nObjectives:")
+        for objective in objectives:
+            print("-", objective)
+        print("\nSummary:")
+        print(summary)
         # Assuming that the lesson_data needs to be parsed or is directly usable
         # If parsing is needed, implement it based on how the data is structured in lesson_data
         learning_outcomes = "Extracted or whole lesson_data"

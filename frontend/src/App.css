@@ -1,78 +1,35 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+  overflow: auto; 
 }
 
 .App-header {
-  background-color: var(--white-100, #fff);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: Inter;
-  font-size: calc(10px + 2vmin);
-  font-style: normal;
-  font-weight: 500;
-  color: var(--Secondary-color, #4b5563);
+  flex-grow: 1;
+  overflow: auto;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-bar {
+  flex-shrink: 0; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.content {
+  flex-grow: 1;
+  overflow-y: auto; 
 }
 
-.lesson-plan {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
 }
 
-.form-row {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 600px; /* Adjust based on your preference */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  width: 48%; /* Adjust the width for spacing between two columns */
-  margin-bottom: 10px;
-}
-
-.lesson-plan input,
-.lesson-plan select,
-.lesson-plan button,
-.lesson-plan input[type="radio"] {
-  margin-top: 5px;
-}
-
-.response {
-  margin: 20px auto;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 80%;
-}

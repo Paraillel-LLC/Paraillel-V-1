@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+  <div class="login-container">
+    <form id="login-form" class="login-form">
+      <h2>Login</h2>
+      <div>
+        <label>Username</label>
+        <input type="text" id="username" />
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" id="password" />
+      </div>
+      <button type="submit" id="login-btn">Login</button>
+      <button type="button" id="create-account-btn">Create an Account</button>
+    </form>
+  </div>
+  <script>
+    // Add event listener for form submission
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      // Prevent default form submission behavior
+      event.preventDefault();
+
+      // Retrieve username and password from form inputs
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+
+      // Perform login validation here (e.g., check credentials against database)
+
+      // Redirect to Home.js upon successful login
+      window.location.href = '/';
+    });
+
+    // Add event listener for "Create Account" button click (existing code)
+    document.getElementById('create-account-btn').addEventListener('click', function() {
+      window.location.href = 'CreateAccount.html'; // Redirect to CreateAccount.html
+    });
+  </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import React from 'react';
+import './LoginWrapper.css'; 
 
 function LoginWrapper() {
   const handleCreateAccount = () => {
@@ -8,12 +9,12 @@ function LoginWrapper() {
   const handleLogin = () => {
     window.location.href = '/Login.html';
   };
+
   return (
-    <div>
+    <div className="login-wrapper-container">
       <h1>Login Or Create an Account</h1>
       <button onClick={handleCreateAccount}>Create Account</button>
       <button onClick={handleLogin}>Login</button>
-
     </div>
   );
 }

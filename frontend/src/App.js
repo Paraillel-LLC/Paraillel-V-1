@@ -1,26 +1,41 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Home from './Home';
-import LoginWrapper from './LoginWrapper';
-import CreateAccountWrapper from './CreateAccountWrapper';
+import ChatGPT from './ChatGPT';
+import Cale from './Cale';
+import TheSettings from './TheSettings';
+import LoginWrapper from './LoginWrapper'; // Assuming Login component is in Login.js
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentPage, setCurrentPage] = useState('home');
+  const handleNavigation = (page) => {
+    setCurrentPage(page, () => {
+      window.scrollTo(0, 0);
+    });
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'chat':
+        return <ChatGPT />;
+      case 'cale':
+        return <Cale />;
+      case 'TheSettings':
+        return <TheSettings />;
+      case 'home':
+        return <div>Home Page Content</div>;
+      case 'LoginWrapper':
+        return <LoginWrapper />;
+      default:
+        return <div>Page not found</div>;
+    }
+  };
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/login" element={<LoginWrapper onLogin={() => setIsLoggedIn(true)} />} />
-          <Route path="/create-account" element={<CreateAccountWrapper />} />
-          <Route
-            path="/"
-            element={isLoggedIn ? <Home /> : <LoginWrapper onLogin={() => setIsLoggedIn(true)} />}
-          />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <Home setCurrentPage={handleNavigation} />
+      {renderPage()}
+    </div>  
   );
 }
 

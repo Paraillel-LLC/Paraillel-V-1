@@ -3,7 +3,8 @@ import './Home.css';
 
 function Home({ setCurrentPage }) {
   const topics = {
-    "General": ["Dashboard", "Calendar","LessonPlan", "Assignments", "Resources"],
+    
+    "General": ["Login/CreateAccount","Dashboard", "Calendar","LessonPlan", "Assignments", "Resources"],
     "Communications": ["Collaborations", "Messages"],
     "Data": ["Roster", "Analytics", "Reports"],
     "Control": ["Settings"]
@@ -19,6 +20,9 @@ function Home({ setCurrentPage }) {
       setCurrentPage("cale"); 
     }else if (topic === "Settings") {
       setCurrentPage("TheSettings"); 
+    }
+      else if (topic === "Login/CreateAccount") {
+        setCurrentPage("LoginWrapper"); 
     } else {
       setCurrentPage(topicComponents[topic]);
     }

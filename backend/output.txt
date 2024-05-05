@@ -1,83 +1,60 @@
 
-I. Relevant Ohio State Academic Standards:
-1. History-Social Science Content Standards:
-a. History Strand:
-- Standard 2: Historical Thinking and Skills
-- Standard 3: The Historical Context and Continuity of Change in the World
-b. Geography Strand:
-- Standard 8: Regions
-- Standard 9: Globalization
-2. English Language Arts Content Standards:
-a. Reading Standard 1: Comprehending Informational Text
-b. Writing Standard 2: Text Types and Purposes
-c. Speaking and Listening Standard 2: Comprehension and Collaboration
 
-II. Lesson Plan:
-A. Objectives:
-By the end of this lesson, students will be able to:
-- Explain the significance of Ohio's history in the context of the United States.
-- Analyze how Ohio's geography has contributed to its history and development.
-- Use historical thinking skills to analyze primary and secondary sources related to Ohio history.
-- Communicate effectively through reading, writing, and speaking activities related to Ohio history.
+State Academic Standards:
+1.CCSS.Math.Content.1.OA.A.1 - Use addition and subtraction within 20 to solve word problems involving situations of adding to, taking from, putting together, taking apart, and comparing, with unknowns in all positions, e.g., by using objects, drawings, and equations with a symbol for the unknown number to represent the problem. 
+2.CCSS.ELA-LITERACY.RL.1.1 - Ask and answer questions about key details in a text. 
+3.CCSS.ELA-LITERACY.SL.1.2 - Ask and answer questions about key details in a text read aloud or information presented orally or through other media.
 
-B. Materials:
-- Map of Ohio (physical and political)
-- Primary and secondary sources related to Ohio's history (e.g. documents, photographs, artifacts)
-- Handouts with discussion questions and writing prompts
-- Tablets or laptops for online research
-- Chart paper and markers for group activities
+Lesson Title: "Fun with Addition and Subtraction"
 
-C. Introduction (15 minutes):
-1. Begin the lesson by showing the map of Ohio and asking students to identify its location in the United States.
-2. Facilitate a brief discussion about Ohio's location, geography, and how it has evolved over time.
+Objective: Students will be able to solve addition and subtraction word problems within 20 using objects, drawings, and equations. They will also be able to ask and answer questions about key details in a text related to addition and subtraction.
 
-D. Exploration (30 minutes):
-1. Divide students into small groups and provide each group with a set of primary and secondary sources related to Ohio's history.
-2. Instruct students to analyze the sources using the historical thinking skills of sourcing, contextualization, corroboration, and close reading.
-3. Encourage students to discuss their findings within their groups and record them on chart paper.
-4. After 15 minutes, have each group present their findings to the class.
+Materials:
+1. Counting objects (beans, buttons, blocks, etc.)
+2. Colored pencils, markers, or crayons
+3. Whiteboard and markers
+4. Addition and subtraction word problems worksheets 
+5. "The Berenstain Bears: The Missing Dinosaur Bone" by Stan and Jan Berenstain (optional)
 
-E. Explanation (45 minutes):
-1. Using the information gathered from the primary and secondary sources, guide students in a discussion about Ohio's history.
-2. Facilitate a conversation about the different periods in Ohio's history (e.g. Native American civilizations, early explorers, statehood, Industrial Revolution, etc.) and how they have shaped the state's development.
-3. Emphasize the impact of Ohio's natural resources, such as coal and iron, on its economy and growth.
-4. Use the map to highlight important historical sites and events in Ohio.
+Lesson Introduction (15 minutes):
+1. Gather the students on the carpet and introduce the lesson topic: addition and subtraction. Ask the students if they know what addition and subtraction mean. Allow for a brief discussion and clarify any misconceptions.
+2. Show the students the counting objects and explain how they will be using them to solve problems in the lesson.
+3. Introduce the book "The Berenstain Bears: The Missing Dinosaur Bone", if using. Ask the students to pay attention to how the bears use addition and subtraction to find the missing bone.
 
-F. Elaboration (60 minutes):
-1. Have students work individually or in pairs to research a specific event or person in Ohio's history.
-2. Give students a prompt or question related to their chosen topic and have them write a short essay answering it.
-3. Encourage students to incorporate information from the sources analyzed in the Exploration stage.
-4. Allow time for students to share their essays with the class and engage in a discussion about their findings.
+Direct Instruction (30 minutes):
+1. Write the numbers 1-10 on the whiteboard. Ask the students to count along as you point to each number.
+2. Using the counting objects, model how to add and subtract with numbers 1-10. Allow for a few student volunteers to participate.
+3. Show students how to represent addition and subtraction problems using drawings and equations on the whiteboard.
+4. Distribute the addition and subtraction word problems worksheets and explain the instructions. Have students complete the worksheets independently or with a partner.
+5. As students are working, circulate around the room and provide assistance as needed.
 
-G. Evaluation (30 minutes):
-1. Give students a handout with discussion questions related to Ohio's history.
-2. Have them work in pairs or small groups to discuss their answers.
-3. As a class, review the answers to the questions and facilitate a discussion about the significance of Ohio's history in the context of the United States.
+Guided Practice (30 minutes):
+1. Choose 2-3 word problems from the worksheet and solve them on the whiteboard, inviting students to participate and explain their thinking.
+2. Have students work in pairs to create their own addition and subtraction word problems using the counting objects and write them on the whiteboard for the class to solve.
+3. Allow for students to ask and answer questions about the word problems.
 
-H. Conclusion (15 minutes):
-1. Summarize the key points about Ohio's history and its impact on the state's development.
-2. Have students reflect on the lesson by discussing what they found most interesting and what they would like to learn more about.
-3. Encourage students to continue exploring Ohio's history in their free time.
+Independent Practice (30 minutes):
+1. After discussing solutions to the word problems, have students complete the rest of the worksheet independently.
+2. During this time, provide one-on-one assistance to students who may be struggling.
+3. Once students have finished, allow for a few volunteers to share their word problems and solutions with the class.
 
-I. Closure:
-As a final project, have students create a digital timeline of Ohio's history using the primary and secondary sources analyzed in class. This will allow them to review the key events and people in Ohio's history and demonstrate their understanding of the lesson.
+Closure (15 minutes):
+1. Gather the students back on the carpet and review the concepts of addition and subtraction.
+2. Ask students to share what they learned in the lesson and give examples of how they can use addition and subtraction in their everyday lives.
+3. Distribute a short exit slip for students to solve one addition and one subtraction word problem.
+4. Collect the exit slips and use them to assess students' understanding of the lesson.
 
-J. Accommodations for Montessori Style:
-- Incorporate hands-on activities and manipulatives, such as puzzles or models, to engage students in learning.
-- Provide opportunities for independent learning and exploration.
-- Encourage movement and movement breaks throughout the lesson.
-- Use real-life experiences and stories to make the lesson more relatable and meaningful to students.
+Extension (Optional):
+1. Have students create their own addition and subtraction stories using the counting objects and present them to the class.
+2. Create a "math center" for students to practice addition and subtraction with various manipulatives such as dice, playing cards, or number flashcards.
+3. Use the book "The Berenstain Bears: The Missing Dinosaur Bone" as a read aloud and have students identify and solve addition and subtraction problems in the story.
 
-K. Assessment:
-Students will be assessed through their group and class discussions, participation in activities, completion of the essay and handout, and their digital timeline.
+Assessment:
+1. The completed addition and subtraction word problem worksheets.
+2. Participation and understanding during guided practice and independent practice.
+3. Exit slip results.
 
-L. Extension Activities:
-- Have students research and compare Ohio's history to another state.
-- Create a role-play activity where students act out important events in Ohio's history.
-- Have students design a brochure or travel guide for visitors to Ohio, highlighting its history and important sites.
-
-M. Reflection:
-After the lesson, take time to reflect on how well it aligned with the Montessori Style approach and whether all students were engaged and supported in their learning. Consider making any necessary adjustments for future lessons.
-
-N. Homework:
-Have students reflect on their learnings from the lesson and write a journal entry about why it is important to study and understand history.
+Reflection:
+1. Were all students able to actively participate and understand the lesson?
+2. What adjustments, if any, could be made to improve the lesson?
+3. How can this lesson be differentiated for students with varying levels of understanding and ability?

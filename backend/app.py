@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, redirect, url_for,session, send_from_directory
 from flask_cors import CORS
 import os
 import requests
@@ -8,56 +8,74 @@ import spacy
 import nltk
 from nltk.tokenize import sent_tokenize
 from summa import summarizer
+from flask.templating import DispatchingJinjaLoader, Environment, TemplateNotFound
+import pymysql.cursors
 
 
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
 
+CORS(app, origins=['http://localhost:3000'])
 
 # Counter for analytics
 study_plan_count = 0
 
 @app.route('/')
 def index():
-    return "Flask server is running!"
+   return send_from_directory('frontend/public', 'index.html')
 
 
 @app.route('/login', methods = ['POST','GET'])
-def login():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-    email = data.get('email')
-    role_id = 1
+def login():   
+    username = request.json.get('username')
+    password = request.json.get('password')
     
     conn = get_db_connection()
-    if conn is not None:
-        try:
-            with conn.cursor() as cursor:
-                insert_query = """
-                    INSERT INTO Users ( username, password, role_id, email) VALUES (%s,%s,%s,%s)
-                    """
-                    # Adjust the values accordingly if you're parsing lesson_data
-                cursor.execute(insert_query, ( username, password, role_id, email))
-                conn.commit()
-                return jsonify({"message": "User added successfully"}), 200
-        except Exception as e:
-            conn.rollback()
-            print(f"Database error: {e}")
-            return jsonify({"error": "Failed to insert user data into the database"}), 500
-        finally:
-            conn.close()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Users WHERE username=%s AND password=%s", (username, password))
+    user = cursor.fetchone()
+        
+    conn.close()
+        
+    if user:
+        return jsonify({'success': True}), 200
+        #return redirect('/index')
     else:
-        return jsonify({"error": "Failed to connect to the database"}), 500
-    if username :
-        print(username)
-        print(email)
-        print(password)
-        return jsonify({"message": "Login successful", "user": username}), 200
+        return jsonify({'success': False, 'message': 'Incorrect username or password'}), 401
+        #return render_template('Login.html', error='Incorrect email or password')
+        
+    #return render_template('Login.html', error=None)
+    
+'''@app.route('/index')
+def home():
+    if 'user' in session:
+        return render_template('index.html', user=session['user'])
     else:
-        return jsonify({"error": "Invalid credentials"}), 401
+        return redirect('/')'''
+    
+@app.route('/create-account', methods=['POST','GET'])
+def create_account():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    email = request.json.get('email')
+    role_id = 1
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT * FROM Users WHERE username = %s", (username,))
+    existing_user = cursor.fetchone()
+    
+    if existing_user:
+        return jsonify({'success': False, 'message': 'Username already exists'}), 400
+    
+    cursor.execute("INSERT INTO Users ( username, password, role_id, email) VALUES (%s,%s,%s,%s)", (username, password,role_id,email))
+    conn.commit()
+
+    conn.close()
+    #return jsonify({'success': True}), 201
+    return render_template('http://localhost:3000/')
        
 @app.route('/create-plan', methods=['POST'])
 def create_plan():
@@ -144,6 +162,7 @@ def create_plan():
         experience_level = data.get('experience_level')
         standard = data.get('standard')
         difficulty_level = data.get('difficulty_level')
+        start_date = data.get('start_date')
 
         conn = get_db_connection()
         if conn is not None:
@@ -168,6 +187,7 @@ def create_plan():
     else:
         return jsonify({"error": "Failed to generate lesson plan from OpenAI API"}), response.status_code
     return jsonify(response.json())
+    return render_template('cale.js', learning_outcomes = learning_outcomes, start_date= start_date)
 
     # Attempt to connect to the database using pymysql
 """conn = get_db_connection()

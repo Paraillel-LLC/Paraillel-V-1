@@ -4,15 +4,20 @@ import Home from './Home';
 import ChatGPT from './ChatGPT';
 import Cale from './Cale';
 import TheSettings from './TheSettings';
-import LoginWrapper from './LoginWrapper'; // Assuming Login component is in Login.js
+import Login from './Login';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleNavigation = (page) => {
     setCurrentPage(page, () => {
       window.scrollTo(0, 0);
     });
   };
+  const handleLogin = (status) => {
+    setIsLoggedIn(status);
+  };
+
 
   const renderPage = () => {
     switch (currentPage) {
@@ -24,8 +29,6 @@ function App() {
         return <TheSettings />;
       case 'home':
         return <div>Home Page Content</div>;
-      case 'LoginWrapper':
-        return <LoginWrapper />;
       default:
         return <div>Page not found</div>;
     }
@@ -33,10 +36,17 @@ function App() {
 
   return (
     <div className="App">
-      <Home setCurrentPage={handleNavigation} />
-      {renderPage()}
-    </div>  
+      {!isLoggedIn ? (
+        <Login onLogin={handleLogin} />
+      ) : (
+        <>
+          <Home setCurrentPage={handleNavigation} />
+          {renderPage()}
+        </>
+      )}
+    </div>
   );
 }
+
 
 export default App;

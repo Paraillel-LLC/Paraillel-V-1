@@ -1,4 +1,4 @@
-import './Login.css'; 
+import './Login.css';
 import React, { useState } from 'react';
 
 function Login({ onLogin }) {
@@ -10,19 +10,17 @@ function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Placeholder for authentication logic
     if (isCreatingAccount) {
       if (!username || !email || !password || password !== confirmPassword) {
         alert('Please fill all fields correctly for account creation.');
         return;
       }
-      // Here you would add your logic to handle account creation
       console.log('Creating account...');
-      // Assuming account creation is successful
-      onLogin(true); // You might want to auto-login the user or redirect to a login page
+      onLogin(true); 
+      window.location.href = '/login'; 
     } else {
       if (username && password) {
-        onLogin(true); // Trigger login success
+        onLogin(true); 
       } else {
         alert('Please enter a username and password');
       }

@@ -1,60 +1,71 @@
 
 
 State Academic Standards:
-1.CCSS.Math.Content.1.OA.A.1 - Use addition and subtraction within 20 to solve word problems involving situations of adding to, taking from, putting together, taking apart, and comparing, with unknowns in all positions, e.g., by using objects, drawings, and equations with a symbol for the unknown number to represent the problem. 
-2.CCSS.ELA-LITERACY.RL.1.1 - Ask and answer questions about key details in a text. 
-3.CCSS.ELA-LITERACY.SL.1.2 - Ask and answer questions about key details in a text read aloud or information presented orally or through other media.
 
-Lesson Title: "Fun with Addition and Subtraction"
+Social Studies Standard:
+Standard 3: People in Societies
+Content Statement: People in the past influence the development and interactions of communities, regions, and nations.
+Code: SS.01.03
+Description: Students will be able to identify and explain the contributions of individuals and groups to Ohio history.
 
-Objective: Students will be able to solve addition and subtraction word problems within 20 using objects, drawings, and equations. They will also be able to ask and answer questions about key details in a text related to addition and subtraction.
+Social Studies Standard:
+Standard 7: History
+Content Statement: The study of history helps us understand the past and present.
+Code: SS.01.07
+Description: Students will be able to use historical thinking skills to examine Ohio's history, including how it impacts the state and its people today.
+
+Experiential Learning Pedagogical Approach:
+Experiential learning is a teaching method that involves actively engaging students in hands-on experiences and reflection to deepen their understanding and retention of the subject matter. This approach encourages students to take ownership of their own learning and apply it to real-life situations. In this lesson, students will participate in various activities to explore Ohio's history and its impact on the state today.
+
+Lesson Title: Ohio History
+
+Grade Level: 1st Grade
+Theme: People in the past influencing the development and interactions of communities, regions, and nations
+
+Objective:
+- Students will identify and explain the contributions of individuals and groups to Ohio history.
+- Students will use historical thinking skills to examine Ohio's history and its impact on the state and its people today.
 
 Materials:
-1. Counting objects (beans, buttons, blocks, etc.)
-2. Colored pencils, markers, or crayons
-3. Whiteboard and markers
-4. Addition and subtraction word problems worksheets 
-5. "The Berenstain Bears: The Missing Dinosaur Bone" by Stan and Jan Berenstain (optional)
+- Ohio History textbook
+- Maps of Ohio
+- Pictures or artifacts of important figures from Ohio's history
+- Worksheet for reflection activity
+- Construction paper
+- Markers or crayons
 
-Lesson Introduction (15 minutes):
-1. Gather the students on the carpet and introduce the lesson topic: addition and subtraction. Ask the students if they know what addition and subtraction mean. Allow for a brief discussion and clarify any misconceptions.
-2. Show the students the counting objects and explain how they will be using them to solve problems in the lesson.
-3. Introduce the book "The Berenstain Bears: The Missing Dinosaur Bone", if using. Ask the students to pay attention to how the bears use addition and subtraction to find the missing bone.
+Introduction (10 minutes):
+- Begin the lesson by asking students if they know what history is. Discuss their responses and explain that history is learning about the past and how it affects the present.
+- Show students a map of Ohio and ask them if they know where they live on the map. Discuss the location's importance in relation to Ohio's history.
 
 Direct Instruction (30 minutes):
-1. Write the numbers 1-10 on the whiteboard. Ask the students to count along as you point to each number.
-2. Using the counting objects, model how to add and subtract with numbers 1-10. Allow for a few student volunteers to participate.
-3. Show students how to represent addition and subtraction problems using drawings and equations on the whiteboard.
-4. Distribute the addition and subtraction word problems worksheets and explain the instructions. Have students complete the worksheets independently or with a partner.
-5. As students are working, circulate around the room and provide assistance as needed.
+- Use a timeline to introduce students to important events and people in Ohio's history. Show pictures or artifacts of these events and individuals to engage students' interest.
+- Guide students in a discussion about the contributions of these people and events to Ohio's history.
+- Pass out the textbook and have students read a short passage about Ohio's history. Encourage them to ask questions and make connections to the timeline.
+- Divide the students into small groups and assign each group a different topic to research in the textbook (e.g. Native American tribes in Ohio, early settlers, important figures in Ohio's history, etc.). Give them 10 minutes to read and take notes.
+- Have each group present their findings to the class, discussing the contributions of their assigned topic to Ohio's history.
 
-Guided Practice (30 minutes):
-1. Choose 2-3 word problems from the worksheet and solve them on the whiteboard, inviting students to participate and explain their thinking.
-2. Have students work in pairs to create their own addition and subtraction word problems using the counting objects and write them on the whiteboard for the class to solve.
-3. Allow for students to ask and answer questions about the word problems.
+Experiential Learning Activities (90 minutes):
+- Have students participate in a role-playing activity where they pretend to be important figures from Ohio's history. Provide props and encourage students to use their imagination.
+- Give students a worksheet and have them reflect on what they have learned about Ohio's history. Ask them to identify one person or event that they found particularly interesting and explain why.
+- Have students create a timeline of Ohio's history using construction paper and markers or crayons. Allow them to be creative and use drawings to represent events and people.
+- Use a large map of Ohio to have students locate important places and landmarks from Ohio's history. Encourage discussion and connections to the timeline and the textbook.
+- As a culminating activity, have students work in groups to create a short skit or presentation about an important event or person from Ohio's history. Allow them to use their creativity and incorporate what they have learned from the lesson.
 
-Independent Practice (30 minutes):
-1. After discussing solutions to the word problems, have students complete the rest of the worksheet independently.
-2. During this time, provide one-on-one assistance to students who may be struggling.
-3. Once students have finished, allow for a few volunteers to share their word problems and solutions with the class.
-
-Closure (15 minutes):
-1. Gather the students back on the carpet and review the concepts of addition and subtraction.
-2. Ask students to share what they learned in the lesson and give examples of how they can use addition and subtraction in their everyday lives.
-3. Distribute a short exit slip for students to solve one addition and one subtraction word problem.
-4. Collect the exit slips and use them to assess students' understanding of the lesson.
-
-Extension (Optional):
-1. Have students create their own addition and subtraction stories using the counting objects and present them to the class.
-2. Create a "math center" for students to practice addition and subtraction with various manipulatives such as dice, playing cards, or number flashcards.
-3. Use the book "The Berenstain Bears: The Missing Dinosaur Bone" as a read aloud and have students identify and solve addition and subtraction problems in the story.
+Closure (10 minutes):
+- Wrap up the lesson by having students share their skits or presentations with the class.
+- Ask students to share one thing they learned about Ohio's history and how it has influenced the state and its people today.
+- Emphasize the importance of understanding and learning about our history to better understand the present and shape the future.
 
 Assessment:
-1. The completed addition and subtraction word problem worksheets.
-2. Participation and understanding during guided practice and independent practice.
-3. Exit slip results.
+- Teacher observation during activities and group discussions.
+- Reflection worksheet.
+- Timeline and skit or presentation.
 
-Reflection:
-1. Were all students able to actively participate and understand the lesson?
-2. What adjustments, if any, could be made to improve the lesson?
-3. How can this lesson be differentiated for students with varying levels of understanding and ability?
+Homework:
+- Ask students to interview an older family member or elder in their community about Ohio's history. Encourage them to bring in any pictures or artifacts they find during their interview to share with the class in the next lesson.
+
+Extension:
+- Have students research and create a mini-biography about an important figure from Ohio's history.
+- Explore Ohio's history through songs or dances from that time period.
+- Plan a field trip to a local historical site or museum related to Ohio's history.

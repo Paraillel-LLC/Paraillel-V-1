@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Home from './Home';
 import ChatGPT from './ChatGPT';
 import Cale from './Cale';
 import TheSettings from './TheSettings';
-import LoginWrapper from './LoginWrapper'; // Assuming Login component is in Login.js
+import Login from './Login';
+import LoginSuccess from './LoginSuccess';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState('login');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showHome, setShowHome] = useState(false); 
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setCurrentPage('LoginSuccess');
+  };
+
   const handleNavigation = (page) => {
     setCurrentPage(page, () => {
       window.scrollTo(0, 0);
     });
+  };
+
+  const handleSubmit = () => {
+    setCurrentPage('home');
+    setShowHome(true); 
   };
 
   const renderPage = () => {
@@ -23,9 +37,11 @@ function App() {
       case 'TheSettings':
         return <TheSettings />;
       case 'home':
-        return <div>Home Page Content</div>;
-      case 'LoginWrapper':
-        return <LoginWrapper />;
+        return <Home setCurrentPage={handleNavigation} />;
+      case 'login':
+        return <Login onLogin={handleLogin} />;
+      case 'LoginSuccess':
+        return <LoginSuccess onSubmit={handleSubmit} />;
       default:
         return <div>Page not found</div>;
     }
@@ -33,9 +49,13 @@ function App() {
 
   return (
     <div className="App">
-      <Home setCurrentPage={handleNavigation} />
+      {showHome && <Home setCurrentPage={handleNavigation} />} 
       {renderPage()}
-    </div>  
+      {isLoggedIn && (
+        <>
+        </>
+      )}
+    </div>
   );
 }
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import "./Calendar.css";
 
-const ChatGPT = ({ setCurrentPage }) => {
+const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   const [response, setResponse] = useState("");
   const [grade, setGrade] = useState("1");
   const [lessonTitle, setLessonTitle] = useState("");
@@ -17,7 +17,7 @@ const ChatGPT = ({ setCurrentPage }) => {
   const [date, setDate] = useState(new Date());
   const [districtId, setDistrictId] = useState("");
   const [schoolId, setSchoolId] = useState("");
-  const [gradeId, setGradeId] = useState(""); // Note: You already have a 'grade' state, you might repurpose it or distinguish between grade name and gradeId
+  const [gradeId, setGradeId] = useState(""); 
 
   const teachingStyles = [
     "Regular School Based",
@@ -86,45 +86,37 @@ const ChatGPT = ({ setCurrentPage }) => {
   };
 
   const createPlan = async () => {
-    // Constructing the payload to include all necessary data
     const payload = {
       district_id: districtId,
       school_id: schoolId,
-      grade_id: gradeId, // Make sure this captures the correct value for grade ID
+      grade_id: gradeId,
       subject: subject,
       pedagogy: teachingStyle,
-      plan_length: planDuration.includes("hours")
-        ? planDuration.split(" ")[0]
-        : planDuration, // Assuming planDuration is like "1-4 hours" and extracting just the number part
-      experience_level: difficultyLevel, // Mapping this correctly to what your backend expects
+      plan_length: planDuration.includes("hours") ? planDuration.split(" ")[0] : planDuration,
+      experience_level: difficultyLevel,
       standard: stateAcademicStandard,
-      difficulty_level: difficultyLevel, // Making sure this matches your database schema
+      difficulty_level: difficultyLevel,
       prompt: `As a seasoned expert in pedagogy, you are tasked to devise a comprehensive and engaging lesson plan for students in grade ${grade} studying ${subject} with a lesson titled "${lessonTitle}" based on a ${teachingStyle} pedagogical approach. The lesson plan should be suitable for a ${planDuration} period and compliant with the ${stateAcademicStandard} curriculum. The theme of the lesson is "${theme}" and is designed to have a difficulty level of "${difficultyLevel}". Please start by listing the relevant state academic standards, complete with their codes and descriptions, and then proceed with the lesson plan. As much as possible, try to factor in the ${teachingStyle} of the students. The first class will be on ${startDate}. Your output should be factual, impartial, thorough, and definitive.`,
-      max_tokens: 1024, // Keeping this for consistency with your request configuration
+      max_tokens: 1024,
     };
 
     try {
-      const result = await axios.post(
-        "http://localhost:5000/create-plan",
-        payload
-      );
+      const result = await axios.post('http://localhost:5000/create-plan', payload);
 
-      // Check if the backend returned the lesson plan content or a success message
-      if (result.data && typeof result.data === "string") {
-        // If the response is just a string (assuming lesson plan content or success message)
+      if (result.data && typeof result.data === 'string') {
         openResponseInNewTab(result.data);
       } else if (result.data && result.data.message) {
-        // If the response contains a 'message' key (assuming a success message)
         openResponseInNewTab(result.data.message);
       } else {
-        // Handle any other unexpected response format
-        console.error(
-          "No response or unexpected format received from the server."
-        );
+        console.error('No response or unexpected format received from the server.');
       }
     } catch (error) {
-      console.error("Error calling backend:", error);
+      console.error('Error calling backend:', error);
     }
+  };
+
+  const handleGenerateClick = () => {
+    onGenerate(lessonTitle, startDate);
   };
 
   return (
@@ -154,10 +146,6 @@ const ChatGPT = ({ setCurrentPage }) => {
         <h2 style={{ marginBottom: "20px", textAlign: "center" }}>
           Create Lesson Plan
         </h2>
-
-        <div className="nav-buttons">
-          <button onClick={() => setCurrentPage("cale")}>Calendar</button>
-        </div>
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ flex: 1, marginRight: "20px" }}>
@@ -275,7 +263,6 @@ const ChatGPT = ({ setCurrentPage }) => {
             </label>
             <label>
               Grade ID:{" "}
-              {/* If you are using 'grade' for something else, like grade name */}
               <input
                 type="text"
                 value={gradeId}
@@ -285,14 +272,33 @@ const ChatGPT = ({ setCurrentPage }) => {
             </label>
           </div>
         </div>
-
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <button onClick={createPlan} className="accent-one">
-            Generate
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
+          <button
+            onClick={createPlan}
+            style={{
+              padding: "10px",
+              backgroundColor: "#007BFF",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Generate Lesson Plan
           </button>
-          <div className="response" style={{ marginTop: "10px" }}>
-            {response}
-          </div>
+          <button
+            onClick={handleGenerateClick}
+            style={{
+              padding: "10px",
+              backgroundColor: "#007BFF",
+              color: "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            Add to Calendar
+          </button>
         </div>
       </div>
     </div>

@@ -11,6 +11,8 @@ function App() {
   const [currentPage, setCurrentPage] = useState('login');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showHome, setShowHome] = useState(false); 
+  const [lessonTitle, setLessonTitle] = useState('');
+  const [startDate, setStartDate] = useState('');
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -18,9 +20,8 @@ function App() {
   };
 
   const handleNavigation = (page) => {
-    setCurrentPage(page, () => {
-      window.scrollTo(0, 0);
-    });
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   const handleSubmit = () => {
@@ -28,12 +29,18 @@ function App() {
     setShowHome(true); 
   };
 
+  const handleGenerate = (title, date) => {
+    setLessonTitle(title);
+    setStartDate(date);
+    setCurrentPage('cale');
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'chat':
-        return <ChatGPT />;
+        return <ChatGPT setCurrentPage={handleNavigation} onGenerate={handleGenerate} />;
       case 'cale':
-        return <Cale />;
+        return <Cale lessonTitle={lessonTitle} startDate={startDate} />;
       case 'TheSettings':
         return <TheSettings />;
       case 'home':

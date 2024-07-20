@@ -1,26 +1,20 @@
 import React, { useState } from 'react';
 import './App.css';
-import ChatGPT from './ChatGPT';
-import Cale from './Cale';
+import ChatGPT from './pages/ChatGPT';
+import Cale from './pages/Cale';
+import Assignment from './pages/Assignments';
+import {BrowserRouter, Route, Routes} from "react-router-dom"
+import Privacy from './pages/Privacy';
 
 function App() {
-  // State to determine which component to render
-  const [currentPage, setCurrentPage] = useState('chat');
-
-  // Function to render the appropriate component based on state
-  const renderPage = () => {
-    if (currentPage === 'chat') {
-      return <ChatGPT setCurrentPage={setCurrentPage} />;
-    } else if (currentPage === 'cale') {
-      return <Cale />;
-    }
-  };
-
-  return (
-    <div className="App">
-      {renderPage()}
-    </div>
-  );
+    return (
+        <BrowserRouter>
+        <Routes>
+            <Route path='/' element={<Assignment/>}/>
+            <Route path='/privacy' element={<Privacy/>}/>
+        </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App;

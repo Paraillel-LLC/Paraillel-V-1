@@ -1,4 +1,8 @@
-body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -14,7 +18,7 @@ code {
 
 .lesson-plan {
   text-align: center;
-}
+} */
 
 .lesson-plan label {
   display: inline-flex;
@@ -68,3 +72,130 @@ code {
     font-weight: 500;
     line-height: normal;
 }
+
+
+/*Assignment Section*/
+
+.assignment {
+  padding-left: 30px;
+}
+
+.assignment-header {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid black; 
+}
+
+.assignment-button {
+  background-color: #3E8CEE;
+  border-radius: 8px;
+  height: 44px;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.assignment-button:hover{
+  background-color: #0496FF;
+}
+
+.assignment-stack {
+  display: flex;
+  gap: 45px;
+  flex-wrap: wrap;
+}
+
+.card {
+  border: 1px #E3E3E3 solid;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+  align-items: start;
+  padding-top: 10px;
+  width: 316px;
+  height: 165px;
+  text-align: left;
+}
+
+.card p {
+  margin: 0;
+}
+
+.card-date {
+  color: #858585;
+  font-size: 12px;
+  font-family: 'Inter';
+  font-weight: 500;
+}
+
+.card-title {
+  font-size: 15px;
+  font-family: 'Inter';
+  font-weight: 600;
+  padding-top: 12px;
+  padding-bottom: 6px;
+}
+
+.card-tags {
+  display: flex;
+  gap: 5px;
+  color: #858585;
+  font-size: 12px;
+  font-family: 'Inter';
+  padding-bottom: 6px;
+}
+.card-due {
+  background-color: #EEF7FF;
+  border: #CBE6FF 1px solid;
+  border-radius: 6px;
+  height: 27px;
+  padding: 0 10px;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-family: 'Inter';
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 93%;
+  padding-right: 30px;
+  padding-left: 10px;
+  margin-top: 50px;
+}
+
+.avatar-stack {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.avatar {
+  border-radius: 50%; 
+  width: 28.66px;
+  height: 28.66px;
+  margin-left: -10px; 
+  border: 2px solid white; 
+  position: relative; 
+  object-fit: cover;
+}
+
+.avatar-add {
+  background-color: #3E8CEE;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 50;
+}
+

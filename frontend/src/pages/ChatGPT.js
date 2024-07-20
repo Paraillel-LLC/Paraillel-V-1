@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
-import "./Calendar.css";
 
   const ChatGPT = ({ setCurrentPage }) => {
 

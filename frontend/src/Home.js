@@ -3,7 +3,7 @@ import './Home.css';
 
 function Home({ setCurrentPage }) {
   const topics = {
-    "General": ["Dashboard", "Calendar","LessonPlan", "Assignments", "Resources"],
+    "General": [,"Dashboard", "Calendar","LessonPlan", "Assignments", "Resources"],
     "Communications": ["Collaborations", "Messages"],
     "Data": ["Roster", "Analytics", "Reports"],
     "Control": ["Settings"]
@@ -19,7 +19,8 @@ function Home({ setCurrentPage }) {
       setCurrentPage("cale"); 
     }else if (topic === "Settings") {
       setCurrentPage("TheSettings"); 
-    } else {
+    }
+       else {
       setCurrentPage(topicComponents[topic]);
     }
   };

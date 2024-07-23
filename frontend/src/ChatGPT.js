@@ -128,14 +128,15 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
         alignItems: "center",
         height: "100vh",
         backgroundColor: "#f0f0f0",
+        marginBottom: "100px",  
       }}
     >
       <div
         className="lesson-plan"
         style={{
           display: "flex",
-          flexDirection: "column",
-          maxWidth: "800px",
+          flexDirection: "row",
+          maxWidth: "1200px",
           width: "100%",
           padding: "20px",
           backgroundColor: "#fff",
@@ -143,162 +144,143 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
           boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <h2 style={{ marginBottom: "20px", textAlign: "center" }}>
+        <h2 style={{ marginBottom: "20px", textAlign: "center", width: "100%" }}>
           Create Lesson Plan
         </h2>
 
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ flex: 1, marginRight: "20px" }}>
-            {/* Form inputs for lesson plan details */}
-            <label>
-              Grade:
-              <select value={grade} onChange={(e) => setGrade(e.target.value)}>
-                {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
-                  <option key={g} value={g}>
-                    {g}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Lesson Title:
-              <input
-                type="text"
-                value={lessonTitle}
-                onChange={(e) => setLessonTitle(e.target.value)}
-                placeholder="Enter Lesson Title"
-              />
-            </label>
-            <label>
-              Subject:
-              <input
-                type="text"
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                placeholder="Enter Subject"
-              />
-            </label>
-            <label>
-              Teaching Style:
-              <select
-                value={teachingStyle}
-                onChange={(e) => setTeachingStyle(e.target.value)}
-              >
-                {teachingStyles.map((style) => (
-                  <option key={style} value={style}>
-                    {style}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Plan Duration:
-              <select
-                value={planDuration}
-                onChange={(e) => setPlanDuration(e.target.value)}
-              >
-                {planDurations.map((duration) => (
-                  <option key={duration} value={duration}>
-                    {duration}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Difficulty Level:
-              <select
-                value={difficultyLevel}
-                onChange={(e) => setDifficultyLevel(e.target.value)}
-              >
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-              </select>
-            </label>
-          </div>
-          <div style={{ flex: 1 }}>
-            <label>
-              State Academic Standard:
-              <input
-                type="text"
-                value={stateAcademicStandard}
-                onChange={(e) => setStateAcademicStandard(e.target.value)}
-                placeholder="Enter State Academic Standard"
-              />
-            </label>
-            <label>
-              Theme:
-              <input
-                type="text"
-                value={theme}
-                onChange={(e) => setTheme(e.target.value)}
-                placeholder="Enter Theme"
-              />
-            </label>
-            <label>
-              Start Date:
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-            </label>
-            <label>
-              District ID:
-              <input
-                type="text"
-                value={districtId}
-                onChange={(e) => setDistrictId(e.target.value)}
-                placeholder="Enter District ID"
-              />
-            </label>
-            <label>
-              School ID:
-              <input
-                type="text"
-                value={schoolId}
-                onChange={(e) => setSchoolId(e.target.value)}
-                placeholder="Enter School ID"
-              />
-            </label>
-            <label>
-              Grade ID:{" "}
-              <input
-                type="text"
-                value={gradeId}
-                onChange={(e) => setGradeId(e.target.value)}
-                placeholder="Enter Grade ID"
-              />
-            </label>
-          </div>
+        <div style={{ display: "flex", flex: 1, flexDirection: "column", marginRight: "20px" }}>
+          <label>
+            Grade:
+            <select value={grade} onChange={(e) => setGrade(e.target.value)}>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Lesson Title:
+            <input
+              type="text"
+              value={lessonTitle}
+              onChange={(e) => setLessonTitle(e.target.value)}
+              placeholder="Enter Lesson Title"
+            />
+          </label>
+          <label>
+            Subject:
+            <input
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="Enter Subject"
+            />
+          </label>
+          <label>
+            Teaching Style:
+            <select
+              value={teachingStyle}
+              onChange={(e) => setTeachingStyle(e.target.value)}
+            >
+              {teachingStyles.map((style) => (
+                <option key={style} value={style}>
+                  {style}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Plan Duration:
+            <select
+              value={planDuration}
+              onChange={(e) => setPlanDuration(e.target.value)}
+            >
+              {planDurations.map((duration) => (
+                <option key={duration} value={duration}>
+                  {duration}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Difficulty Level:
+            <select
+              value={difficultyLevel}
+              onChange={(e) => setDifficultyLevel(e.target.value)}
+            >
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </label>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
-          <button
-            onClick={createPlan}
-            style={{
-              padding: "10px",
-              backgroundColor: "#007BFF",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Generate Lesson Plan
-          </button>
-          <button
-            onClick={handleGenerateClick}
-            style={{
-              padding: "10px",
-              backgroundColor: "#007BFF",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Add to Calendar
-          </button>
+        <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+          <label>
+            State Academic Standard:
+            <input
+              type="text"
+              value={stateAcademicStandard}
+              onChange={(e) => setStateAcademicStandard(e.target.value)}
+              placeholder="Enter State Academic Standard"
+            />
+          </label>
+          <label>
+            Theme:
+            <input
+              type="text"
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+              placeholder="Enter Theme"
+            />
+          </label>
+          <label>
+            Start Date:
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </label>
+        
+          <label>
+            Grade ID:{" "}
+            <input
+              type="text"
+              value={gradeId}
+              onChange={(e) => setGradeId(e.target.value)}
+              placeholder="Enter Grade ID"
+            />
+          </label>
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", marginTop: "20px" }}>
+            <button
+              onClick={createPlan}
+              style={{
+                padding: "10px",
+                backgroundColor: "#007BFF",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginBottom: "10px",
+              }}
+            >
+              Generate Lesson Plan
+            </button>
+            <button
+              onClick={handleGenerateClick}
+              style={{
+                padding: "10px",
+                backgroundColor: "#007BFF",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              Add to Calendar
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './TheSettings.css'; 
 
 const topics = {
   Profile: "Your personal information",

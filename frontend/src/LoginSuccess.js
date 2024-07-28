@@ -1,5 +1,4 @@
 import React from 'react';
-import './LoginSuccess.css';
 
 function LoginSuccess({ onSubmit }) {
   const handleSubmit = () => {

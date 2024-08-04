@@ -10,9 +10,9 @@ const topics = {
 
 const profileDetails = {
   Teacher: [
-    "Name",
+    "First Name",
+    "Last Name",
     "Email",
-    "Phone Number",
     "Profile Picture",
     "Subject(s) Taught",
     "Grade Level(s)",
@@ -21,9 +21,9 @@ const profileDetails = {
     "School ID"
   ],
   Administration: [
-    "Name",
+    "First Name",
+    "Last Name",
     "Email",
-    "Phone Number",
     "Profile Picture",
     "Department",
     "Role/Position",
@@ -32,9 +32,9 @@ const profileDetails = {
     "School ID"
   ],
   District: [
-    "Name",
+    "First Name",
+    "Last Name",
     "Email",
-    "Phone Number",
     "Profile Picture",
     "Role/Position",
     "District Information",
@@ -43,21 +43,20 @@ const profileDetails = {
   ]
 };
 
-const additionalDetails = [
-  "Name",
-  "Email",
-  "Phone Number",
-  "Profile Picture",
-  "Role/Position",
-  "District Information",
-  "Bio",
-  "District ID"
-];
+
+
+const districtSchoolMapping = {
+  "District1": ["School1-1", "School1-2"],
+  "District2": ["School2-1", "School2-2"],
+  "District3": ["School3-1", "School3-2"]
+};
 
 const TheSettings = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useState('Teacher'); 
-  const [formData, setFormData] = useState({}); 
+  const [selectedProfile, setSelectedProfile] = useState('Teacher');
+  const [formData, setFormData] = useState({});
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedSchool, setSelectedSchool] = useState('');
 
   const handleTopicSelection = (topic) => {
     setSelectedTopic(topic);
@@ -65,7 +64,7 @@ const TheSettings = () => {
 
   const handleProfileSelection = (event) => {
     setSelectedProfile(event.target.value);
-    setFormData({}); 
+    setFormData({});
   };
 
   const handleInputChange = (event) => {
@@ -73,6 +72,26 @@ const TheSettings = () => {
     setFormData({
       ...formData,
       [name]: value
+    });
+  };
+
+  const handleDistrictChange = (event) => {
+    const district = event.target.value;
+    setSelectedDistrict(district);
+    setFormData({
+      ...formData,
+      "District ID": district,
+      "School ID": districtSchoolMapping[district][0]
+    });
+    setSelectedSchool(districtSchoolMapping[district][0]);
+  };
+
+  const handleSchoolChange = (event) => {
+    const school = event.target.value;
+    setSelectedSchool(school);
+    setFormData({
+      ...formData,
+      "School ID": school
     });
   };
 
@@ -110,24 +129,50 @@ const TheSettings = () => {
           <div className="profile-content">
             <form onSubmit={handleSubmit}>
               {profileDetails[selectedProfile].map((detail, index) => (
-                <div key={index} className="form-group">
-                  <label>{detail}</label>
-                  <input 
-                    type="text" 
-                    name={detail} 
-                    value={formData[detail] || ''} 
-                    onChange={handleInputChange} 
-                  />
-                </div>
+                detail === "District ID" ? (
+                  <div key={index} className="form-group">
+                    <label>{detail}</label>
+                    <select 
+                      name={detail} 
+                      value={formData[detail] || ''} 
+                      onChange={handleDistrictChange}
+                    >
+                      <option value="">Select District</option>
+                      {Object.keys(districtSchoolMapping).map((district, idx) => (
+                        <option key={idx} value={district}>{district}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : detail === "School ID" ? (
+                  <div key={index} className="form-group">
+                    <label>{detail}</label>
+                    <select 
+                      name={detail} 
+                      value={selectedSchool} 
+                      onChange={handleSchoolChange}
+                      disabled={!selectedDistrict}
+                    >
+                      <option value="">Select School</option>
+                      {selectedDistrict && districtSchoolMapping[selectedDistrict].map((school, idx) => (
+                        <option key={idx} value={school}>{school}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div key={index} className="form-group">
+                    <label>{detail}</label>
+                    <input 
+                      type="text" 
+                      name={detail} 
+                      value={formData[detail] || ''} 
+                      onChange={handleInputChange} 
+                    />
+                  </div>
+                )
               ))}
               <button type="submit" className="submit-button">Submit</button>
             </form>
-            <div className="additional-details">
-              {additionalDetails.map((detail, index) => (
-                <p key={index}>{detail}</p>
-              ))}
             </div>
-          </div>
         )}
       </div>
     </div>

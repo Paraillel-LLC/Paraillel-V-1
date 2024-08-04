@@ -67,7 +67,6 @@ function LoginForm({ onLogin, toggleMode }) {
 function CreateAccountForm({ onLogin, toggleMode }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -75,7 +74,7 @@ function CreateAccountForm({ onLogin, toggleMode }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!firstName || !lastName || !phone || !username || !email || !password || password !== confirmPassword) {
+    if (!firstName || !lastName || !username || !email || !password || password !== confirmPassword) {
       alert('Please fill all fields correctly for account creation.');
       return;
     }
@@ -102,15 +101,6 @@ function CreateAccountForm({ onLogin, toggleMode }) {
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-        />
-      </div>
-      <div>
-        <label className="block text-gray-700">Phone</label>
-        <input
-          type="text"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
         />
       </div>

@@ -12,7 +12,6 @@ const profileDetails = {
   Teacher: [
     "First Name",
     "Last Name",
-    "Email",
     "Profile Picture",
     "Subject(s) Taught",
     "Grade Level(s)",
@@ -23,7 +22,6 @@ const profileDetails = {
   Administration: [
     "First Name",
     "Last Name",
-    "Email",
     "Profile Picture",
     "Department",
     "Role/Position",
@@ -34,7 +32,6 @@ const profileDetails = {
   District: [
     "First Name",
     "Last Name",
-    "Email",
     "Profile Picture",
     "Role/Position",
     "District Information",
@@ -42,8 +39,6 @@ const profileDetails = {
     "District ID"
   ]
 };
-
-
 
 const districtSchoolMapping = {
   "District1": ["School1-1", "School1-2"],
@@ -57,6 +52,7 @@ const TheSettings = () => {
   const [formData, setFormData] = useState({});
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedSchool, setSelectedSchool] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleTopicSelection = (topic) => {
     setSelectedTopic(topic);
@@ -98,6 +94,11 @@ const TheSettings = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Form data submitted:", formData);
+    setIsEditing(false);
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
   };
 
   return (
@@ -136,6 +137,7 @@ const TheSettings = () => {
                       name={detail} 
                       value={formData[detail] || ''} 
                       onChange={handleDistrictChange}
+                      disabled={!isEditing}
                     >
                       <option value="">Select District</option>
                       {Object.keys(districtSchoolMapping).map((district, idx) => (
@@ -150,7 +152,7 @@ const TheSettings = () => {
                       name={detail} 
                       value={selectedSchool} 
                       onChange={handleSchoolChange}
-                      disabled={!selectedDistrict}
+                      disabled={!isEditing || !selectedDistrict}
                     >
                       <option value="">Select School</option>
                       {selectedDistrict && districtSchoolMapping[selectedDistrict].map((school, idx) => (
@@ -166,13 +168,17 @@ const TheSettings = () => {
                       name={detail} 
                       value={formData[detail] || ''} 
                       onChange={handleInputChange} 
+                      disabled={!isEditing}
                     />
                   </div>
                 )
               ))}
-              <button type="submit" className="submit-button">Submit</button>
+              <div className="button-group">
+                <button type="submit" className="submit-button">Submit</button>
+                <button type="button" className="edit-button" onClick={handleEdit}>Edit</button>
+              </div>
             </form>
-            </div>
+          </div>
         )}
       </div>
     </div>

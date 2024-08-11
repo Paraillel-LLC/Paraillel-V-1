@@ -316,7 +316,19 @@ label.form-label {
   cursor: pointer;
   margin-top: 20px;
 }
+.edit-button {
+  background-color: green; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 5px; 
+}
 
+.edit-button:hover {
+  background-color: darkgreen; 
+}
 .submit-button:hover {
   background-color: #0056b3;
 }

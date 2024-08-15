@@ -16,10 +16,10 @@ def insert_teacher(conn, data):
         # Prepare call to stored procedure
 
         param = [10,0]
-        command = "insert into Teacher (school_id, district_id, teacher_name, profile_pic, subjects_taught, grade_levels, bio) values (6, 2, 'dfwefe', 'dwedwedwe', 'edwedwedew', 'dewedwedwe' , 'edwedwedwed') "
+        #command = "insert into Teacher (school_id, district_id, teacher_name, profile_pic, subjects_taught, grade_levels, bio) values (6, 2, 'first last', 'cccc', '1,2,3,4,5' , '12', 'bio') "
         #command = " CALL `test_schema`.`InsertTeacher` ("+school_id+","+district_id+" , '"+teacher_name+"', '"+teacher_emailid+"', '"+profile_pic+"', '"+subjects_taught+"', '"+grade_levels+"', '"+bio+"', @success, @result); "
-        cursor.execute(command)
-        # cursor.callproc('InsertTeacher', args)
+        #cursor.execute(command)
+        cursor.callproc('InsertTeacher', args)
 
         results = cursor.fetchone()
         if results:
@@ -35,6 +35,7 @@ def insert_teacher(conn, data):
         return jsonify({'Error': str(e)}), 500
     finally:
         cursor.close()
+        conn.commit()
         conn.close()
 
 #---------------------------------------------    
@@ -70,20 +71,21 @@ def insert_admin(conn, data):
         return jsonify({'Error': str(e)}), 500
     finally:
         cursor.close()
+        conn.commit()
         conn.close()
 
 #---------------------------------------------    
 def insert_district(conn, data):
-    role_id = data['formData']['Role/Position']
-    district_name = data['formData']['Name']
+    role_position = data['formData']['Role/Position']
+    district_name = data['formData']['First Name'] + ' ' + data['formData']['Last Name']
     district_emailid = data['formData']['Email']
-    district_phone = data['formData']['Phone Number']
     district_pic = data['formData']['Profile Picture']
     district_info = data['formData']['District Information']
     district_bio = data['formData']['Bio']
-    user_id = 40 #data['formData']['user_id']
+    district_district_id1 = data['formData']['District ID']
     
-    args = [role_id, district_name, district_emailid , district_phone, district_pic, district_info, district_bio, user_id, True, '']
+    
+    args = [role_position, district_name, district_emailid , district_pic, district_info, district_bio, district_district_id1, True, '']
     try:
         cursor = conn.cursor()
         # Prepare call to stored procedure
@@ -103,7 +105,8 @@ def insert_district(conn, data):
     except Exception as e:
         return jsonify({'Error': str(e)}), 500
     finally:
-        cursor.close()
+        
+        conn.commit()
         conn.close()
 
 #-------------------------------------------------------

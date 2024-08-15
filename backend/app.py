@@ -76,6 +76,7 @@ def user_info():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Users WHERE username=%s ", (username))
     user = cursor.fetchone()
+    cursor.close()
     conn.close() 
 
     user_info = {
@@ -128,15 +129,16 @@ def get_district_school_mapping():
 
         # SQL query to fetch district-school mapping
         cursor.execute('''
-           SELECT Districts.district_id, Districts.district_name AS DistrictName, 
+           SELECT District_Name.district_id, District_Name.district_name AS DistrictName, 
                 School.school_id, School.school_name AS SchoolName
-            FROM Districts INNER JOIN School ON Districts.district_id = School.district_id
+            FROM District_Name INNER JOIN School ON District_Name.District_id = School.district_id
         ''')
 
         # Organize data into a dictionary
         district_school_mapping = {}
         rows = cursor.fetchall()
-        
+        cursor.close()
+
         for row in rows:
             district_id, district_name, school_id, school_name = row
 
@@ -183,6 +185,7 @@ def login():
     
     cursor.execute("SELECT * FROM Users WHERE username=%s AND password=%s", (username, password))
     user = cursor.fetchone()
+    cursor.close()
     conn.close()    
     if user:
         print(user)
@@ -228,9 +231,10 @@ def create_account():
     
     if existing_user:
         return jsonify({'success': False, 'message': 'Username already exists'}), 400
-    
-    cursor.execute("INSERT INTO Users ( username, password, role_id, email, firstname, lastname) VALUES (%s,%s,%s,%s,%s,%s)", (username, password,role_id,email, firstname, lastname))
-    conn.commit()
+    else:
+        cursor.execute("INSERT INTO Users ( username, password, role_id, email, firstname, lastname) VALUES (%s,%s,%s,%s,%s,%s)", (username, password,role_id,email, firstname, lastname))
+        cursor.close()
+        conn.commit()
 
     conn.close()
     return jsonify({'success': True}), 200

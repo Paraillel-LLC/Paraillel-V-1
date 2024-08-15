@@ -2,70 +2,91 @@
 
 State Academic Standards:
 
-Social Studies Standard:
-Standard 3: People in Societies
-Content Statement: People in the past influence the development and interactions of communities, regions, and nations.
-Code: SS.01.03
-Description: Students will be able to identify and explain the contributions of individuals and groups to Ohio history.
+Social Studies Standard: History
+Grade 6 - Topic: Indian History
+Ohio Academic Content Standard: 6.HIS.3: Investigate the impact of ancient civilizations on the development of significant world regions
+Ohio Academic Content Standard: 6.HIS.4: Identify key characteristics of ancient civilizations in India
+Ohio Academic Content Standard: 6.HIS.5: Explain the significance and impact of major events, individuals, and movements in ancient Indian history
 
-Social Studies Standard:
-Standard 7: History
-Content Statement: The study of history helps us understand the past and present.
-Code: SS.01.07
-Description: Students will be able to use historical thinking skills to examine Ohio's history, including how it impacts the state and its people today.
+Lesson Title: Indian History
 
-Experiential Learning Pedagogical Approach:
-Experiential learning is a teaching method that involves actively engaging students in hands-on experiences and reflection to deepen their understanding and retention of the subject matter. This approach encourages students to take ownership of their own learning and apply it to real-life situations. In this lesson, students will participate in various activities to explore Ohio's history and its impact on the state today.
+Lesson Objective:
+Students will be able to identify key characteristics of ancient civilizations in India and explain the significance and impact of major events, individuals, and movements in Indian history.
 
-Lesson Title: Ohio History
+Materials Needed:
+- Textbooks or online resources
+- Map of India
+- Primary and secondary sources on Indian history
+- Graphic organizers and worksheets
+- Art supplies (optional)
 
-Grade Level: 1st Grade
-Theme: People in the past influencing the development and interactions of communities, regions, and nations
+Differentiated Instruction:
+- Use a variety of media such as textual, visual, and auditory to engage students with different learning styles.
+- Provide options for student choice in completing assignments and activities.
+- Allow for small group work and partner work for collaboration and support.
+- Differentiate assessments by providing options for students to demonstrate their understanding through various forms such as written, oral, or visual presentations.
 
-Objective:
-- Students will identify and explain the contributions of individuals and groups to Ohio history.
-- Students will use historical thinking skills to examine Ohio's history and its impact on the state and its people today.
+Duration:
+1-4 hours (may be broken into multiple class periods)
 
-Materials:
-- Ohio History textbook
-- Maps of Ohio
-- Pictures or artifacts of important figures from Ohio's history
-- Worksheet for reflection activity
-- Construction paper
-- Markers or crayons
+Anticipatory Set:
+- Begin by asking students to share what they already know about India and its history.
+- Show a map of India and ask students to identify its location and neighboring countries.
+- Explain to students that they will be learning about the ancient civilizations in India today and their contributions to the development of the region.
 
-Introduction (10 minutes):
-- Begin the lesson by asking students if they know what history is. Discuss their responses and explain that history is learning about the past and how it affects the present.
-- Show students a map of Ohio and ask them if they know where they live on the map. Discuss the location's importance in relation to Ohio's history.
+Direct Instruction:
+1. Introduction to Ancient India
+- Provide a brief overview of the Indus Valley Civilization and its location, including the significance of the Indus River.
+- Introduce the main features of the Harappan Civilization, such as its advanced city planning and trade routes.
+- Use visual aids to support the information, such as maps and images of artifacts.
 
-Direct Instruction (30 minutes):
-- Use a timeline to introduce students to important events and people in Ohio's history. Show pictures or artifacts of these events and individuals to engage students' interest.
-- Guide students in a discussion about the contributions of these people and events to Ohio's history.
-- Pass out the textbook and have students read a short passage about Ohio's history. Encourage them to ask questions and make connections to the timeline.
-- Divide the students into small groups and assign each group a different topic to research in the textbook (e.g. Native American tribes in Ohio, early settlers, important figures in Ohio's history, etc.). Give them 10 minutes to read and take notes.
-- Have each group present their findings to the class, discussing the contributions of their assigned topic to Ohio's history.
+2. The Vedic Period
+- Explain the Vedic period and its significance in Indian history.
+- Discuss the role of the Vedas and the caste system in the development of Indian society.
+- Allow for student discussion and reflection on the impact of the caste system.
 
-Experiential Learning Activities (90 minutes):
-- Have students participate in a role-playing activity where they pretend to be important figures from Ohio's history. Provide props and encourage students to use their imagination.
-- Give students a worksheet and have them reflect on what they have learned about Ohio's history. Ask them to identify one person or event that they found particularly interesting and explain why.
-- Have students create a timeline of Ohio's history using construction paper and markers or crayons. Allow them to be creative and use drawings to represent events and people.
-- Use a large map of Ohio to have students locate important places and landmarks from Ohio's history. Encourage discussion and connections to the timeline and the textbook.
-- As a culminating activity, have students work in groups to create a short skit or presentation about an important event or person from Ohio's history. Allow them to use their creativity and incorporate what they have learned from the lesson.
+3. Mauryan Empire
+- Present the rise and fall of the Mauryan Empire and its leader, Chandragupta Maurya.
+- Discuss the achievements of the Mauryan Empire, such as the spread of Buddhism and the introduction of a centralized government.
+- Use primary and secondary sources to support the information.
 
-Closure (10 minutes):
-- Wrap up the lesson by having students share their skits or presentations with the class.
-- Ask students to share one thing they learned about Ohio's history and how it has influenced the state and its people today.
-- Emphasize the importance of understanding and learning about our history to better understand the present and shape the future.
+4. Gupta Empire
+- Provide an overview of the Gupta Empire and its accomplishments, such as advancements in mathematics, science, and art.
+- Engage students in a small group activity where they explore the Gupta Empire's achievements and their impact on modern-day society.
 
-Assessment:
-- Teacher observation during activities and group discussions.
-- Reflection worksheet.
-- Timeline and skit or presentation.
+5. Contributions of Ancient India
+- Allow students to work in pairs or small groups to research and present on one aspect of ancient Indian contributions, such as the decimal system, early medicine, or literature.
+- Have students create a visual representation of their findings, such as a poster or infographic.
+
+6. Assessment
+- To assess understanding, have students fill out a graphic organizer or worksheet on the key characteristics and contributions of ancient Indian civilizations.
+- Provide options for students to present their learning, such as a written essay, oral presentation, or visual project.
+
+Closure:
+- Have students share one thing they learned about ancient India and its influence on modern-day society.
+- Encourage students to ask questions and reflect on the importance of understanding world history and the impact of ancient civilizations.
 
 Homework:
-- Ask students to interview an older family member or elder in their community about Ohio's history. Encourage them to bring in any pictures or artifacts they find during their interview to share with the class in the next lesson.
+- Assign readings or online resources for students to further explore the topic of ancient Indian history.
+- Provide differentiated options for homework, such as reading comprehension questions, a summary of main ideas, or a creative project.
 
-Extension:
-- Have students research and create a mini-biography about an important figure from Ohio's history.
-- Explore Ohio's history through songs or dances from that time period.
-- Plan a field trip to a local historical site or museum related to Ohio's history.
+Possible Extension Activities:
+- Have students research and present on a specific Indian king or leader.
+- Create a timeline of ancient Indian history and add key events and individuals.
+- Have students create a cave painting or other art piece inspired by ancient Indian art.
+
+Assessment:
+
+Informal:
+- Student participation in class discussions and activities
+- Observations during group work and independent tasks
+
+Formal:
+- Completed graphic organizer or worksheet
+- Presentation of research on ancient Indian contributions
+- Homework assignment
+
+References:
+- Cleveland, J. (2014). A history of the modern world. Cengage Learning.
+- Stanford History Education Group. (n.d.). Indian History. Retrieved from https://sheg.stanford.edu/history-lessons/india
+- Ohio Department of Education. (2010). Academic Content Standards: Social Studies. Retrieved from http://education.ohio.gov/getattachment/Topics/Learning-in-Ohio/Social- Studies/Full-K-12-PDF-Format-SS_Learning-Grade-6.pdf.aspx.

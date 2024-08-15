@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
 import "./Calendar.css";
+import {LessonPlanContext} from "./LessonPlanContext";
 
-const ChatGPT = ({ setCurrentPage }) => {
-  const [response, setResponse] = useState("");
-  const [grade, setGrade] = useState("1");
-  const [lessonTitle, setLessonTitle] = useState("");
-  const [subject, setSubject] = useState("");
-  const [teachingStyle, setTeachingStyle] = useState("Montessori Style");
-  const [planDuration, setPlanDuration] = useState("1-4 hours");
-  const [stateAcademicStandard, setStateAcademicStandard] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [theme, setTheme] = useState("");
-  const [difficultyLevel, setDifficultyLevel] = useState("Easy");
-  const [date, setDate] = useState(new Date());
-  const [districtId, setDistrictId] = useState("");
-  const [schoolId, setSchoolId] = useState("");
-  const [gradeId, setGradeId] = useState(""); // Note: You already have a 'grade' state, you might repurpose it or distinguish between grade name and gradeId
+  const ChatGPT = ({ setCurrentPage }) => {
+
+    const [response, setResponse] = useState("");
+    const [grade, setGrade] = useState("1");
+    const [lessonTitle, setLessonTitle] = useState("");
+    const [subject, setSubject] = useState("");
+    const [teachingStyle, setTeachingStyle] = useState("Montessori Style");
+    const [planDuration, setPlanDuration] = useState("1-4 hours");
+    const [stateAcademicStandard, setStateAcademicStandard] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [theme, setTheme] = useState("");
+    const [difficultyLevel, setDifficultyLevel] = useState("Easy");
+    const [date, setDate] = useState(new Date());
+    const [districtId, setDistrictId] = useState("");
+    const [schoolId, setSchoolId] = useState("");
+    const [gradeId, setGradeId] = useState("");
+    const { addLessonToCale } = useContext(LessonPlanContext);
 
   const teachingStyles = [
     "Regular School Based",
@@ -66,7 +69,6 @@ const ChatGPT = ({ setCurrentPage }) => {
     "Fading",
     "Task Variation",
     "Time Delay",
-    "Incidental Teaching",
     "Pivotal Response Training",
     "Error Correction",
     "Self-Monitoring",
@@ -86,7 +88,6 @@ const ChatGPT = ({ setCurrentPage }) => {
   };
 
   const createPlan = async () => {
-    // Constructing the payload to include all necessary data
     const payload = {
       district_id: districtId,
       school_id: schoolId,
@@ -113,9 +114,17 @@ const ChatGPT = ({ setCurrentPage }) => {
       if (result.data && typeof result.data === "string") {
         // If the response is just a string (assuming lesson plan content or success message)
         openResponseInNewTab(result.data);
+        addLessonToCale({
+          title: lessonTitle,
+          date: startDate,
+        });
       } else if (result.data && result.data.message) {
         // If the response contains a 'message' key (assuming a success message)
         openResponseInNewTab(result.data.message);
+        addLessonToCale({
+          title: lessonTitle,
+          date: startDate,
+        });
       } else {
         // Handle any other unexpected response format
         console.error(

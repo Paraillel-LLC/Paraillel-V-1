@@ -1,12 +1,20 @@
+/* TheSettings.css */
+
+.settings-container {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center-align children horizontally */
+  padding: 20px; /* Padding around the container */
+  min-height: 100vh; /* Ensure the container takes at least full viewport height */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+}
+
 .settings-navbar {
   display: flex;
   flex-wrap: wrap; /* Allow wrapping for multiple rows */
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 80px; /* Adjust the top position as needed */
-  left: 0;
-  right: 0;
+  justify-content: center; /* Center the buttons */
+  margin-top: 20px; /* Space below the header */
+  width: 100%; /* Take full width to allow centering */
 }
 
 .settings-navbar button {
@@ -14,7 +22,7 @@
   border: none;
   padding: 10px 20px; /* Adjust padding as needed */
   cursor: pointer;
-  margin: 1px; /* Add some space around the buttons */
+  margin: 5px; /* Add some space around the buttons */
 }
 
 .settings-navbar button:hover {
@@ -22,7 +30,7 @@
 }
 
 .topic-description {
-  margin-bottom: 5px;
-  
+  margin-top: 20px; /* Space between navbar and topic description */
   text-align: center; /* Center align the description text */
+  width: 100%; /* Ensure full width for the content */
 }

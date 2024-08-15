@@ -1,6 +1,5 @@
 import React from 'react';
 import './Home.css'; 
-
 function Home({ setCurrentPage }) {
   const topics = {
     "General": ["Dashboard", "Calendar","LessonPlan", "Assignments", "Resources"],
@@ -8,7 +7,6 @@ function Home({ setCurrentPage }) {
     "Data": ["Roster", "Analytics", "Reports"],
     "Control": ["Settings"]
   };
-
   // Function to handle page navigation
   const handleNavigation = (topic) => {
     if (topic === "LessonPlan") {
@@ -17,13 +15,12 @@ function Home({ setCurrentPage }) {
       setCurrentPage("home"); 
     } else if (topic === "Calendar") {
       setCurrentPage("cale"); 
-    }else if (topic === "Settings") {
+    } else if (topic === "Settings") {
       setCurrentPage("TheSettings"); 
     } else {
       setCurrentPage(topicComponents[topic]);
     }
   };
-
   const topicComponents = {
     "LessonPlan": "ChatGPT", 
     "Dashboard": "home", 
@@ -38,7 +35,6 @@ function Home({ setCurrentPage }) {
     "Settings": "Settings" 
   };
   
-
   
   return (
     <div className="home-container">
@@ -64,5 +60,4 @@ function Home({ setCurrentPage }) {
     </div>
   );
 }
-
 export default Home;

@@ -119,6 +119,128 @@ def create_account():
     return jsonify({'success': True}), 200
     return redirect(url_for('home'))
     #return render_template('http://localhost:3000/')
+    
+@app.route('/save_profile', methods=['POST'])
+def save_profile():
+    data = request.json  # Get JSON data from the request
+    profile = data.get('profile')  # Get the profile name from the data
+    print(f"Profile: {profile}")
+    print("Received data:", data)  # Print data to console
+    
+    #logic to insert data into Admin table
+    if profile == 'admin':
+        admin_name = data.get('Name')
+        admin_emailid = data.get('Email')
+        admin_contact_number = data.get('Phone Number')
+        profile_pic = data.get('Profile Picture')
+        admin_department = data.get('Department')
+        role_id = data.get('Role/Position')
+        bio = data.get('bio')
+        district_id = data.get('District ID')
+        school_id = data.get('School ID')
+        print(admin_name)
+        print(admin_emailid)
+        print(admin_contact_number)
+        print(profile_pic)
+        print(admin_department)
+        print(role_id)
+        print(bio)
+        print(district_id)
+        print(school_id)
+        
+        conn = get_db_connection()
+        if conn is not None:
+            try:
+                with conn.cursor() as cursor:
+                    insert_query = """
+                    INSERT INTO Admin ( admin_name, admin_emailid, admin_contact_number, profile_pic, admin_department, role_id, bio, district_id, school_id)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """
+                    # Adjust the values accordingly if you're parsing Admin data
+                    cursor.execute(insert_query, (admin_name, admin_emailid, admin_contact_number, profile_pic, admin_department, role_id, bio, district_id, school_id))
+                    conn.commit()
+                    return jsonify({"message": "Data updated successfully"}), 200
+            except Exception as e:
+                conn.rollback()
+                print(f"Database error: {e}")
+                return jsonify({"error": "Failed to insert Admin data into the database"}), 500
+            finally:
+                conn.close()
+        else:
+            return jsonify({"error": "Failed to connect to the database"}), 500
+        
+    #logic to insert data into Teacher table
+    if profile == 'teacher':
+        teacher_name = data.get('Name')
+        teacher_emailid = data.get('Email')
+        teacher_contact_number = data.get('Phone Number')
+        profile_pic = data.get('Profile Picture')
+        subjects_taught = data.get('Subject(s) Taught')
+        grade_levels = data.get('Grade Level(s)')
+        bio = data.get('bio')
+        district_id = data.get('District ID')
+        school_id = data.get('School ID')
+        
+        conn = get_db_connection()
+        if conn is not None:
+            try:
+                with conn.cursor() as cursor:
+                    insert_query = """
+                    INSERT INTO Teacher ( teacher_name, teacher_emailid, teacher_contact_number, profile_pic, subjects_taught, grade_levels, bio, district_id, school_id)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """
+                    # Adjust the values accordingly if you're parsing Teacher data
+                    cursor.execute(insert_query, (teacher_name, teacher_emailid, teacher_contact_number, profile_pic, subjects_taught, grade_levels, bio, district_id, school_id))
+                    conn.commit()
+                    return jsonify({"message": "Data updated successfully"}), 200
+            except Exception as e:
+                conn.rollback()
+                print(f"Database error: {e}")
+                return jsonify({"error": "Failed to insert Teacher data into the database"}), 500
+            finally:
+                conn.close()
+        else:
+            return jsonify({"error": "Failed to connect to the database"}), 500
+        
+    #logic to insert data into District table
+    if profile == 'district':
+        district_name = data.get('Name')
+        district_emailid = data.get('Email')
+        district_contact_number = data.get('Phone Number')
+        profile_pic = data.get('Profile Picture')
+        district_information = data.get('District Information')
+        role_id = data.get('Role/Position')
+        bio = data.get('bio')
+        district_id = data.get('District ID')
+        
+        conn = get_db_connection()
+        if conn is not None:
+            try:
+                with conn.cursor() as cursor:
+                    insert_query = """
+                    INSERT INTO Districts ( district_name, district_emailid, district_contact_number, profile_pic, district_information, role_id, bio)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s)
+                    """
+                    # Adjust the values accordingly if you're parsing District Data
+                    cursor.execute(insert_query, (district_name, district_emailid, district_contact_number, profile_pic, district_information, role_id, bio))
+                    conn.commit()
+                    return jsonify({"message": "Data updated successfully"}), 200
+            except Exception as e:
+                conn.rollback()
+                print(f"Database error: {e}")
+                return jsonify({"error": "Failed to insert District data into the database"}), 500
+            finally:
+                conn.close()
+        else:
+            return jsonify({"error": "Failed to connect to the database"}), 500
+        
+    
+        
+    # Send response back to the frontend
+    response = {
+        'message': 'Data saved successfully!'
+    }
+    return jsonify(response), 200
 
 
 '''@app.route('/login', methods = ['POST','GET'])
@@ -383,9 +505,11 @@ def create_plan():
         print(summary)
         # Assuming that the lesson_data needs to be parsed or is directly usable
         # If parsing is needed, implement it based on how the data is structured in lesson_data
-        learning_outcomes = "Extracted or whole lesson_data"
+        objectives_text = "\n".join(objectives)
+        outcomes_text = "\n".join(outcomes)
+        learning_outcomes = outcomes_text
         prerequisites = "Extracted or whole lesson_data"
-        objective = "Extracted or whole lesson_data"
+        objective = objectives_text
         # User-provided details from request
         #user_id = 1  # Example: Assuming a known user ID for simplicity
         district_id = data.get('district_id')
@@ -404,11 +528,11 @@ def create_plan():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO LessonPlan ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO LessonPlan ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective,generated_lesson_plan,summary)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective))
+                    cursor.execute(insert_query, ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective,file_content,summary))
                     conn.commit()
                     return jsonify({"message": "Lesson plan created successfully"}), 200
             except Exception as e:

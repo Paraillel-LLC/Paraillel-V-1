@@ -53,6 +53,7 @@ const TheSettings = () => {
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedSchool, setSelectedSchool] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [subjects, setSubjects] = useState([""]); // Default one subject field
 
   const handleTopicSelection = (topic) => {
     setSelectedTopic(topic);
@@ -88,6 +89,31 @@ const TheSettings = () => {
     setFormData({
       ...formData,
       "School ID": school
+    });
+  };
+
+  const handleAddSubject = () => {
+    setSubjects([...subjects, ""]);
+  };
+
+  const handleRemoveSubject = (index) => {
+    if (subjects.length > 1) { // Ensure at least one subject field remains
+      const newSubjects = subjects.filter((_, idx) => idx !== index);
+      setSubjects(newSubjects);
+      setFormData({
+        ...formData,
+        "Subject(s) Taught": newSubjects
+      });
+    }
+  };
+
+  const handleSubjectChange = (index, value) => {
+    const newSubjects = [...subjects];
+    newSubjects[index] = value;
+    setSubjects(newSubjects);
+    setFormData({
+      ...formData,
+      "Subject(s) Taught": newSubjects
     });
   };
 
@@ -159,6 +185,40 @@ const TheSettings = () => {
                         <option key={idx} value={school}>{school}</option>
                       ))}
                     </select>
+                  </div>
+                ) : detail === "Subject(s) Taught" ? (
+                  <div key={index} className="form-group">
+                    <label>{detail}</label>
+                    <div className="subjects-container">
+                      {subjects.map((subject, idx) => (
+                        <div key={idx} className="subject-entry">
+                          <input 
+                            type="text" 
+                            value={subject} 
+                            onChange={(e) => handleSubjectChange(idx, e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          {isEditing && (
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveSubject(idx)}
+                              className="remove-subject-button"
+                            >
+                              −
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                      {isEditing && (
+                        <button 
+                          type="button" 
+                          onClick={handleAddSubject}
+                          className="add-subject-button"
+                        >
+                          +
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <div key={index} className="form-group">

@@ -8,7 +8,7 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex-center min-h-screen bg-gray-100 p-4">
       <div className="w-full max-w-sm bg-white p-8 rounded-lg shadow-lg">
         {isCreatingAccount ? (
           <CreateAccountForm onLogin={onLogin} toggleMode={toggleMode} />
@@ -34,30 +34,31 @@ function LoginForm({ onLogin, toggleMode }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="form-container space-y-6">
       <h2 className="text-2xl font-semibold mb-4">Login</h2>
       <div>
-        <label className="block text-gray-700">Username</label>
+        <label className="form-label">Username</label>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Password</label>
+        <label className="form-label">Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
-      <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+      <button type="submit" className="submit-button">
         Login
       </button>
-      <button type="button" onClick={toggleMode} className="w-full mt-4 text-blue-500 hover:underline">
+      <button type="button" onClick={toggleMode} className="text-blue-500 hover:underline mt-4">
+        
         Create an Account
       </button>
     </form>
@@ -84,66 +85,66 @@ function CreateAccountForm({ onLogin, toggleMode }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="form-container space-y-6">
       <h2 className="text-2xl font-semibold mb-4">Create Account</h2>
       <div>
-        <label className="block text-gray-700">First Name</label>
+        <label className="form-label">First Name</label>
         <input
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Last Name</label>
+        <label className="form-label">Last Name</label>
         <input
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Username</label>
+        <label className="form-label">Username</label>
         <input
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Email</label>
+        <label className="form-label">Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Password</label>
+        <label className="form-label">Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
       <div>
-        <label className="block text-gray-700">Verify Password</label>
+        <label className="form-label">Verify Password</label>
         <input
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="input"
         />
       </div>
-      <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+      <button type="submit" className="submit-button">
         Create Account
       </button>
-      <button type="button" onClick={toggleMode} className="w-full mt-4 text-blue-500 hover:underline">
+      <button type="button" onClick={toggleMode} className="text-blue-500 hover:underline mt-4">
         Already have an account? Login
       </button>
     </form>

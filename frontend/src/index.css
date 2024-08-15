@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+
 /* Custom styles */
 body {
   font-family: 'Inter', sans-serif;
@@ -330,3 +333,4 @@ label.form-label {
 .submit-button:hover {
   background-color: #0056b3;
 }
+

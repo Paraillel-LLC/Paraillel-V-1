@@ -61,6 +61,8 @@ const TheSettings = () => {
   const [formData, setFormData] = useState({});
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedSchool, setSelectedSchool] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [subjects, setSubjects] = useState([""]); // Default one subject field
   const [districtSchoolMapping, setDistrictSchoolMapping] = useState({});
 
   useEffect(() => {
@@ -145,6 +147,32 @@ const TheSettings = () => {
 
   };
 
+  const handleAddSubject = () => {
+    setSubjects([...subjects, ""]);
+  };
+
+  const handleRemoveSubject = (index) => {
+    if (subjects.length > 1) { // Ensure at least one subject field remains
+      const newSubjects = subjects.filter((_, idx) => idx !== index);
+      setSubjects(newSubjects);
+      setFormData({
+        ...formData,
+        "Subject(s) Taught": newSubjects
+      });
+    }
+  };
+
+  const handleSubjectChange = (index, value) => {
+    const newSubjects = [...subjects];
+    newSubjects[index] = value;
+    setSubjects(newSubjects);
+    setFormData({
+      ...formData,
+      "Subject(s) Taught": newSubjects
+    });
+  };
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     fetch('http://localhost:5000/save_settings', {
@@ -168,10 +196,12 @@ const TheSettings = () => {
     .catch((error) => {
       console.error('Error:', error);
     });
-
+    setIsEditing(false);
   };
 
-
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
   
   return (
     <div>
@@ -209,6 +239,7 @@ const TheSettings = () => {
                       name={detail} 
                       value={formData[detail] || ''} 
                       onChange={handleDistrictChange}
+                      disabled={!isEditing}
                     >
                       <option value="">Select District</option>
                       {Object.keys(districtSchoolMapping).map((districtId, idx) => (
@@ -223,7 +254,7 @@ const TheSettings = () => {
                       name={detail} 
                       value={selectedSchool} 
                       onChange={handleSchoolChange}
-                      disabled={!selectedDistrict}
+                      disabled={!isEditing || !selectedDistrict}
                     >
                       <option value="">Select School</option>
                       {selectedDistrict && Object.keys(districtSchoolMapping[selectedDistrict].schools).map((schoolId, idx) => (
@@ -231,6 +262,40 @@ const TheSettings = () => {
                       ))}
                     </select>
                   </div>
+                  ) : detail === "Subject(s) Taught" ? (
+                    <div key={index} className="form-group">
+                      <label>{detail}</label>
+                      <div className="subjects-container">
+                        {subjects.map((subject, idx) => (
+                          <div key={idx} className="subject-entry">
+                            <input 
+                              type="text" 
+                              value={subject} 
+                              onChange={(e) => handleSubjectChange(idx, e.target.value)}
+                              disabled={!isEditing}
+                            />
+                            {isEditing && (
+                              <button 
+                                type="button" 
+                                onClick={() => handleRemoveSubject(idx)}
+                                className="remove-subject-button"
+                              >
+                                −
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                        {isEditing && (
+                          <button 
+                            type="button" 
+                            onClick={handleAddSubject}
+                            className="add-subject-button"
+                          >
+                            +
+                          </button>
+                        )}
+                      </div>
+                    </div>
                 ) : (
                   <div key={index} className="form-group">
                     <label>{detail}</label>
@@ -239,11 +304,15 @@ const TheSettings = () => {
                       name={detail} 
                       value={formData[detail] || ''} 
                       onChange={handleInputChange} 
+                      disabled={!isEditing}
                     />
                   </div>
                 )
               ))}
-              <button type="submit" className="submit-button">Submit</button>
+              <div className="button-group">
+                <button type="submit" className="submit-button">Submit</button>
+                <button type="button" className="edit-button" onClick={handleEdit}>Edit</button>
+              </div>
             </form>
             </div>
         )}

@@ -7,7 +7,7 @@ def insert_teacher(conn, data):
     teacher_emailid = data['formData']['Email']
     #teacher_contact_number = data['formData']['Phone Number']
     profile_pic = data['formData']['Profile Picture']
-    subjects_taught = data['formData']['Subject(s) Taught']
+    subjects_taught = ",".join(data['formData']['Subject(s) Taught'])
     grade_levels = data['formData']['Grade Level(s)']
     bio = data['formData']['Bio']
     args = [school_id, district_id ,teacher_name , teacher_emailid, profile_pic ,subjects_taught,grade_levels,bio, True, '']

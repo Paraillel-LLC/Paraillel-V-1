@@ -12,6 +12,7 @@ from summa import summarizer
 from flask.templating import DispatchingJinjaLoader, Environment, TemplateNotFound
 import pymysql.cursors
 
+from thesettings import insert_admin, insert_district, insert_teacher
 
 load_dotenv()
 
@@ -55,12 +56,127 @@ study_plan_count = 0
 def index():
    return "Flask Server is running"
 
+'''
+Date: 08/01/2024
+programer : Mohsen Jafari
+function description : This function will return the user information which is stored in Users table
+Input : Pass the json format with 'username' as attribute contains the username value
+Output: Jason format with 
+        'successful' atribute with True/False value indicates the username is found or not
+        'user_info' attribute with these sub-atributes : id, username, password, role_id, email, fullname' 
+        if 'successful' is True the user_info in valid otherwise it's not vaid
+'''
+
+@app.route('/user_info', methods=['POST'])
+def user_info():
+    data = request.json
+    username = data.get('username')
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Users WHERE username=%s ", (username))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close() 
+
+    user_info = {
+            'id': 0,
+            'username': '',
+            'password': '',
+            'role_id' : 0,
+            'email' : '',
+            'firstname' : '',
+            'lastname' : ''
+        }
+    if user:
+        # Assuming the columns in the Users table are id, username, email, etc.
+        user_info['id'] = user[0]
+        user_info['username'] = user[1]
+        user_info['password'] = user[2]
+        user_info['role_id'] = user[3]
+        user_info['email'] = user[6]
+        user_info['firstname'] = user[7]
+        user_info['lastname'] = user[8]
+        
+        return jsonify({'successful': True, 'user_info': user_info}), 200
+    else:
+        return jsonify({'successful': False, 'user_info': user_info}), 401
+
+@app.route('/save_settings', methods=['POST'])
+def save_settings():
+    conn = get_db_connection()
+    data = request.json
+    profile = data.get('profile')
+
+    #print("Received data:", data)
+    
+    if data['selectedProfile'] == 'Administration': 
+        return insert_admin(conn, data)
+    elif data['selectedProfile'] == 'Teacher':
+        return insert_teacher(conn, data)
+    else:
+        return insert_district(conn, data)
+
+#return the district and schol for dropdown items
+#---------------------------------------------------
+
+@app.route('/get_district_school_mapping', methods=['GET'])
+def get_district_school_mapping():
+    try:
+        # Connect to the database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # SQL query to fetch district-school mapping
+        cursor.execute('''
+           SELECT District_Name.district_id, District_Name.district_name AS DistrictName, 
+                School.school_id, School.school_name AS SchoolName
+            FROM District_Name INNER JOIN School ON District_Name.District_id = School.district_id
+        ''')
+
+        # Organize data into a dictionary
+        district_school_mapping = {}
+        rows = cursor.fetchall()
+        cursor.close()
+
+        for row in rows:
+            district_id, district_name, school_id, school_name = row
+
+            if district_id not in district_school_mapping:
+                district_school_mapping[district_id] = {
+                    "name": district_name,
+                    "schools": {}
+                }
+
+            district_school_mapping[district_id]["schools"][school_id] = school_name
+        
+        
+        '''for row in rows:
+            district_name = row[0]
+            school_name = row[1]
+            if district_name not in district_school_mapping:
+                district_school_mapping[district_name] = []
+            district_school_mapping[district_name].append(school_name)
+        '''
+        
+        # Close the connection
+        conn.close()
+
+        # Return the mapping as JSON
+        return jsonify({'successful': True, 'data': district_school_mapping})
+    
+    except Exception as e:
+        return jsonify({'successful': False, 'message': str(e)}), 500
+
+
+
 @app.route('/login', methods = ['POST'])
 def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
     
+    print(username, password)
     #print(username)
     #print(password)
 
@@ -69,6 +185,7 @@ def login():
     
     cursor.execute("SELECT * FROM Users WHERE username=%s AND password=%s", (username, password))
     user = cursor.fetchone()
+    cursor.close()
     conn.close()    
     if user:
         print(user)
@@ -97,6 +214,9 @@ def login():
 @app.route('/create-account', methods=['POST'])
 def create_account():
     data = request.get_json()
+    firstname = data.get('firstname')
+    lastname = data.get('lastname')
+    
     username = data.get('username')
     password = data.get('password')
     email = data.get('email')
@@ -111,136 +231,15 @@ def create_account():
     
     if existing_user:
         return jsonify({'success': False, 'message': 'Username already exists'}), 400
-    
-    cursor.execute("INSERT INTO Users ( username, password, role_id, email) VALUES (%s,%s,%s,%s)", (username, password,role_id,email))
-    conn.commit()
+    else:
+        cursor.execute("INSERT INTO Users ( username, password, role_id, email, firstname, lastname) VALUES (%s,%s,%s,%s,%s,%s)", (username, password,role_id,email, firstname, lastname))
+        cursor.close()
+        conn.commit()
 
     conn.close()
     return jsonify({'success': True}), 200
     return redirect(url_for('home'))
     #return render_template('http://localhost:3000/')
-    
-@app.route('/save_profile', methods=['POST'])
-def save_profile():
-    data = request.json  # Get JSON data from the request
-    profile = data.get('profile')  # Get the profile name from the data
-    print(f"Profile: {profile}")
-    print("Received data:", data)  # Print data to console
-    
-    #logic to insert data into Admin table
-    if profile == 'admin':
-        admin_name = data.get('Name')
-        admin_emailid = data.get('Email')
-        admin_contact_number = data.get('Phone Number')
-        profile_pic = data.get('Profile Picture')
-        admin_department = data.get('Department')
-        role_id = data.get('Role/Position')
-        bio = data.get('bio')
-        district_id = data.get('District ID')
-        school_id = data.get('School ID')
-        print(admin_name)
-        print(admin_emailid)
-        print(admin_contact_number)
-        print(profile_pic)
-        print(admin_department)
-        print(role_id)
-        print(bio)
-        print(district_id)
-        print(school_id)
-        
-        conn = get_db_connection()
-        if conn is not None:
-            try:
-                with conn.cursor() as cursor:
-                    insert_query = """
-                    INSERT INTO Admin ( admin_name, admin_emailid, admin_contact_number, profile_pic, admin_department, role_id, bio, district_id, school_id)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    """
-                    # Adjust the values accordingly if you're parsing Admin data
-                    cursor.execute(insert_query, (admin_name, admin_emailid, admin_contact_number, profile_pic, admin_department, role_id, bio, district_id, school_id))
-                    conn.commit()
-                    return jsonify({"message": "Data updated successfully"}), 200
-            except Exception as e:
-                conn.rollback()
-                print(f"Database error: {e}")
-                return jsonify({"error": "Failed to insert Admin data into the database"}), 500
-            finally:
-                conn.close()
-        else:
-            return jsonify({"error": "Failed to connect to the database"}), 500
-        
-    #logic to insert data into Teacher table
-    if profile == 'teacher':
-        teacher_name = data.get('Name')
-        teacher_emailid = data.get('Email')
-        teacher_contact_number = data.get('Phone Number')
-        profile_pic = data.get('Profile Picture')
-        subjects_taught = data.get('Subject(s) Taught')
-        grade_levels = data.get('Grade Level(s)')
-        bio = data.get('bio')
-        district_id = data.get('District ID')
-        school_id = data.get('School ID')
-        
-        conn = get_db_connection()
-        if conn is not None:
-            try:
-                with conn.cursor() as cursor:
-                    insert_query = """
-                    INSERT INTO Teacher ( teacher_name, teacher_emailid, teacher_contact_number, profile_pic, subjects_taught, grade_levels, bio, district_id, school_id)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                    """
-                    # Adjust the values accordingly if you're parsing Teacher data
-                    cursor.execute(insert_query, (teacher_name, teacher_emailid, teacher_contact_number, profile_pic, subjects_taught, grade_levels, bio, district_id, school_id))
-                    conn.commit()
-                    return jsonify({"message": "Data updated successfully"}), 200
-            except Exception as e:
-                conn.rollback()
-                print(f"Database error: {e}")
-                return jsonify({"error": "Failed to insert Teacher data into the database"}), 500
-            finally:
-                conn.close()
-        else:
-            return jsonify({"error": "Failed to connect to the database"}), 500
-        
-    #logic to insert data into District table
-    if profile == 'district':
-        district_name = data.get('Name')
-        district_emailid = data.get('Email')
-        district_contact_number = data.get('Phone Number')
-        profile_pic = data.get('Profile Picture')
-        district_information = data.get('District Information')
-        role_id = data.get('Role/Position')
-        bio = data.get('bio')
-        district_id = data.get('District ID')
-        
-        conn = get_db_connection()
-        if conn is not None:
-            try:
-                with conn.cursor() as cursor:
-                    insert_query = """
-                    INSERT INTO Districts ( district_name, district_emailid, district_contact_number, profile_pic, district_information, role_id, bio)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s)
-                    """
-                    # Adjust the values accordingly if you're parsing District Data
-                    cursor.execute(insert_query, (district_name, district_emailid, district_contact_number, profile_pic, district_information, role_id, bio))
-                    conn.commit()
-                    return jsonify({"message": "Data updated successfully"}), 200
-            except Exception as e:
-                conn.rollback()
-                print(f"Database error: {e}")
-                return jsonify({"error": "Failed to insert District data into the database"}), 500
-            finally:
-                conn.close()
-        else:
-            return jsonify({"error": "Failed to connect to the database"}), 500
-        
-    
-        
-    # Send response back to the frontend
-    response = {
-        'message': 'Data saved successfully!'
-    }
-    return jsonify(response), 200
 
 
 '''@app.route('/login', methods = ['POST','GET'])
@@ -505,11 +504,9 @@ def create_plan():
         print(summary)
         # Assuming that the lesson_data needs to be parsed or is directly usable
         # If parsing is needed, implement it based on how the data is structured in lesson_data
-        objectives_text = "\n".join(objectives)
-        outcomes_text = "\n".join(outcomes)
-        learning_outcomes = outcomes_text
+        learning_outcomes = "Extracted or whole lesson_data"
         prerequisites = "Extracted or whole lesson_data"
-        objective = objectives_text
+        objective = "Extracted or whole lesson_data"
         # User-provided details from request
         #user_id = 1  # Example: Assuming a known user ID for simplicity
         district_id = data.get('district_id')
@@ -528,11 +525,11 @@ def create_plan():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO LessonPlan ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective,generated_lesson_plan,summary)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO LessonPlan ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective,file_content,summary))
+                    cursor.execute(insert_query, ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective))
                     conn.commit()
                     return jsonify({"message": "Lesson plan created successfully"}), 200
             except Exception as e:

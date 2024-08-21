@@ -323,10 +323,11 @@ const TheSettings = () => {
 
 export default TheSettings;
 function getUserInfo(setFormData) {
+  const tempusername = localStorage.getItem('username');
   fetch('http://localhost:5000/user_info', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: 'test' }) // Replace with the actual username
+    body: JSON.stringify({ username: tempusername }) // Replace with the actual username
   })
     .then(response => response.json())
     .then(data => {

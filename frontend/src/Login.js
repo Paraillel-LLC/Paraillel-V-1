@@ -59,6 +59,8 @@ function LoginForm({ onLogin, toggleMode }) {
         onLogin(true);
         console.log("isValidCredentials: " + isValidCredentials);
         //window.location.href = '/home'; 
+        localStorage.setItem('username', username);  //Mohsen Code
+        
       } else {
       alert("Please enter a valid username and password.");
     }

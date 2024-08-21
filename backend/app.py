@@ -70,6 +70,7 @@ Output: Jason format with
 @app.route('/user_info', methods=['POST'])
 def user_info():
     data = request.json
+    
     username = data.get('username')
     
     conn = get_db_connection()

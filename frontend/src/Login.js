@@ -159,12 +159,13 @@ function CreateAccountForm({ onLogin, toggleMode }) {
   } 
 
   function createAccount() {
-    const firstname = document.getElementById('firstname').value;
-    const lastname = document.getElementById('lastname').value;
+    //const firstname = document.getElementById('firstName').value;
+    //const lastname = document.getElementById('lastName').value;
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const email = document.getElementById('email').value;
+    //const username = document.getElementById('username').value;
+    //const password = document.getElementById('password').value;
+    //const email = document.getElementById('email').value;
+    
     // Make a POST request to your Flask backend
     console.log("createAccount function called!");
     fetch('http://localhost:5000/create-account', {
@@ -173,8 +174,8 @@ function CreateAccountForm({ onLogin, toggleMode }) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            firstname: firstname,
-            lastname: lastname,
+            firstname: firstName,
+            lastname: lastName,
             username: username,
             password: password,
             email: email

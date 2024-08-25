@@ -35,5 +35,4 @@ const Cale = ({ lessonTitle, startDate }) => {
     </div>
   );
 };
-
 export default Cale;

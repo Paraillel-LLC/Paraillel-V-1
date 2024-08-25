@@ -131,9 +131,11 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
 
   const handleGenerateClick = () => {
     const duration = `${planDuration} ${planDurationUnit}${planDuration > 1 ? "s" : ""}`;
-    const endDate = calculateEndDate(); // Calculate end date based on duration
-    onGenerate(lessonTitle, startDate, endDate); // Pass end date to onGenerate
+    const endDate = calculateEndDate();
+    const eventTitle = `${lessonTitle} (${duration})`; // Include duration in the title
+    onGenerate(eventTitle, startDate, endDate);
   };
+  
 
   return (
     <div className="min-h-screen flex-center bg-gray-100 p-4">

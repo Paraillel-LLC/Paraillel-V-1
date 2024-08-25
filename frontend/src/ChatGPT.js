@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Calendar from "react-calendar";
 
 const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   const [response, setResponse] = useState("");
@@ -8,15 +7,15 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   const [lessonTitle, setLessonTitle] = useState("");
   const [subject, setSubject] = useState("");
   const [teachingStyle, setTeachingStyle] = useState("Montessori Style");
-  const [planDuration, setPlanDuration] = useState("1-4 hours");
+  const [planDuration, setPlanDuration] = useState("1");
+  const [planDurationUnit, setPlanDurationUnit] = useState("hour");
   const [stateAcademicStandard, setStateAcademicStandard] = useState("");
   const [startDate, setStartDate] = useState("");
   const [theme, setTheme] = useState("");
   const [difficultyLevel, setDifficultyLevel] = useState("Easy");
-  const [date, setDate] = useState(new Date());
   const [districtId, setDistrictId] = useState("");
   const [schoolId, setSchoolId] = useState("");
-  const [gradeId, setGradeId] = useState(""); 
+  const [gradeId, setGradeId] = useState("");
 
   const teachingStyles = [
     "Regular School Based",
@@ -65,7 +64,6 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
     "Fading",
     "Task Variation",
     "Time Delay",
-    "Incidental Teaching",
     "Pivotal Response Training",
     "Error Correction",
     "Self-Monitoring",
@@ -76,7 +74,8 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
     "Relationship Development Intervention (RDI)",
     "Social Skills Group",
   ];
-  const planDurations = ["1-4 hours", "1-5 hours"];
+
+  const durationUnits = ["hour", "day", "week"];
 
   const openResponseInNewTab = (responseContent) => {
     const newWindow = window.open("", "_blank");
@@ -85,17 +84,18 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   };
 
   const createPlan = async () => {
+    const duration = `${planDuration} ${planDurationUnit}${planDuration > 1 ? "s" : ""}`;
     const payload = {
       district_id: districtId,
       school_id: schoolId,
       grade_id: gradeId,
       subject: subject,
       pedagogy: teachingStyle,
-      plan_length: planDuration.includes("hours") ? planDuration.split(" ")[0] : planDuration,
+      plan_length: duration,
       experience_level: difficultyLevel,
       standard: stateAcademicStandard,
       difficulty_level: difficultyLevel,
-      prompt: `As a seasoned expert in pedagogy, you are tasked to devise a comprehensive and engaging lesson plan for students in grade ${grade} studying ${subject} with a lesson titled "${lessonTitle}" based on a ${teachingStyle} pedagogical approach. The lesson plan should be suitable for a ${planDuration} period and compliant with the ${stateAcademicStandard} curriculum. The theme of the lesson is "${theme}" and is designed to have a difficulty level of "${difficultyLevel}". Please start by listing the relevant state academic standards, complete with their codes and descriptions, and then proceed with the lesson plan. As much as possible, try to factor in the ${teachingStyle} of the students. The first class will be on ${startDate}. Your output should be factual, impartial, thorough, and definitive.`,
+      prompt: `As a seasoned expert in pedagogy, you are tasked to devise a comprehensive and engaging lesson plan for students in grade ${grade} studying ${subject} with a lesson titled "${lessonTitle}" based on a ${teachingStyle} pedagogical approach. The lesson plan should be suitable for a ${duration} period and compliant with the ${stateAcademicStandard} curriculum. The theme of the lesson is "${theme}" and is designed to have a difficulty level of "${difficultyLevel}". Please start by listing the relevant state academic standards, complete with their codes and descriptions, and then proceed with the lesson plan. As much as possible, try to factor in the ${teachingStyle} of the students. The first class will be on ${startDate}. Your output should be factual, impartial, thorough, and definitive.`,
       max_tokens: 1024,
     };
 
@@ -114,43 +114,39 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
     }
   };
 
+  const calculateEndDate = () => {
+    const start = new Date(startDate);
+    let end = new Date(startDate);
+
+    if (planDurationUnit === "hour") {
+      end.setHours(start.getHours() + parseInt(planDuration));
+    } else if (planDurationUnit === "day") {
+      end.setDate(start.getDate() + parseInt(planDuration) - 1);
+    } else if (planDurationUnit === "week") {
+      end.setDate(start.getDate() + parseInt(planDuration) * 7 - 1);
+    }
+
+    return end.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+  };
+
   const handleGenerateClick = () => {
-    onGenerate(lessonTitle, startDate);
+    const duration = `${planDuration} ${planDurationUnit}${planDuration > 1 ? "s" : ""}`;
+    const endDate = calculateEndDate(); // Calculate end date based on duration
+    onGenerate(lessonTitle, startDate, endDate); // Pass end date to onGenerate
   };
 
   return (
-    <div
-      className="lesson-plan-container"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        backgroundColor: "#f0f0f0",
-        marginBottom: "100px",  
-      }}
-    >
-      <div
-        className="lesson-plan"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          maxWidth: "1200px",
-          width: "100%",
-          padding: "20px",
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <h2 style={{ marginBottom: "20px", textAlign: "center", width: "100%" }}>
-          Create Lesson Plan
-        </h2>
-
-        <div style={{ display: "flex", flex: 1, flexDirection: "column", marginRight: "20px" }}>
-          <label>
+    <div className="min-h-screen flex-center bg-gray-100 p-4">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+        <h2 className="text-2xl font-semibold text-center mb-6">Create Lesson Plan</h2>
+        <div className="space-y-4">
+          <label className="form-label">
             Grade:
-            <select value={grade} onChange={(e) => setGrade(e.target.value)}>
+            <select 
+              className="input mt-1"
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
+            >
               {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
                 <option key={g} value={g}>
                   {g}
@@ -158,27 +154,30 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
               ))}
             </select>
           </label>
-          <label>
+          <label className="form-label">
             Lesson Title:
             <input
               type="text"
+              className="input mt-1"
               value={lessonTitle}
               onChange={(e) => setLessonTitle(e.target.value)}
               placeholder="Enter Lesson Title"
             />
           </label>
-          <label>
+          <label className="form-label">
             Subject:
             <input
               type="text"
+              className="input mt-1"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="Enter Subject"
             />
           </label>
-          <label>
+          <label className="form-label">
             Teaching Style:
-            <select
+            <select 
+              className="input mt-1"
               value={teachingStyle}
               onChange={(e) => setTeachingStyle(e.target.value)}
             >
@@ -189,22 +188,34 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
               ))}
             </select>
           </label>
-          <label>
+          <label className="form-label">
             Plan Duration:
-            <select
-              value={planDuration}
-              onChange={(e) => setPlanDuration(e.target.value)}
-            >
-              {planDurations.map((duration) => (
-                <option key={duration} value={duration}>
-                  {duration}
-                </option>
-              ))}
-            </select>
+            <div className="flex">
+              <input
+                type="number"
+                className="input mt-1 w-1/2"
+                value={planDuration}
+                onChange={(e) => setPlanDuration(e.target.value)}
+                min="1"
+                max={planDurationUnit === "hour" ? "23" : planDurationUnit === "day" ? "6" : "4"}
+              />
+              <select 
+                className="input mt-1 w-1/2 ml-2"
+                value={planDurationUnit}
+                onChange={(e) => setPlanDurationUnit(e.target.value)}
+              >
+                {durationUnits.map((unit) => (
+                  <option key={unit} value={unit}>
+                    {unit.charAt(0).toUpperCase() + unit.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
           </label>
-          <label>
+          <label className="form-label">
             Difficulty Level:
-            <select
+            <select 
+              className="input mt-1"
               value={difficultyLevel}
               onChange={(e) => setDifficultyLevel(e.target.value)}
             >
@@ -213,69 +224,55 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
               <option value="Hard">Hard</option>
             </select>
           </label>
-        </div>
-        <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
-          <label>
+          <label className="form-label">
             State Academic Standard:
             <input
               type="text"
+              className="input mt-1"
               value={stateAcademicStandard}
               onChange={(e) => setStateAcademicStandard(e.target.value)}
               placeholder="Enter State Academic Standard"
             />
           </label>
-          <label>
+          <label className="form-label">
             Theme:
             <input
               type="text"
+              className="input mt-1"
               value={theme}
               onChange={(e) => setTheme(e.target.value)}
               placeholder="Enter Theme"
             />
           </label>
-          <label>
+          <label className="form-label">
             Start Date:
             <input
               type="date"
+              className="input mt-1"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />
           </label>
-        
-          <label>
-            Grade ID:{" "}
+          <label className="form-label">
+            Grade ID:
             <input
               type="text"
+              className="input mt-1"
               value={gradeId}
               onChange={(e) => setGradeId(e.target.value)}
               placeholder="Enter Grade ID"
             />
           </label>
-          <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", marginTop: "20px" }}>
-            <button
+          <div className="space-y-4">
+            <button 
               onClick={createPlan}
-              style={{
-                padding: "10px",
-                backgroundColor: "#007BFF",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-                marginBottom: "10px",
-              }}
+              className="button w-full"
             >
               Generate Lesson Plan
             </button>
-            <button
+            <button 
               onClick={handleGenerateClick}
-              style={{
-                padding: "10px",
-                backgroundColor: "#007BFF",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
+              className="button-secondary w-full"
             >
               Add to Calendar
             </button>

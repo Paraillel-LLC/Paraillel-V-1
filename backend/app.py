@@ -454,7 +454,7 @@ def create_plan():
     #print(os.getenv("OPENAI_API_KEY"))
     #print(prompt)
     #print(response.status_code)
-    
+    response.status_code = 200;
     if response.status_code == 200:
         lesson_data = response.json().get('choices', [{}])[0].get('text', '')
         
@@ -503,6 +503,8 @@ def create_plan():
             print("-", objective)
         print("\nSummary:")
         print(summary)
+
+        
         # Assuming that the lesson_data needs to be parsed or is directly usable
         # If parsing is needed, implement it based on how the data is structured in lesson_data
         learning_outcomes = "Extracted or whole lesson_data"
@@ -510,27 +512,31 @@ def create_plan():
         objective = "Extracted or whole lesson_data"
         # User-provided details from request
         #user_id = 1  # Example: Assuming a known user ID for simplicity
-        district_id = data.get('district_id')
-        school_id = data.get('school_id')
-        grade_id = data.get('grade_id')
+        grade = data.get('grade')
+        lesson_title = data.get('lesson_title')
         subject = data.get('subject')
         pedagogy = data.get('pedagogy')
         plan_length = data.get('plan_length')
-        experience_level = data.get('experience_level')
+        duration = data.get('duration')
         standard = data.get('standard')
-        difficulty_level = data.get('difficulty_level')
         start_date = data.get('start_date')
+        theme = data.get('theme')
+        difficulty_level = data.get('difficulty_level')
+        district_id = data.get('district_id')
+        school_id = data.get('school_id')
+        grade_id = data.get('grade_id')
+        
 
         conn = get_db_connection()
         if conn is not None:
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO LessonPlan ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO LessonPlan ( district_id, school_id, grade, lesson_title, subject, pedagogy, plan_length, duration, difficulty_level, standard, Theme, start_date, grade_id, learning_outcomes, prerequisites, objective)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( district_id, school_id, grade_id, subject, pedagogy, plan_length, experience_level, standard, difficulty_level, learning_outcomes, prerequisites, objective))
+                    cursor.execute(insert_query, ( district_id, school_id, grade, lesson_title, subject, pedagogy, plan_length, duration, difficulty_level, standard, theme, start_date, grade_id, learning_outcomes, prerequisites, objective))
                     conn.commit()
                     return jsonify({"message": "Lesson plan created successfully"}), 200
             except Exception as e:

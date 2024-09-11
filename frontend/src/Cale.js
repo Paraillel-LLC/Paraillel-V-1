@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { createEventSchedule } from './App'; // Import the function
 
-const Cale = ({ lessonTitle, startDate }) => {
+const Cale = ({ lessonTitle, startDate, endDate }) => {
+//const Cale = ({ lessonTitle, startDate, endDate }) => {
   const [calendarView] = useState('dayGridMonth');
 
-  const events = [
-    {
-      title: lessonTitle,
-      start: startDate,
-      allDay: true,
-    },
-  ];
+  const events = createEventSchedule(lessonTitle, startDate, endDate);
 
   return (
     <div style={{ paddingTop: 0 }}>

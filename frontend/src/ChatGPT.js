@@ -114,26 +114,11 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
     }
   };
 
-  const calculateEndDate = () => {
-    const start = new Date(startDate);
-    let end = new Date(startDate);
-
-    if (planDurationUnit === "hour") {
-      end.setHours(start.getHours() + parseInt(planDuration));
-    } else if (planDurationUnit === "day") {
-      end.setDate(start.getDate() + parseInt(planDuration) - 1);
-    } else if (planDurationUnit === "week") {
-      end.setDate(start.getDate() + parseInt(planDuration) * 7 - 1);
-    }
-
-    return end.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-  };
 
   const handleGenerateClick = () => {
     const duration = `${planDuration} ${planDurationUnit}${planDuration > 1 ? "s" : ""}`;
-    const endDate = calculateEndDate();
     const eventTitle = `${lessonTitle} (${duration})`; // Include duration in the title
-    onGenerate(eventTitle, startDate, endDate);
+    onGenerate(eventTitle, startDate);
   };
   
 

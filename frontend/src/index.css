@@ -334,3 +334,113 @@ label.form-label {
   background-color: #0056b3;
 }
 
+
+
+
+
+/* Account, Privacy, Security section styles */
+.account-page {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 40px auto; /* Centers the container */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+.account-section {
+  padding: 10px 0;
+}
+
+.account-section h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 5px;
+}
+
+.account-section p {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.account-divider {
+  border-bottom: 2px solid lightgray;
+  margin: 20px 0;
+}
+
+/* Privacy Settings */
+.privacy-setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.privacy-setting label {
+  font-weight: 500;
+  color: black;
+}
+
+.privacy-setting select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+
+/* Security Section */
+.security-section h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: lightgray;
+  margin-bottom: 5px;
+}
+
+.security-section p {
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.password-update {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.password-update button {
+  padding: 5px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.password-update button:hover {
+  background-color: #0056b3;
+}
+
+.email-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.email-info label {
+  font-weight: 500;
+  color: black;
+}
+
+.email-info p {
+  font-size: 1rem;
+  color: black;
+  margin: 0;
+}
+
+.security-divider {
+  border-bottom: 1px solid lightgray;
+  margin: 20px 0;
+}

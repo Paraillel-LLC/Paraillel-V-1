@@ -54,6 +54,12 @@ const TheSettings = () => {
   const [selectedSchool, setSelectedSchool] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [subjects, setSubjects] = useState([""]); // Default one subject field
+  const [selectedPrivacyContact, setSelectedPrivacyContact] = useState('Only Me');
+  const [selectedPrivacyProfile, setSelectedPrivacyProfile] = useState('Only Me');
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [email] = useState('user@example.com'); // Replace with actual user email if dynamic
+
+  const privacyOptions = ['Only Me', 'My Friends', 'Everyone'];
 
   const handleTopicSelection = (topic) => {
     setSelectedTopic(topic);
@@ -127,6 +133,14 @@ const TheSettings = () => {
     setIsEditing(true);
   };
 
+  const handlePrivacyChange = (setter) => (event) => {
+    setter(event.target.value);
+  };
+
+  const handlePasswordEdit = () => {
+    setIsEditingPassword(true);
+  };
+
   return (
     <div>
       <h2>Settings</h2>
@@ -141,6 +155,7 @@ const TheSettings = () => {
           </button>
         ))}
       </div>
+
       <div className="profile-selector">
         {selectedTopic === "Profile" && (
           <select value={selectedProfile} onChange={handleProfileSelection}>
@@ -150,8 +165,11 @@ const TheSettings = () => {
           </select>
         )}
       </div>
+
       <div className="topic-description">
         {selectedTopic && <p>{topics[selectedTopic]}</p>}
+
+        {/* Profile Section */}
         {selectedTopic === "Profile" && (
           <div className="profile-content">
             <form onSubmit={handleSubmit}>
@@ -238,6 +256,54 @@ const TheSettings = () => {
                 <button type="button" className="edit-button" onClick={handleEdit}>Edit</button>
               </div>
             </form>
+          </div>
+        )}
+
+        {/* Account Section */}
+        {selectedTopic === "Account" && (
+          <div className="account-page">
+            <h3>Privacy</h3>
+            <div className="privacy-setting">
+              <label>Who can view your contact information?</label>
+              <select 
+                value={selectedPrivacyContact} 
+                onChange={handlePrivacyChange(setSelectedPrivacyContact)}
+              >
+                {privacyOptions.map((option, index) => (
+                  <option key={index} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="privacy-setting">
+              <label>Who can view your profile?</label>
+              <select 
+                value={selectedPrivacyProfile} 
+                onChange={handlePrivacyChange(setSelectedPrivacyProfile)}
+              >
+                {privacyOptions.map((option, index) => (
+                  <option key={index} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+
+            <h3>Login & Recovery</h3>
+            <div className="password-update">
+              <label>Password</label>
+              <button onClick={handlePasswordEdit}>Update Password</button>
+              {isEditingPassword && (
+                <div className="password-fields">
+                  <input type="password" placeholder="Enter new password" />
+                  <input type="password" placeholder="Confirm new password" />
+                  <button type="button">Save</button>
+                </div>
+              )}
+            </div>
+
+            <div className="email-info">
+              <label>Email</label>
+              <p>{email}</p>
+            </div>
           </div>
         )}
       </div>

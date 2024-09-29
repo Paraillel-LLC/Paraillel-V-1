@@ -5,6 +5,8 @@ import Cale from './Cale';
 import TheSettings from './TheSettings';
 import Login from './Login';
 import LoginSuccess from './LoginSuccess';
+import Assignment from './Assignment';
+
 
 function App() {
   const [currentPage, setCurrentPage] = useState('login');
@@ -42,6 +44,8 @@ function App() {
         return <Cale lessonTitle={lessonTitle} startDate={startDate} />;
       case 'TheSettings':
         return <TheSettings />;
+      case 'Assignment':
+        return <Assignment />;
       case 'home':
         return <Home setCurrentPage={handleNavigation} />;
       case 'login':

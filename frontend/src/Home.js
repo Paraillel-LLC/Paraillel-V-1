@@ -21,7 +21,9 @@ function Home({ setCurrentPage }) {
     }else if (topic === "Assignments") {
       setCurrentPage("Assignment"); 
     }
-    
+    else if (topic === "Resources") {
+      setCurrentPage("Resource"); 
+    }
        else {
       setCurrentPage(topicComponents[topic]);
     }

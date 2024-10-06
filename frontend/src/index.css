@@ -444,3 +444,60 @@ label.form-label {
   border-bottom: 1px solid lightgray;
   margin: 20px 0;
 }
+
+
+
+
+
+
+
+
+/* Resources Page Styles */
+
+.resources-navbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  position: fixed; 
+  top: 80px; 
+  left: 0;
+  right: 0;
+  z-index: 10; 
+}
+
+.resources-navbar button {
+  background-color: #3b82f6; /* Tailwind's blue-500 */
+  color: #ffffff; /* white */
+  padding: 0.5rem 1rem; /* Tailwind's py-2 px-4 */
+  border-radius: 0.375rem; /* Tailwind's rounded-md */
+  transition: background-color 0.3s ease;
+  outline: none;
+  box-shadow: 0 0 0 2px #1d4ed8; /* focus:ring-2 focus:ring-blue-500 */
+}
+
+.resources-navbar button:hover {
+  background-color: #D31212; /* Tailwind's blue-600 */
+}
+
+.resources-navbar button:focus {
+  box-shadow: 0 0 0 4px #bfdbfe; /* focus:ring-offset-2 */
+}
+
+.resources-header {
+  font-size: 1.5rem; /* Tailwind's text-2xl */
+  font-weight: 600; /* Tailwind's font-semibold */
+  text-align: center;
+  margin-bottom: 1.5rem; /* Tailwind's mb-6 */
+}
+
+.resources-message {
+  text-align: center; /* Center align the message */
+}
+.resources-navbar .filter-button {
+  background-color: #10b981; /* Change to your desired color */
+}
+
+.resources-navbar .add-resources-button {
+  background-color: #f59e0b; /* Change to your desired color */
+}

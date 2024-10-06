@@ -6,6 +6,8 @@ import TheSettings from './TheSettings';
 import Login from './Login';
 import LoginSuccess from './LoginSuccess';
 import Assignment from './Assignment';
+import Resource from './Resource';
+
 
 
 function App() {
@@ -46,6 +48,8 @@ function App() {
         return <TheSettings />;
       case 'Assignment':
         return <Assignment />;
+      case 'Resource':
+        return <Resource />;
       case 'home':
         return <Home setCurrentPage={handleNavigation} />;
       case 'login':

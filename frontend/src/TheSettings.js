@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 const topics = {
   Profile: "Your personal information",
   Account: "Your account settings",
-  LessonPlan: "Manage your lesson plans",
   Notification: "Your notification preferences",
   Subscription: "Your subscription details",
 };

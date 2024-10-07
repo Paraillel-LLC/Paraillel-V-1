@@ -2,23 +2,30 @@ import React, { useState } from 'react';
 
 const Assignment = () => {
   const [assignments, setAssignments] = useState([]);
-  const [title, setTitle] = useState('');
+  const [Type, setType] = useState('');
+  const [Subject, setSubject] = useState('');
+  const [Standard, setStandard] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [className, setClassName] = useState('');
+  const [Questions, setQuestions] = useState('');
   const [showInput, setShowInput] = useState(false);
 
   const handleAddAssignment = () => {
-    if (title.trim() !== '' && dueDate.trim() !== '' && className.trim() !== '') {
+    if (Type.trim() !== '' && dueDate.trim() !== '' && Questions.trim() !== '') {
       const newAssignment = {
         createdDate: new Date().toLocaleDateString('en-US'), // the current date
-        title,
+
+        Type,
+        Subject,
         dueDate,
-        className,
+        Questions,
+        Standard,
       };
       setAssignments([...assignments, newAssignment]);
-      setTitle('');
+      setType('');
+      setSubject('')
+      setStandard('');
       setDueDate('');
-      setClassName('');
+      setQuestions('');
       setShowInput(false); // Hide input box after adding
     }
   };
@@ -33,23 +40,42 @@ const Assignment = () => {
       {/* Input Container - Appears when the button is clicked */}
       {showInput && (
         <div style={styles.inputContainer}>
-          {/* Assignment Title Input */}
+        {/* Assignment Subject */}
+           <input
+            style={styles.inputBox}
+            type="text"
+            value={Subject}
+            onChange={(e) => setSubject(e.target.value)}
+            placeholder="Enter Subject "
+          />
+          {/* Assignment type Input */}
           <input
             style={styles.inputBox}
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter assignment title"
+            value={Type}
+            onChange={(e) => setType(e.target.value)}
+            placeholder="Enter Type of Assignment "
+          />
+           {/* number of questions */}
+           <input
+            style={styles.inputBox}
+            type="text"
+            value={Questions}
+            onChange={(e) => setQuestions(e.target.value)}
+            placeholder="Enter Number of questions"
+          />
+
+          {/* Academic Standard Input */}
+
+          <input
+            style={styles.inputBox}
+            type="text"
+            value={Standard}
+            onChange={(e) => setStandard(e.target.value)}
+            placeholder="Enter Academic State Standards "
           />
           
-          {/* Class Name Input */}
-          <input
-            style={styles.inputBox}
-            type="text"
-            value={className}
-            onChange={(e) => setClassName(e.target.value)}
-            placeholder="Enter class name"
-          />
+         
           
           {/* Due Date as a Text Input */}
           <input
@@ -74,8 +100,10 @@ const Assignment = () => {
           {assignments.map((assignment, index) => (
             <div key={index} style={styles.assignmentBox}>
              <p>Created Date: {assignment.createdDate}</p>
-              <p style={styles.assignmentTitle}><strong>{assignment.title}</strong></p>
-              <p>Class: {assignment.className}</p>
+              <p><strong>Subject: {assignment.Subject}</strong></p>
+              <p>Number of Questions: {assignment.Questions}</p>
+              <p>Assignment Type: {assignment.Type}</p>
+              <p>Academic Standards: {assignment.Standard}</p>             
               <p>Due Date: {assignment.dueDate}</p>
             </div>
           ))}

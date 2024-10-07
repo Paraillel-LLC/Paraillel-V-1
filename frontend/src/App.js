@@ -7,6 +7,7 @@ import Login from './Login';
 import LoginSuccess from './LoginSuccess';
 import Assignment from './Assignment';
 import Resource from './Resource';
+import StudyGuide from './StudyGuide';
 
 
 
@@ -48,6 +49,8 @@ function App() {
         return <TheSettings />;
       case 'Assignment':
         return <Assignment />;
+      case 'StudyGuide':
+        return <StudyGuide />;
       case 'Resource':
         return <Resource />;
       case 'home':

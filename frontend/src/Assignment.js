@@ -4,6 +4,7 @@ const Assignment = () => {
   const [assignments, setAssignments] = useState([]);
   const [Type, setType] = useState('');
   const [Subject, setSubject] = useState('');
+  const [Topic, setTopic] = useState('');
   const [Standard, setStandard] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [Questions, setQuestions] = useState('');
@@ -16,6 +17,7 @@ const Assignment = () => {
 
         Type,
         Subject,
+        Topic,
         dueDate,
         Questions,
         Standard,
@@ -23,6 +25,7 @@ const Assignment = () => {
       setAssignments([...assignments, newAssignment]);
       setType('');
       setSubject('')
+      setTopic('')
       setStandard('');
       setDueDate('');
       setQuestions('');
@@ -47,6 +50,13 @@ const Assignment = () => {
             value={Subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Enter Subject "
+          />
+          <input
+            style={styles.inputBox}
+            type="text"
+            value={Topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="Enter Topic "
           />
           {/* Assignment type Input */}
           <input
@@ -101,6 +111,7 @@ const Assignment = () => {
             <div key={index} style={styles.assignmentBox}>
              <p>Created Date: {assignment.createdDate}</p>
               <p><strong>Subject: {assignment.Subject}</strong></p>
+              <p>Topic: {assignment.Topic}</p>
               <p>Number of Questions: {assignment.Questions}</p>
               <p>Assignment Type: {assignment.Type}</p>
               <p>Academic Standards: {assignment.Standard}</p>             

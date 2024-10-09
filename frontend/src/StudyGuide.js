@@ -4,6 +4,7 @@ const StudyGuide = () => {
   const [studyGuides, setStudyGuides] = useState([]);
   const [grade, setGrade] = useState('');
   const [subject, setSubject] = useState('');
+  const [topic, setTopic] = useState('');
   const [teachingStyle, setTeachingStyle] = useState('');
   const [showInput, setShowInput] = useState(false);
 
@@ -14,11 +15,13 @@ const StudyGuide = () => {
         createdDate: new Date().toLocaleDateString('en-US'), // The current date
         grade,
         subject,
+        topic,
         teachingStyle,
       };
       setStudyGuides([...studyGuides, newGuide]);
       setGrade('');
       setSubject('');
+      setTopic('');
       setTeachingStyle('');
       setShowInput(false);
     }
@@ -52,6 +55,13 @@ const StudyGuide = () => {
               onChange={(e) => setSubject(e.target.value)}
               placeholder="Enter Subject"
             />
+             <input
+              style={styles.inputBox}
+              type="text"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              placeholder="Enter Topic"
+            />
             <input
               style={styles.inputBox}
               type="text"
@@ -76,6 +86,7 @@ const StudyGuide = () => {
             <p><strong>Created Date:</strong> {guide.createdDate}</p>
             <p><strong>Grade:</strong> {guide.grade}</p>
             <p><strong>Subject:</strong> {guide.subject}</p>
+            <p><strong>Topic:</strong> {guide.topic}</p>
             <p><strong>Teaching Style:</strong> {guide.teachingStyle}</p>
           </div>
         ))}

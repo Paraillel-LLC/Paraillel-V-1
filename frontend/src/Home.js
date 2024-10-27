@@ -2,7 +2,7 @@ import React from 'react';
 
 function Home({ setCurrentPage }) {
   const topics = {
-    "General": [,"Dashboard", "Calendar","LessonPlan", "Assignments","StudyGuide", "Resources"],
+    "General": [,"Dashboard", "Calendar","LessonPlan", "Assignments","StudyGuide","Quiz","ExampleGenerator", "Resources"],
     "Communications": ["Collaborations", "Messages"],
     "Data": ["Roster", "Analytics", "Reports"],
     "Control": ["Settings"]
@@ -24,6 +24,12 @@ function Home({ setCurrentPage }) {
     else if (topic === "StudyGuide") {
       setCurrentPage("StudyGuide"); 
     }
+    else if (topic === "Quiz") {
+      setCurrentPage("Quiz"); 
+    }
+    else if (topic === "ExampleGenerator") {
+      setCurrentPage("ExampleGenerator"); 
+    }
     else if (topic === "Resources") {
       setCurrentPage("Resource"); 
     }
@@ -38,6 +44,8 @@ function Home({ setCurrentPage }) {
     "Calendar": "Cale",
     "Assignments": "Assignments", 
     "StudyGuide": "StudyGuide", 
+    "Quiz": "Quiz", 
+    "ExampleGenerator" : "ExampleGenerator",
     "Resources": "Resources", 
     "Collaborations": "Collaborations", 
     "Messages": "Messages",

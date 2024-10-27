@@ -8,7 +8,8 @@ import LoginSuccess from './LoginSuccess';
 import Assignment from './Assignment';
 import Resource from './Resource';
 import StudyGuide from './StudyGuide';
-
+import Quiz from './Quiz';
+import ExampleGenerator from './ExampleGenerator';
 
 
 function App() {
@@ -51,6 +52,10 @@ function App() {
         return <Assignment />;
       case 'StudyGuide':
         return <StudyGuide />;
+      case 'Quiz':
+        return <Quiz />;
+      case 'ExampleGenerator':
+        return <ExampleGenerator />;
       case 'Resource':
         return <Resource />;
       case 'home':

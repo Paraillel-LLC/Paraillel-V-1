@@ -4,11 +4,13 @@ const QuizGenerator = () => {
   const [step, setStep] = useState(1); 
   const [quizAudience, setQuizAudience] = useState('');
   const [questionType, setQuestionType] = useState('');
-  const [numQuestions, setNumQuestions] = useState(''); // User-defined number of questions
+  const [numQuestions, setNumQuestions] = useState(''); 
+  const [subject, setSubject] = useState('');
+  const [topic, setTopic] = useState('');
 
   // Function to handle moving to the next step
   const handleNextStep = () => {
-    if (quizAudience && questionType && numQuestions) {
+    if (quizAudience && questionType && numQuestions && subject && topic) {
       setStep(2);
     }
   };
@@ -40,6 +42,20 @@ const QuizGenerator = () => {
             onChange={(e) => setNumQuestions(e.target.value)}
             placeholder="Enter Number of Questions"
           />
+          <input
+            style={styles.inputBox}
+            type="text"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            placeholder="Enter Subject"
+          />
+          <input
+            style={styles.inputBox}
+            type="text"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder="Enter Topic"
+          />
           <button style={styles.nextButton} onClick={handleNextStep}>
             Next
           </button>
@@ -53,6 +69,8 @@ const QuizGenerator = () => {
           <p><strong>Audience:</strong> {quizAudience}</p>
           <p><strong>Question Type:</strong> {questionType}</p>
           <p><strong>Number of Questions:</strong> {numQuestions}</p>
+          <p><strong>Subject:</strong> {subject}</p>
+          <p><strong>Topic:</strong> {topic}</p>
         </div>
       )}
     </div>

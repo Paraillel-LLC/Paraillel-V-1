@@ -9,6 +9,7 @@ import Assignment from './Assignment';
 import Resource from './Resource';
 import StudyGuide from './StudyGuide';
 import Quiz from './Quiz';
+import Essay from './Essay';
 import ExampleGenerator from './ExampleGenerator';
 
 
@@ -54,6 +55,8 @@ function App() {
         return <StudyGuide />;
       case 'Quiz':
         return <Quiz />;
+      case 'Essay':
+        return <Essay />;
       case 'ExampleGenerator':
         return <ExampleGenerator />;
       case 'Resource':

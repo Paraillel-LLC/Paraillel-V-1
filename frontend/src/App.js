@@ -11,6 +11,8 @@ import StudyGuide from './StudyGuide';
 import Quiz from './Quiz';
 import Essay from './Essay';
 import Documents from './Documents';
+import Summary from './Summary';
+
 
 import ExampleGenerator from './ExampleGenerator';
 
@@ -61,6 +63,8 @@ function App() {
         return <Essay />;
       case 'ExampleGenerator':
         return <ExampleGenerator />;
+      case 'Summary':
+        return <Summary />;
       case 'Documents':
         return <Documents />;
       case 'Resource':

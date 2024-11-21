@@ -1,46 +1,34 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {LessonPlanContext} from './LessonPlanContext';
+import { createEventSchedule } from './App'; // Import the function
 
-const Cale = () => {
-  const [calendarView, setCalendarView] = useState('dayGridMonth'); // 
+const Cale = ({ lessonTitle, startDate, endDate }) => {
+//const Cale = ({ lessonTitle, startDate, endDate }) => {
+  const [calendarView] = useState('dayGridMonth');
 
-  const { lessons } = useContext(LessonPlanContext);
-
-  const getCurrentDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    let mm = today.getMonth() + 1; // Months start at 0!
-    let dd = today.getDate();
-
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-
-    return year + '-' + mm + '-' + dd;
-  };
+  const events = createEventSchedule(lessonTitle, startDate, endDate);
 
   return (
-    <div style={{ paddingTop: 0 }}> 
-    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+    <div style={{ paddingTop: 0 }}>
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}></div>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '80px' }}>
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin]}
+          initialView={calendarView}
+          headerToolbar={{
+            left: 'prev,next',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+          }}
+          nowIndicator
+          initialDate={new Date()}
+          events={events}
+          height="auto"
+        />
+      </div>
     </div>
-    <div style={{ maxWidth: '800px', margin: '0 auto' , padding: "80px"}}>
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin]}
-        initialView={calendarView}
-        headerToolbar={{
-          left: 'prev,next',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        }}
-        nowIndicator
-        events={lessons}
-        initialDate={getCurrentDate()}
-        height="auto"
-      />
-    </div>
-  </div>
   );
 };
 

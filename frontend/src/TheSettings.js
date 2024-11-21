@@ -1,9 +1,8 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState } from 'react';
 
 const topics = {
   Profile: "Your personal information",
   Account: "Your account settings",
-  LessonPlan: "Manage your lesson plans",
   Notification: "Your notification preferences",
   Subscription: "Your subscription details",
 };
@@ -12,7 +11,6 @@ const profileDetails = {
   Teacher: [
     "First Name",
     "Last Name",
-    "Email",
     "Profile Picture",
     "Subject(s) Taught",
     "Grade Level(s)",
@@ -23,7 +21,6 @@ const profileDetails = {
   Administration: [
     "First Name",
     "Last Name",
-    "Email",
     "Profile Picture",
     "Department",
     "Role/Position",
@@ -34,7 +31,6 @@ const profileDetails = {
   District: [
     "First Name",
     "Last Name",
-    "Email",
     "Profile Picture",
     "Role/Position",
     "District Information",
@@ -43,17 +39,11 @@ const profileDetails = {
   ]
 };
 
-
-//Mohsen wrote codes that fill this variable dynamically from database
-/*const districtSchoolMapping = {
+const districtSchoolMapping = {
   "District1": ["School1-1", "School1-2"],
   "District2": ["School2-1", "School2-2"],
   "District3": ["School3-1", "School3-2"]
 };
-*/
-
-// Load the district and school dynamically.
-
 
 const TheSettings = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -63,28 +53,12 @@ const TheSettings = () => {
   const [selectedSchool, setSelectedSchool] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [subjects, setSubjects] = useState([""]); // Default one subject field
-  const [districtSchoolMapping, setDistrictSchoolMapping] = useState({});
+  const [selectedPrivacyContact, setSelectedPrivacyContact] = useState('Only Me');
+  const [selectedPrivacyProfile, setSelectedPrivacyProfile] = useState('Only Me');
+  const [isEditingPassword, setIsEditingPassword] = useState(false);
+  const [email] = useState('user@example.com'); // Replace with actual user email if dynamic
 
-  useEffect(() => {
-    fetch('http://localhost:5000/get_district_school_mapping')
-      .then(response => response.json())
-      .then(data => {
-        if (data.successful) {
-          //alert(data.data);
-          //districtSchoolMapping = data.data;
-          setDistrictSchoolMapping(data.data); // Here it updates the state with the fetched data
-        } else {
-          console.error('Error fetching district-school mapping:', data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-      // Fetch the user information to pre-fill form fields
-    getUserInfo(setFormData);
-
-  }, []);
-
+  const privacyOptions = ['Only Me', 'My Friends', 'Everyone'];
 
   const handleTopicSelection = (topic) => {
     setSelectedTopic(topic);
@@ -93,9 +67,6 @@ const TheSettings = () => {
   const handleProfileSelection = (event) => {
     setSelectedProfile(event.target.value);
     setFormData({});
-    getUserInfo(setFormData);
-
-
   };
 
   const handleInputChange = (event) => {
@@ -107,18 +78,7 @@ const TheSettings = () => {
   };
 
   const handleDistrictChange = (event) => {
-    const districtId = event.target.value;
-    setSelectedDistrict(districtId);
-    setFormData({
-      ...formData,
-      "District ID": districtId,
-      "School ID": Object.keys(districtSchoolMapping[districtId].schools)[0] // Default to the first school ID
-    });
-    setSelectedSchool(Object.keys(districtSchoolMapping[districtId].schools)[0]);
-  
-
-
-    /*const district = event.target.value;
+    const district = event.target.value;
     setSelectedDistrict(district);
     setFormData({
       ...formData,
@@ -126,25 +86,15 @@ const TheSettings = () => {
       "School ID": districtSchoolMapping[district][0]
     });
     setSelectedSchool(districtSchoolMapping[district][0]);
-    */
   };
 
   const handleSchoolChange = (event) => {
-    /*const school = event.target.value;
+    const school = event.target.value;
     setSelectedSchool(school);
     setFormData({
       ...formData,
       "School ID": school
     });
-    */
-
-    const schoolId = event.target.value;
-    setSelectedSchool(schoolId);
-    setFormData({
-      ...formData,
-      "School ID": schoolId
-    });
-
   };
 
   const handleAddSubject = () => {
@@ -172,37 +122,24 @@ const TheSettings = () => {
     });
   };
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch('http://localhost:5000/save_settings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      
-      body: JSON.stringify({'selectedProfile' : selectedProfile, 'formData' : formData})
-    })
-    .then(response => response.json())
-    .then(data => {
-      if(data.successful == true){
-        alert(data.message);
-        // Successful , next step  //ToDO
-      }
-      else{
-        alert('Error: ' + data.message);
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+    console.log("Form data submitted:", formData);
     setIsEditing(false);
   };
 
   const handleEdit = () => {
     setIsEditing(true);
   };
-  
+
+  const handlePrivacyChange = (setter) => (event) => {
+    setter(event.target.value);
+  };
+
+  const handlePasswordEdit = () => {
+    setIsEditingPassword(true);
+  };
+
   return (
     <div>
       <h2>Settings</h2>
@@ -217,6 +154,7 @@ const TheSettings = () => {
           </button>
         ))}
       </div>
+
       <div className="profile-selector">
         {selectedTopic === "Profile" && (
           <select value={selectedProfile} onChange={handleProfileSelection}>
@@ -226,8 +164,11 @@ const TheSettings = () => {
           </select>
         )}
       </div>
+
       <div className="topic-description">
         {selectedTopic && <p>{topics[selectedTopic]}</p>}
+
+        {/* Profile Section */}
         {selectedTopic === "Profile" && (
           <div className="profile-content">
             <form onSubmit={handleSubmit}>
@@ -242,8 +183,8 @@ const TheSettings = () => {
                       disabled={!isEditing}
                     >
                       <option value="">Select District</option>
-                      {Object.keys(districtSchoolMapping).map((districtId, idx) => (
-                        <option key={idx} value={districtId}>{districtSchoolMapping[districtId].name}</option>
+                      {Object.keys(districtSchoolMapping).map((district, idx) => (
+                        <option key={idx} value={district}>{district}</option>
                       ))}
                     </select>
                   </div>
@@ -257,45 +198,45 @@ const TheSettings = () => {
                       disabled={!isEditing || !selectedDistrict}
                     >
                       <option value="">Select School</option>
-                      {selectedDistrict && Object.keys(districtSchoolMapping[selectedDistrict].schools).map((schoolId, idx) => (
-                        <option key={idx} value={schoolId}>{districtSchoolMapping[selectedDistrict].schools[schoolId]}</option>
+                      {selectedDistrict && districtSchoolMapping[selectedDistrict].map((school, idx) => (
+                        <option key={idx} value={school}>{school}</option>
                       ))}
                     </select>
                   </div>
-                  ) : detail === "Subject(s) Taught" ? (
-                    <div key={index} className="form-group">
-                      <label>{detail}</label>
-                      <div className="subjects-container">
-                        {subjects.map((subject, idx) => (
-                          <div key={idx} className="subject-entry">
-                            <input 
-                              type="text" 
-                              value={subject} 
-                              onChange={(e) => handleSubjectChange(idx, e.target.value)}
-                              disabled={!isEditing}
-                            />
-                            {isEditing && (
-                              <button 
-                                type="button" 
-                                onClick={() => handleRemoveSubject(idx)}
-                                className="remove-subject-button"
-                              >
-                                −
-                              </button>
-                            )}
-                          </div>
-                        ))}
-                        {isEditing && (
-                          <button 
-                            type="button" 
-                            onClick={handleAddSubject}
-                            className="add-subject-button"
-                          >
-                            +
-                          </button>
-                        )}
-                      </div>
+                ) : detail === "Subject(s) Taught" ? (
+                  <div key={index} className="form-group">
+                    <label>{detail}</label>
+                    <div className="subjects-container">
+                      {subjects.map((subject, idx) => (
+                        <div key={idx} className="subject-entry">
+                          <input 
+                            type="text" 
+                            value={subject} 
+                            onChange={(e) => handleSubjectChange(idx, e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          {isEditing && (
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveSubject(idx)}
+                              className="remove-subject-button"
+                            >
+                              −
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                      {isEditing && (
+                        <button 
+                          type="button" 
+                          onClick={handleAddSubject}
+                          className="add-subject-button"
+                        >
+                          +
+                        </button>
+                      )}
                     </div>
+                  </div>
                 ) : (
                   <div key={index} className="form-group">
                     <label>{detail}</label>
@@ -314,7 +255,55 @@ const TheSettings = () => {
                 <button type="button" className="edit-button" onClick={handleEdit}>Edit</button>
               </div>
             </form>
+          </div>
+        )}
+
+        {/* Account Section */}
+        {selectedTopic === "Account" && (
+          <div className="account-page">
+            <h3>Privacy</h3>
+            <div className="privacy-setting">
+              <label>Who can view your contact information?</label>
+              <select 
+                value={selectedPrivacyContact} 
+                onChange={handlePrivacyChange(setSelectedPrivacyContact)}
+              >
+                {privacyOptions.map((option, index) => (
+                  <option key={index} value={option}>{option}</option>
+                ))}
+              </select>
             </div>
+
+            <div className="privacy-setting">
+              <label>Who can view your profile?</label>
+              <select 
+                value={selectedPrivacyProfile} 
+                onChange={handlePrivacyChange(setSelectedPrivacyProfile)}
+              >
+                {privacyOptions.map((option, index) => (
+                  <option key={index} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+
+            <h3>Login & Recovery</h3>
+            <div className="password-update">
+              <label>Password</label>
+              <button onClick={handlePasswordEdit}>Update Password</button>
+              {isEditingPassword && (
+                <div className="password-fields">
+                  <input type="password" placeholder="Enter new password" />
+                  <input type="password" placeholder="Confirm new password" />
+                  <button type="button">Save</button>
+                </div>
+              )}
+            </div>
+
+            <div className="email-info">
+              <label>Email</label>
+              <p>{email}</p>
+            </div>
+          </div>
         )}
       </div>
     </div>
@@ -322,26 +311,3 @@ const TheSettings = () => {
 };
 
 export default TheSettings;
-function getUserInfo(setFormData) {
-  fetch('http://localhost:5000/user_info', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: 'test' }) // Replace with the actual username
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.successful) {
-        // Pre-fill the form with user information
-        setFormData({
-          'First Name': data.user_info.firstname,
-          'Last Name': data.user_info.lastname,
-          'Email': data.user_info.email,
-        });
-      } else {
-        console.error('Error fetching user info:', data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-}

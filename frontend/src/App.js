@@ -5,6 +5,37 @@ import Cale from './Cale';
 import TheSettings from './TheSettings';
 import Login from './Login';
 import LoginSuccess from './LoginSuccess';
+import Assignment from './Assignment';
+import Resource from './Resource';
+import StudyGuide from './StudyGuide';
+import Quiz from './Quiz';
+import Essay from './Essay';
+import Documents from './Documents';
+import ExampleGenerator from './ExampleGenerator';
+
+
+
+// Function to generate events for a date range : Mohsen Code
+export function createEventSchedule (title, startDate, endDate) {
+  const events = [];
+  
+  const start = new Date(startDate);
+  start.setDate(start.getDate() + 1) // The previous function always converts to one day before !!!!
+  
+  const end = new Date(endDate);
+  end.setDate(end.getDate() + 1) // The previous function always converts to one day before !!!!
+
+  // Loop through each day between start and end date
+  for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+    events.push({
+      title: title,
+      start: new Date(date), // Ensure a new Date object is created
+      allDay: true,
+    });
+  }
+
+  return events;
+}
 
 function App() {
   const [currentPage, setCurrentPage] = useState('login');
@@ -12,6 +43,7 @@ function App() {
   const [showHome, setShowHome] = useState(false); 
   const [lessonTitle, setLessonTitle] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -28,9 +60,10 @@ function App() {
     setShowHome(true); 
   };
 
-  const handleGenerate = (title, date) => {
+  const handleGenerate = (title, date, enddate) => {
     setLessonTitle(title);
     setStartDate(date);
+    setEndDate(enddate);
     setCurrentPage('cale');
   };
 
@@ -39,9 +72,23 @@ function App() {
       case 'chat':
         return <ChatGPT setCurrentPage={handleNavigation} onGenerate={handleGenerate} />;
       case 'cale':
-        return <Cale lessonTitle={lessonTitle} startDate={startDate} />;
+        return <Cale lessonTitle={lessonTitle} startDate={startDate} endDate={endDate}/>;
       case 'TheSettings':
         return <TheSettings />;
+      case 'Assignment':
+        return <Assignment />;
+      case 'StudyGuide':
+        return <StudyGuide />;
+      case 'Quiz':
+        return <Quiz />;
+      case 'Essay':
+        return <Essay />;
+      case 'ExampleGenerator':
+        return <ExampleGenerator />;
+      case 'Documents':
+         return <Documents />;
+      case 'Resource':
+        return <Resource />;
       case 'home':
         return <Home setCurrentPage={handleNavigation} />;
       case 'login':

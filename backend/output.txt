@@ -1,92 +1,39 @@
 
 
-State Academic Standards:
+Topic: Numbers in Maths
 
-Social Studies Standard: History
-Grade 6 - Topic: Indian History
-Ohio Academic Content Standard: 6.HIS.3: Investigate the impact of ancient civilizations on the development of significant world regions
-Ohio Academic Content Standard: 6.HIS.4: Identify key characteristics of ancient civilizations in India
-Ohio Academic Content Standard: 6.HIS.5: Explain the significance and impact of major events, individuals, and movements in ancient Indian history
+1. Which of the following is an even number?
+A. 7
+B. 12
+C. 5
+D. 9
 
-Lesson Title: Indian History
+2. What is the next number in this pattern: 1, 4, 9, 16, ____
+A. 25
+B. 32
+C. 36
+D. 27
 
-Lesson Objective:
-Students will be able to identify key characteristics of ancient civilizations in India and explain the significance and impact of major events, individuals, and movements in Indian history.
+3. What is the value of the digit 5 in the number 145?
+A. 500
+B. 50
+C. 5
+D. 0
 
-Materials Needed:
-- Textbooks or online resources
-- Map of India
-- Primary and secondary sources on Indian history
-- Graphic organizers and worksheets
-- Art supplies (optional)
+4. What is the place value of the digit 6 in the number 764?
+A. Ones
+B. Tens
+C. Hundreds
+D. Thousands
 
-Differentiated Instruction:
-- Use a variety of media such as textual, visual, and auditory to engage students with different learning styles.
-- Provide options for student choice in completing assignments and activities.
-- Allow for small group work and partner work for collaboration and support.
-- Differentiate assessments by providing options for students to demonstrate their understanding through various forms such as written, oral, or visual presentations.
+5. What is the difference between the largest 3-digit number and the smallest 4-digit number?
+A. 110
+B. 99
+C. 100
+D. 1,000
 
-Duration:
-1-4 hours (may be broken into multiple class periods)
+Instructions: Choose the correct answer for each question. 
 
-Anticipatory Set:
-- Begin by asking students to share what they already know about India and its history.
-- Show a map of India and ask students to identify its location and neighboring countries.
-- Explain to students that they will be learning about the ancient civilizations in India today and their contributions to the development of the region.
+Remember to show your work and be confident in your answers! 
 
-Direct Instruction:
-1. Introduction to Ancient India
-- Provide a brief overview of the Indus Valley Civilization and its location, including the significance of the Indus River.
-- Introduce the main features of the Harappan Civilization, such as its advanced city planning and trade routes.
-- Use visual aids to support the information, such as maps and images of artifacts.
-
-2. The Vedic Period
-- Explain the Vedic period and its significance in Indian history.
-- Discuss the role of the Vedas and the caste system in the development of Indian society.
-- Allow for student discussion and reflection on the impact of the caste system.
-
-3. Mauryan Empire
-- Present the rise and fall of the Mauryan Empire and its leader, Chandragupta Maurya.
-- Discuss the achievements of the Mauryan Empire, such as the spread of Buddhism and the introduction of a centralized government.
-- Use primary and secondary sources to support the information.
-
-4. Gupta Empire
-- Provide an overview of the Gupta Empire and its accomplishments, such as advancements in mathematics, science, and art.
-- Engage students in a small group activity where they explore the Gupta Empire's achievements and their impact on modern-day society.
-
-5. Contributions of Ancient India
-- Allow students to work in pairs or small groups to research and present on one aspect of ancient Indian contributions, such as the decimal system, early medicine, or literature.
-- Have students create a visual representation of their findings, such as a poster or infographic.
-
-6. Assessment
-- To assess understanding, have students fill out a graphic organizer or worksheet on the key characteristics and contributions of ancient Indian civilizations.
-- Provide options for students to present their learning, such as a written essay, oral presentation, or visual project.
-
-Closure:
-- Have students share one thing they learned about ancient India and its influence on modern-day society.
-- Encourage students to ask questions and reflect on the importance of understanding world history and the impact of ancient civilizations.
-
-Homework:
-- Assign readings or online resources for students to further explore the topic of ancient Indian history.
-- Provide differentiated options for homework, such as reading comprehension questions, a summary of main ideas, or a creative project.
-
-Possible Extension Activities:
-- Have students research and present on a specific Indian king or leader.
-- Create a timeline of ancient Indian history and add key events and individuals.
-- Have students create a cave painting or other art piece inspired by ancient Indian art.
-
-Assessment:
-
-Informal:
-- Student participation in class discussions and activities
-- Observations during group work and independent tasks
-
-Formal:
-- Completed graphic organizer or worksheet
-- Presentation of research on ancient Indian contributions
-- Homework assignment
-
-References:
-- Cleveland, J. (2014). A history of the modern world. Cengage Learning.
-- Stanford History Education Group. (n.d.). Indian History. Retrieved from https://sheg.stanford.edu/history-lessons/india
-- Ohio Department of Education. (2010). Academic Content Standards: Social Studies. Retrieved from http://education.ohio.gov/getattachment/Topics/Learning-in-Ohio/Social- Studies/Full-K-12-PDF-Format-SS_Learning-Grade-6.pdf.aspx.
+Answer Key: 1. B  2. A  3. B  4. C  5. C

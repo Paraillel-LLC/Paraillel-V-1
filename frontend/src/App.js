@@ -12,9 +12,8 @@ import Quiz from './Quiz';
 import Essay from './Essay';
 import Documents from './Documents';
 import Summary from './Summary';
-
-
 import ExampleGenerator from './ExampleGenerator';
+import DoNow from './DoNow';
 
 
 function App() {
@@ -65,6 +64,8 @@ function App() {
         return <ExampleGenerator />;
       case 'Summary':
         return <Summary />;
+      case 'DoNow':
+        return <DoNow />;
       case 'Documents':
         return <Documents />;
       case 'Resource':

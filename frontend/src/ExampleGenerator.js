@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from "axios";
+import axios from 'axios';
 
 const ExampleGenerator = () => {
   const [step, setStep] = useState(1);
@@ -10,36 +10,45 @@ const ExampleGenerator = () => {
   const [comprehensionLevel, setComprehensionLevel] = useState('');
   const [exampleBasis, setExampleBasis] = useState('');
 
-  const handleNextStep = () => {
-    if (step === 1 && grade && subject) {
-      setStep(2);
+  // Step 1: Next button
+  const handleNextStepPage1 = () => {
+    if (grade && subject) {
+      setStep(2); // Move to step 2 (second page)
+    } else {
+      alert('Please fill out grade and subject');
     }
   };
 
-  const handleGenerateExample = () => {
-    const newExampleGenerator = {
-      grade,
-      subject,
-      topic,
-      learningStyle,
-      comprehensionLevel,
-      exampleBasis,
-    };
-    
-    createExampleGenerator(newExampleGenerator);
+  // Step 2: Submit form with all fields checked
+  const handleSubmitPage2 = async () => {
+    if (topic && learningStyle && comprehensionLevel && exampleBasis) {
+      const newExampleGenerator = {
+        grade,
+        subject,
+        topic,
+        learningStyle,
+        comprehensionLevel,
+        exampleBasis,
+      };
+
+      await createExampleGenerator(newExampleGenerator);
+      setStep(3); // Move to next step (summary page)
+    } else {
+      alert('Please fill out all fields');
+    }
   };
 
-  async function createExampleGenerator(newExampleGenerator){
+  // Async function to create the example generator
+  async function createExampleGenerator(newExampleGenerator) {
     const exampleGenerator = {
-  
-    grade: newExampleGenerator.grade,
-    subject: newExampleGenerator.subject,
-    topic: newExampleGenerator.topic,
-    learningStyle: newExampleGenerator.learningStyle,
-    comprehensionLevel: newExampleGenerator.comprehensionLevel,
-    exampleBasis: newExampleGenerator.exampleBasis,
-    prompt: `" "`,
-    max_tokens: 2048,
+      grade: newExampleGenerator.grade,
+      subject: newExampleGenerator.subject,
+      topic: newExampleGenerator.topic,
+      learningStyle: newExampleGenerator.learningStyle,
+      comprehensionLevel: newExampleGenerator.comprehensionLevel,
+      exampleBasis: newExampleGenerator.exampleBasis,
+      prompt: `"Generate examples tailored for a "${grade}" level audience. The subject is "${subject}", and the topic to focus on is "${topic}". Design the examples to align with a "${learningStyle}" learning style and ensure they are appropriate for a comprehension level of "${comprehensionLevel}". Use "${exampleBasis}" as the foundation for creating these examples. The examples should be clear, engaging, and structured to enhance understanding of the topic."`,
+      max_tokens: 2048,
     };
 
     try {
@@ -55,7 +64,7 @@ const ExampleGenerator = () => {
     } catch (error) {
       console.error('Error calling backend:', error);
     }
-  };
+  }
 
   return (
     <div style={styles.container}>
@@ -76,7 +85,7 @@ const ExampleGenerator = () => {
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Subject"
           />
-          <button style={styles.nextButton} onClick={handleNextStep}>
+          <button style={styles.nextButton} onClick={handleNextStepPage1}>
             Next
           </button>
         </div>
@@ -120,7 +129,7 @@ const ExampleGenerator = () => {
             onChange={(e) => setExampleBasis(e.target.value)}
             placeholder="Basis for Example (Context)"
           />
-          <button style={styles.generateButton} onClick={() => setStep(3)}>
+          <button style={styles.generateButton} onClick={handleSubmitPage2}>
             Generate Examples
           </button>
         </div>

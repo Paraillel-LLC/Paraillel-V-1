@@ -46,7 +46,7 @@ const Assignment = () => {
     dueDate: newAssignment.dueDate,
     Questions: newAssignment.Questions,
     Standard: newAssignment.Standard,
-    prompt: `"As an experienced pedagogy expert, create a comprehensive and engaging assignment for Grade-level students on the topic of "${Topic}" within ${Subject}. This assignment should be structured as a ${Type} and contain ${Questions} questions. Each question should start with "Q1: question 1," "Q2: question 2," etc., and each answer should be labeled as "A1: answer," "A2: answer," to provide a detailed answer key that guides student learning. Ensure the assignment aligns with ${Standard}. Also, include a list of required materials or resources, such as textbooks, online articles, or tools, that will help students successfully complete the assignment. The assignment should include a variety of formats to cover all key aspects of the topic, fostering understanding and engagement."`,
+    prompt: `"Design a detailed and engaging assignment for grade-level students on the topic "${Topic}" within the subject "${Subject}". The assignment should be structured as a "${Type}" and consist of "${Questions}" thoughtfully crafted questions. Ensure that the assignment aligns with the "${Standard}"."`,
     max_tokens: 2048,
     };
 

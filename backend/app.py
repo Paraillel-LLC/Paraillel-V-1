@@ -14,6 +14,8 @@ import pymysql.cursors
 import re
 import json
 from datetime import datetime
+from transformers import T5Tokenizer, T5ForConditionalGeneration
+nltk.download('punkt_tab')
 
 from thesettings import insert_admin, insert_district, insert_teacher
 
@@ -54,6 +56,21 @@ def send_request_with_retry(prompt, max_retries=3):
 
 # Counter for analytics
 study_plan_count = 0
+
+def generate_title(text):
+    # Load pre-trained T5 model and tokenizer
+    model = T5ForConditionalGeneration.from_pretrained("t5-small")
+    tokenizer = T5Tokenizer.from_pretrained("t5-small")
+
+    # Prepare the input for the T5 model
+    input_text = "summarize: " + text
+    inputs = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True)
+
+    # Generate the summary/title
+    summary_ids = model.generate(inputs['input_ids'], max_length=10, num_beams=4, early_stopping=True)
+    title = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+
+    return title
 
 @app.route('/')
 def index():
@@ -291,45 +308,45 @@ def create_account():
     return redirect(url_for('home'))
     #return render_template('http://localhost:3000/')
     
-def parse_assignment(doc, assignment_type):
-    # Dictionary to map assignment types to their corresponding regex patterns
-    patterns = {
-        "Fill-in-the-Blank": r"(\d+\.\s.*?)(?=\nAnswer key:|$)",
-        "Multiple Choice": r"(\d+\.\s.*?\n(?:A\.\s.*\n)*?)",
-        "True/False": r"(\d+\.\s(True or False:.*?)\s*)",
-        "Justify True/False": r"(\d+\.\s(Justify True or False.*?)\s*)",
-        "Term and Definition Matching": r"(Match the terms to their definitions.*?)\s*",
-        "Short Answer": r"(\d+\.\s(Short Answer.*?:.*?)\s*)",
-        "Analytical Essay": r"(\d+\.\s(Analytical Essay.*?:.*?)\s*)",
-        "Sort Terms into Categories": r"(\d+\.\s(Sort the terms.*?:.*?)\s*)",
-        "Sequence Events or Processes": r"(\d+\.\s(Sequence the events.*?:.*?)\s*)"
-    }
+# def parse_assignment(doc, assignment_type):
+#     # Dictionary to map assignment types to their corresponding regex patterns
+#     patterns = {
+#         "Fill-in-the-Blank": r"(\d+\.\s.*?)(?=\nAnswer key:|$)",
+#         "Multiple Choice": r"(\d+\.\s.*?\n(?:A\.\s.*\n)*?)",
+#         "True/False": r"(\d+\.\s(True or False:.*?)\s*)",
+#         "Justify True/False": r"(\d+\.\s(Justify True or False.*?)\s*)",
+#         "Term and Definition Matching": r"(Match the terms to their definitions.*?)\s*",
+#         "Short Answer": r"(\d+\.\s(Short Answer.*?:.*?)\s*)",
+#         "Analytical Essay": r"(\d+\.\s(Analytical Essay.*?:.*?)\s*)",
+#         "Sort Terms into Categories": r"(\d+\.\s(Sort the terms.*?:.*?)\s*)",
+#         "Sequence Events or Processes": r"(\d+\.\s(Sequence the events.*?:.*?)\s*)"
+#     }
     
-    file_content = doc.text
+#     file_content = doc.text
     
-    answer_pattern = r"Answer key:\s*(.*)"
+#     answer_pattern = r"Answer key:\s*(.*)"
 
-    # Check if the assignment type provided is valid
-    if assignment_type not in patterns:
-        raise ValueError(f"Invalid assignment type. Please choose from {list(patterns.keys())}")
+#     # Check if the assignment type provided is valid
+#     if assignment_type not in patterns:
+#         raise ValueError(f"Invalid assignment type. Please choose from {list(patterns.keys())}")
 
-    # Get the corresponding regex pattern for the assignment type
-    pattern = patterns[assignment_type]
+#     # Get the corresponding regex pattern for the assignment type
+#     pattern = patterns[assignment_type]
 
-    # Find all questions and corresponding answers using the pattern
-    #parsed_data = re.findall(pattern, file_content, re.DOTALL)
-    questions = re.findall(pattern, file_content, re.DOTALL)
-    answers = re.findall(answer_pattern, file_content)
+#     # Find all questions and corresponding answers using the pattern
+#     #parsed_data = re.findall(pattern, file_content, re.DOTALL)
+#     questions = re.findall(pattern, file_content, re.DOTALL)
+#     answers = re.findall(answer_pattern, file_content)
 
-    # Dictionary to store questions and answers
-    question_answer_dict = {}
+#     # Dictionary to store questions and answers
+#     question_answer_dict = {}
 
-    for i in range(min(len(questions), len(answers))):
-        question = questions[i].strip()
-        answer = answers[i].strip()
-        question_answer_dict[question] = answer
+#     for i in range(min(len(questions), len(answers))):
+#         question = questions[i].strip()
+#         answer = answers[i].strip()
+#         question_answer_dict[question] = answer
 
-    return question_answer_dict
+#     return question_answer_dict
 
 @app.route('/create-assignment', methods=['POST'])
 def create_assignment():
@@ -383,11 +400,10 @@ def create_assignment():
         print(Content)
         print(type(dueDate))
         required_Material = ''
+        title = generate_title(Content)
         
-        
-        
-        questions_str = {}
-        answers_str = {}
+        # questions_str = {}
+        # answers_str = {}
         
         # for i, qa_pair in enumerate(Content.split("\nQ")[1:], start=1):  # Skip the first empty split
         #     if qa_pair.strip():  # Check if the pair is not empty
@@ -398,11 +414,11 @@ def create_assignment():
         #             answers_str[f"answer_{i}"] = answer.split("\n")[0].strip()
         #         except ValueError:
         #             print(f"Error processing Q{i}: {qa_pair}. Not enough values to unpack.")
-        for i, qa_pair in enumerate(Content.split("Q"), 1):
-            if qa_pair.strip():
-                question, answer = qa_pair.split("A", 1)
-                questions_str[f"question_{i}"] = question.strip()
-                answers_str[f"answer_{i}"] = answer.strip()
+        # for i, qa_pair in enumerate(Content.split("Q"), 1):
+        #     if qa_pair.strip():
+        #         question, answer = qa_pair.split("A", 1)
+        #         questions_str[f"question_{i}"] = question.strip()
+        #         answers_str[f"answer_{i}"] = answer.strip()
             
         #dueDate_obj = datetime.strptime(dueDate, "%m/%d/%y")
         #formatted_dueDate = dueDate_obj.strftime("%Y-%m-%d")
@@ -412,23 +428,23 @@ def create_assignment():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO Assignments ( topic, Content, required_materials, Subject, Type_of_Assignment, Number_of_questions, Academic_State_Standard, Due_date)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO Assignments ( topic, Content, required_materials, Subject, Type_of_Assignment, Number_of_questions, Academic_State_Standard, Due_date, title)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( Topic, Content, required_Material, Subject, Type, Questions_number, Standard, dueDate))
+                    cursor.execute(insert_query, ( Topic, Content, required_Material, Subject, Type, Questions_number, Standard, dueDate, title))
                     
-                    assignment_id = cursor.lastrowid
+                    # assignment_id = cursor.lastrowid
 
-                    # Step 2: Insert question-answer pairs into AssignmentQuestions table
-                    for i in range(1, len(questions_str) + 1):
-                        question = questions_str[f"question_{i}"]
-                        answer = answers_str[f"answer_{i}"]
-                        cursor.execute(
-                            "INSERT INTO AssignmentQuestions (assignment_id, question_number, question, answer) VALUES (%s, %s, %s, %s)",
-                            (assignment_id, i, question, answer)
-                        )
+                    #  Step 2: Insert question-answer pairs into AssignmentQuestions table
+                    # for i in range(1, len(questions_str) + 1):
+                    #     question = questions_str[f"question_{i}"]
+                    #     answer = answers_str[f"answer_{i}"]
+                    #     cursor.execute(
+                    #         "INSERT INTO AssignmentQuestions (assignment_id, question_number, question, answer) VALUES (%s, %s, %s, %s)",
+                    #         (assignment_id, i, question, answer)
+                    #     )
                     conn.commit()
                     return jsonify({"message": "Assignment created successfully"}), 200
             except Exception as e:
@@ -491,38 +507,39 @@ def create_quiz():
         Content = doc.text
         print("Content:")
         print(Content)
+        title = generate_title(Content)
         
-        questions_str = {}
-        answers_str = {}
+        # questions_str = {}
+        # answers_str = {}
         
-        for i, qa_pair in enumerate(Content.split("Q"), 1):
-            if qa_pair.strip():
-                question, answer = qa_pair.split("A", 1)
-                questions_str[f"question_{i}"] = question.strip()
-                answers_str[f"answer_{i}"] = answer.strip()
+        # for i, qa_pair in enumerate(Content.split("Q"), 1):
+        #     if qa_pair.strip():
+        #         question, answer = qa_pair.split("A", 1)
+        #         questions_str[f"question_{i}"] = question.strip()
+        #         answers_str[f"answer_{i}"] = answer.strip()
             
         conn = get_db_connection()
         if conn is not None:
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO Quiz ( quiz_audience, question_type, num_questions, subject, topic)
-                    VALUES ( %s, %s, %s, %s, %s)
+                    INSERT INTO Quiz ( quiz_audience, question_type, num_questions, subject, topic, title, content)
+                    VALUES ( %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( quizAudience, questionType, numQuestions, subject, topic))
+                    cursor.execute(insert_query, ( quizAudience, questionType, numQuestions, subject, topic, title, Content))
                     
-                    quiz_id = cursor.lastrowid
+                    # quiz_id = cursor.lastrowid
 
-                    # Step 2: Insert question-answer pairs into AssignmentQuestions table
-                    for i in range(1, len(questions_str) + 1):
-                        question = questions_str[f"question_{i}"]
-                        answer = answers_str[f"answer_{i}"]
-                        cursor.execute(
-                            "INSERT INTO QuizQuestions (quiz_id, question_number, question, answer) VALUES (%s, %s, %s, %s)",
-                            (quiz_id, i, question, answer)
-                        )
+                    # # Step 2: Insert question-answer pairs into AssignmentQuestions table
+                    # for i in range(1, len(questions_str) + 1):
+                    #     question = questions_str[f"question_{i}"]
+                    #     answer = answers_str[f"answer_{i}"]
+                    #     cursor.execute(
+                    #         "INSERT INTO QuizQuestions (quiz_id, question_number, question, answer) VALUES (%s, %s, %s, %s)",
+                    #         (quiz_id, i, question, answer)
+                    #     )
                     conn.commit()
                     return jsonify({"message": "Quiz created successfully"}), 200
             except Exception as e:
@@ -592,18 +609,19 @@ def create_studyGuide():
         output = doc.text
         print("Content:")
         print(output)
+        title = generate_title(output)
             
         conn = get_db_connection()
         if conn is not None:
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO Quiz ( grade, subject, topic, teachingStyle, output, created_at)
-                    VALUES ( %s, %s, %s, %s, %s, %s)
+                    INSERT INTO StudyGuide ( grade, subject, topic, teachingStyle, output, created_at, title)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( grade, subject, topic, teachingStyle, output, createdDate))
+                    cursor.execute(insert_query, ( grade, subject, topic, teachingStyle, output, createdDate, title))
                     conn.commit()
                     return jsonify({"message": "Study Guide created successfully"}), 200
             except Exception as e:
@@ -668,18 +686,19 @@ def create_exampleGenerator():
         output = doc.text
         print("Content:")
         print(output)
+        title = generate_title(output)
             
         conn = get_db_connection()
         if conn is not None:
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO Quiz ( grade, subject, topic, teachingStyle, comprehensionLevel, exampleBasis, output)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO ExampleGenerator (grade, subject, topic, learningStyle, comprehensionLevel, exampleBasis, output, title)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( grade, subject, topic, learningStyle, comprehensionLevel, exampleBasis, output))
+                    cursor.execute(insert_query, ( grade, subject, topic, learningStyle, comprehensionLevel, exampleBasis, output, title))
                     conn.commit()
                     return jsonify({"message": "Example Generator created successfully"}), 200
             except Exception as e:

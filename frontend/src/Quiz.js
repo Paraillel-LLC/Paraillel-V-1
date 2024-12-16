@@ -36,7 +36,7 @@ const QuizGenerator = () => {
     numQuestions: newQuiz.numQuestions,
     subject: newQuiz.subject,
     topic: newQuiz.topic,
-    prompt: `"As an experienced pedagogy expert, create a comprehensive and engaging quiz for Grade-level students on the topic of "${topic}" within ${subject}. This quiz should be structured as a ${questionType} and contain ${numQuestions} questions. Ensure the assignment aligns with ${quizAudience}."`,
+    prompt: `"Create a quiz for the audience of "${quizAudience}", focusing on the subject of "${subject}" and the topic of "${topic}". The quiz should consist of "${numQuestions}" questions and cover the following question type: "${questionType}". Ensure the questions are appropriate for the specified audience and effectively assess their knowledge of the chosen subject and topic."`,
     max_tokens: 2048,
     };
 

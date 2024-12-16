@@ -33,12 +33,11 @@ const StudyGuide = () => {
   async function createStudyGuide(newStudyGuide){
     const studyGuide = {
   
-    createdDate: newStudyGuide.createdDate,
     grade: newStudyGuide.grade,
     subject: newStudyGuide.subject,
     topic: newStudyGuide.topic,
     teachingStyle: newStudyGuide.teachingStyle,
-    prompt: `" "`,
+    prompt: `"Generate a detailed and structured study guide for the subject "${subject}", focusing on the topic "${topic}". The guide should incorporate curated resources such as academic papers, articles, and relevant study materials, with direct links to each resource. Additionally, include insights and discussions from social media platforms (e.g., Twitter, Reddit, LinkedIn) that offer practical perspectives or advice on the topic. Ensure the content aligns with the teaching style of "${teachingStyle}" and is tailored to the learning needs of "${grade}" students.The guide should offer a balance of theoretical knowledge and practical applications suitable for the grade level."`,
     max_tokens: 2048,
     };
 

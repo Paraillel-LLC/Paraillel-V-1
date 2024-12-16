@@ -1,39 +1,72 @@
 
 
-Topic: Numbers in Maths
+Grade Level: 3-5
+Subject: Math
+Topic: Numbers
 
-1. Which of the following is an even number?
-A. 7
-B. 12
-C. 5
-D. 9
+Assignment: "Number Sense Challenge"
 
-2. What is the next number in this pattern: 1, 4, 9, 16, ____
-A. 25
-B. 32
-C. 36
-D. 27
+Objective:
+Students will demonstrate their understanding of numbers and their ability to apply mathematical concepts through a series of multiple choice questions.
 
-3. What is the value of the digit 5 in the number 145?
-A. 500
-B. 50
-C. 5
-D. 0
+Structure:
+The assignment will consist of 5 multiple choice questions, each with 4 options. Students will choose the correct answer from the given options. The questions will progressively increase in difficulty.
 
-4. What is the place value of the digit 6 in the number 764?
-A. Ones
-B. Tens
-C. Hundreds
-D. Thousands
+Instructions:
+1. Read each question carefully and choose the best answer from the given options.
+2. Circle your answer on the answer sheet provided.
+3. You have 30 minutes to complete the assignment.
+4. Make sure to show all your work and use any necessary mathematical strategies.
 
-5. What is the difference between the largest 3-digit number and the smallest 4-digit number?
-A. 110
-B. 99
-C. 100
-D. 1,000
+Questions:
 
-Instructions: Choose the correct answer for each question. 
+1. What is the value of the underlined digit in the number 643?
+a. 4
+b. 400
+c. 40
+d. 4000
 
-Remember to show your work and be confident in your answers! 
+2. Which of the following is an odd number?
+a. 24
+b. 38
+c. 57
+d. 72
 
-Answer Key: 1. B  2. A  3. B  4. C  5. C
+3. What is the product of 6 and 9?
+a. 54
+b. 15
+c. 60
+d. 65
+
+4. Which of the following fractions is equivalent to 3/5?
+a. 9/10
+b. 6/8
+c. 5/9
+d. 4/6
+
+5. What is the place value of the underlined digit in the number 35,724?
+a. thousands
+b. tens
+c. ones
+d. hundreds
+
+Alignment:
+This assignment aligns with the following 4th grade Common Core State Standards for Mathematics:
+
+- 4.NBT.A.1: Recognize that in a multi-digit whole number, a digit in one place represents ten times what it represents in the place to its right.
+- 4.NBT.A.2: Read and write multi-digit whole numbers using base-ten numerals, number names, and expanded form.
+- 4.NBT.B.3: Use place value understanding to round multi-digit whole numbers to any place.
+- 4.NBT.B.4: Compare two multi-digit numbers based on meanings of the digits in each place, using >, =, and < symbols.
+
+Grading:
+Each question will be worth 4 points, for a total of 20 points. Students will receive:
+- 4 points for selecting the correct answer
+- 2 points for showing all work and using mathematical strategies
+- 1 point for correctly identifying the place value in question 5
+- 1 point for neat and organized work
+
+Extension:
+For students who finish early, they can create their own multiple choice question about numbers and challenge their classmates to solve it.
+
+Conclusion:
+This assignment will assess students' understanding of numbers in a fun and engaging way. Make sure to use your time wisely, show all your work, and pay attention to the place value of numbers. Good luck!

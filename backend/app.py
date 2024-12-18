@@ -23,7 +23,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, origins=["http://localhost:3000"])
 
 def make_openai_request(prompt):
     headers = {
@@ -524,7 +524,7 @@ def create_quiz():
                 with conn.cursor() as cursor:
                     insert_query = """
                     INSERT INTO Quiz ( quiz_audience, question_type, num_questions, subject, topic, title, content)
-                    VALUES ( %s, %s, %s, %s, %s, %s)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
@@ -741,7 +741,7 @@ def create_plan():
     if response.status_code == 200:
         lesson_data = response.json().get('choices', [{}])[0].get('text', '')
         
-        with open("output.txt", "w") as file:
+        with open("output.txt", "w", encoding="utf-8") as file:
             file.write(lesson_data)
         with open("output.txt", "r") as file:
             file_content = file.read()
@@ -790,9 +790,9 @@ def create_plan():
         
         # Assuming that the lesson_data needs to be parsed or is directly usable
         # If parsing is needed, implement it based on how the data is structured in lesson_data
-        learning_outcomes = "Extracted or whole lesson_data"
+        learning_outcomes = outcomes
         prerequisites = "Extracted or whole lesson_data"
-        objective = "Extracted or whole lesson_data"
+        #objective = "Extracted or whole lesson_data"
         # User-provided details from request
         #user_id = 1  # Example: Assuming a known user ID for simplicity
         grade = data.get('grade')

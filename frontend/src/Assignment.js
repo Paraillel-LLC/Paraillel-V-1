@@ -51,7 +51,12 @@ const Assignment = () => {
     };
 
     try {
-      const result = await axios.post('http://localhost:5000/create-assignment', assignment);
+      //const result = await axios.post('http://localhost:5000/create-assignment', assignment);
+      const result = await axios.post('http://localhost:5000/create-assignment', assignment, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (result.data && typeof result.data === 'string') {
         alert(result.data);

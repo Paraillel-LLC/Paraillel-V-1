@@ -5,6 +5,14 @@ import Cale from './Cale';
 import TheSettings from './TheSettings';
 import Login from './Login';
 import LoginSuccess from './LoginSuccess';
+import Assignment from './Assignment';
+import Resource from './Resource';
+import StudyGuide from './StudyGuide';
+import Quiz from './Quiz';
+import Essay from './Essay';
+import Documents from './Documents';
+import ExampleGenerator from './ExampleGenerator';
+
 
 
 // Function to generate events for a date range : Mohsen Code
@@ -67,6 +75,20 @@ function App() {
         return <Cale lessonTitle={lessonTitle} startDate={startDate} endDate={endDate}/>;
       case 'TheSettings':
         return <TheSettings />;
+        case 'Assignment':
+          return <Assignment />;
+        case 'StudyGuide':
+          return <StudyGuide />;
+          case 'Quiz':
+            return <Quiz />;
+          case 'Essay':
+            return <Essay />;
+          case 'ExampleGenerator':
+            return <ExampleGenerator />;
+          case 'Documents':
+            return <Documents />;
+          case 'Resource':
+          return <Resource />;
       case 'home':
         return <Home setCurrentPage={handleNavigation} />;
       case 'login':

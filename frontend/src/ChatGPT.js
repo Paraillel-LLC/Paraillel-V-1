@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Modal from "./Modal";
 
 const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   const [response, setResponse] = useState("");
@@ -16,6 +17,17 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   const [districtId, setDistrictId] = useState("");
   const [schoolId, setSchoolId] = useState("");
   const [gradeId, setGradeId] = useState(""); 
+  
+  const [showModal, setShowModal] = useState(false);
+  const [essayContent, setEssayContent] = useState("Initializing...");
+  const [ititle, setititle] = useState("");
+  const [tablename, settablename] = useState("");
+  const [keyname, setkeyname] = useState("");
+  const [valname, setvalname] = useState("");
+  const [keyval, setkeyval] = useState("");
+
+  const hideModal = () => setShowModal(false);
+
 
   const teachingStyles = [
     "Regular School Based",
@@ -101,16 +113,35 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
     school_id: schoolId,
     grade_id: gradeId,
     prompt: `As a seasoned expert in pedagogy, you are tasked to devise a comprehensive and engaging lesson plan for students in grade ${grade} studying ${subject} with a lesson titled "${lessonTitle}" based on a ${teachingStyle} pedagogical approach. The lesson plan should be suitable for a ${duration} period and compliant with the ${stateAcademicStandard} curriculum. The theme of the lesson is "${theme}" and is designed to have a difficulty level of "${difficultyLevel}". Please start by listing the relevant state academic standards, complete with their codes and descriptions, and then proceed with the lesson plan. As much as possible, try to factor in the ${teachingStyle} of the students. The first class will be on ${startDate}. Your output should be factual, impartial, thorough, and definitive.`,
-    max_tokens: 1024,
+    username: localStorage.getItem('username'),
+    max_tokens: 1024
     };
 
     try {
       const result = await axios.post('http://localhost:5000/create-plan', payload);
 
       if (result.data && typeof result.data === 'string') {
-        openResponseInNewTab(result.data);
+        //openResponseInNewTab(result.data);
+        
+        settablename("LessonPlan")
+        setkeyname("lesson_id")
+        setvalname("objective")
+        setkeyval(result.data.lesson_id);
+        
+        setShowModal(true)
+        //setGeneratedLesson(result.data.generated);
+        //setModalVisible(true);
+
       } else if (result.data && result.data.message) {
-        openResponseInNewTab(result.data.message);
+        //openResponseInNewTab(result.data.message);
+        settablename("LessonPlan")
+        setkeyname("lesson_id")
+        setvalname("objective")
+        setkeyval(result.data.lesson_id);
+
+        setShowModal(true)
+        //setGeneratedLesson(result.data.generated);
+        //setModalVisible(true);
       } else {
         console.error('No response or unexpected format received from the server.');
       }
@@ -141,6 +172,7 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
     onGenerate(eventTitle, startDate, endDate);
   };
 
+  //const closeModal = () => setModalVisible(false);
 
   return (
     <div className="min-h-screen flex-center bg-gray-100 p-4">
@@ -286,7 +318,17 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
           </div>
         </div>
       </div>
+       <Modal
+        isVisible={showModal}
+        essay={essayContent}
+        tablename={tablename}
+        keyname={keyname}
+        valname={valname}
+        keyval={keyval}
+        onHide={hideModal}
+      />
     </div>
+    
   );
 };
 

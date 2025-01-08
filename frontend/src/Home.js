@@ -2,7 +2,7 @@ import React from 'react';
 
 function Home({ setCurrentPage }) {
   const topics = {
-    "General": [,"Dashboard", "Calendar","LessonPlan", "Assignments", "Resources"],
+    "General": [,"Dashboard", "Calendar","LessonPlan", "Assignments","StudyGuide","Quiz","Essay","ExampleGenerator","Documents", "Resources"],
     "Communications": ["Collaborations", "Messages"],
     "Data": ["Roster", "Analytics", "Reports"],
     "Control": ["Settings"]
@@ -18,6 +18,26 @@ function Home({ setCurrentPage }) {
       setCurrentPage("cale"); 
     }else if (topic === "Settings") {
       setCurrentPage("TheSettings"); 
+    }else if (topic === "Assignments") {
+      setCurrentPage("Assignment"); 
+    }
+    else if (topic === "StudyGuide") {
+      setCurrentPage("StudyGuide"); 
+    }
+    else if (topic === "Quiz") {
+      setCurrentPage("Quiz"); 
+    }
+    else if (topic === "Essay") {
+      setCurrentPage("Essay"); 
+    }
+    else if (topic === "ExampleGenerator") {
+      setCurrentPage("ExampleGenerator"); 
+    }
+    else if (topic === "Documents") {
+      setCurrentPage("Documents"); 
+    }
+    else if (topic === "Resources") {
+      setCurrentPage("Resource"); 
     }
        else {
       setCurrentPage(topicComponents[topic]);
@@ -29,6 +49,11 @@ function Home({ setCurrentPage }) {
     "Dashboard": "home", 
     "Calendar": "Cale",
     "Assignments": "Assignments", 
+    "StudyGuide": "StudyGuide", 
+    "Quiz": "Quiz", 
+    "Essay": "Essay", 
+    "ExampleGenerator" : "ExampleGenerator",
+    "Documents" : "Documents",
     "Resources": "Resources", 
     "Collaborations": "Collaborations", 
     "Messages": "Messages",

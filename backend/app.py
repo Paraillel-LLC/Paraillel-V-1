@@ -1011,6 +1011,48 @@ def Get_Assignment():
         conn.commit()
         conn.close()
 #-------------------------------------------------------
+@app.route("/tables_list/<username>/<tablename>", methods=["GET"])
+def tables_list(username, tablename):
+    
+    user_id = Get_user_id(username)
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    q = ""
+    match tablename:
+        case "Assignments" : q = "select L.assignment_id as id, L.topic as topic, L.Subject as subject from Assignment_users as LU inner join Assignments AS L on L.assignment_id = LU.assignment_id where LU.user_id = %s;"
+        case "ExampleGenerator": q = "select L.id as id, L.topic as topic, L.Subject as subject from example_users as LU inner join ExampleGenerator AS L on L.id = LU.example_id where LU.user_id = %s;"
+        case "LessonPlan": q = "select L.lesson_id as id, L.lesson_title as topic, L.subject as subject from LessonPlan_Users as LU inner join LessonPlan AS L on L.lesson_id = LU.lesson_id where LU.user_id = %s;" 
+        case "Quiz": q = "select L.quiz_id as id, L.topic as topic, L.subject as subject from quiz_users as LU inner join Quiz AS L on L.quiz_id = LU.quiz_id where LU.user_id = %s;"    
+        case "StudyGuide": q = "select L.id as id, L.topic as topic, L.subject as subject from studyguide_users as LU inner join StudyGuide AS L on L.id = LU.studyguide_id where LU.user_id = %s;"
+    
+    cursor.execute(q, (user_id))
+
+    lessonplans = {
+            'id': 0,
+            'topic': '',
+            'subject': '',
+            'content': ''
+       }
+    results = cursor.fetchall()
+    if results:
+        # If data is returned, format it into a list of dictionaries (or appropriate structure)
+        lessonplans = []
+        for row in results:
+            lessonplans.append({
+                    'id': row[0],
+                    'topic': row[1],
+                    'subject': row[2]
+                })
+        cursor.close()
+        conn.close() 
+
+        return jsonify({'successful': True, 'tabledata': lessonplans}), 200
+    else:
+        cursor.close()
+        conn.close() 
+        return jsonify({'successful': False, 'message': 'No data found'}), 404
+
 
 @app.route("/lesson-plans-list/<string:username>", methods=["GET"])
 def get_lesson_plans(username):
@@ -1094,12 +1136,33 @@ def Save_LLM_detail():
         return jsonify({'successful': False, 'message': ' An error occurred:' + str(e)}), 404
 
 
-@app.route("/lesson-plan-detail/<int:plan_id>", methods=["GET"])
-def get_lesson_plan_detail(plan_id):
+@app.route("/lesson-plan-detail/<int:plan_id>/<string:tablename>", methods=["GET"])
+def get_lesson_plan_detail(plan_id, tablename):
+    
+    iid = ""
+    detail = "" 
+    match tablename:
+        case "Assignments" : 
+            iid = "assignment_id"
+            detail = "Content"
+        case "ExampleGenerator": 
+            iid = "id"
+            detail = "output"
+        case "LessonPlan": 
+            iid = "lesson_id"
+            detail = "objective" 
+        case "Quiz": 
+            iid = "quiz_id"
+            detail = "content"    
+        case "StudyGuide": 
+            iid = "id"
+            detail = "output"
+    
     
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("select objective from LessonPlan where lesson_id = %s;", (plan_id))
+
+    cursor.execute("select "+detail+" from "+tablename+" where "+iid+" = %s;", (plan_id))
 
     results = cursor.fetchone()
     if results:
@@ -1118,11 +1181,31 @@ def update_lessonplan_essay():
     data = request.get_json()
     lessonplan_id = data.get('lessonplan_id')
     essay = data.get('essay')
+    tablename = data.get('tablename')
     
+    id_name = ""
+    content = ""
+    match tablename:
+        case "Assignments" : 
+            id_name = "assignment_id"
+            content = "Content"
+        case "ExampleGenerator" : 
+            id_name = "id"
+            content = "output"
+        case "LessonPlan" :
+            id_name = "lesson_id"
+            content = "objective"
+        case "Quiz" : 
+            id_name = "quiz_id"
+            content = "content"
+        case "StudyGuide" :  
+            id_name = "id"
+            content = "output"
+
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        update_query = "UPDATE LessonPlan SET objective = %s where lesson_id = %s"
+        update_query = "UPDATE "+tablename+" SET "+content+" = %s where "+id_name+" = %s"
         cursor.execute(update_query, (essay, lessonplan_id))
     
         return jsonify({'successful': True, 'message': 'essay is updated successfully'}), 200

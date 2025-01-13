@@ -1,91 +1,45 @@
 
 
-Subject: Math
-
-Topic: Real Numbers
-
-Grading Level: 7
-
 I. Introduction
-- Definition of Real Numbers
-- Importance of understanding Real Numbers in Math
-- Previous knowledge required: Basic understanding of whole numbers and fractions
+- Define social study as an interdisciplinary subject that explores various aspects of human society, including history, geography, economics, politics, and culture
+- Explain the importance of studying history in understanding the present and shaping the future
+- Provide an overview of the topic of history and its relevance to 7th grade students
 
-II. The Basics of Real Numbers
-- Whole Numbers: Definition and Examples
-- Integers: Definition and Examples
-- Rational numbers: Definition and Examples
-- Irrational numbers: Definition and Examples
-- Real Numbers as a combination of Rational and Irrational numbers
+II. The Basics of History
+- Define history as the study of past events, people, and societies
+- Explain the concept of time and how it is divided into periods, such as ancient, medieval, and modern
+- Discuss the role of different types of sources, such as primary and secondary sources, in understanding history
 
-III. Properties of Real Numbers
-- Closure Property: Definition and Examples
-- Commutative Property: Definition and Examples
-- Associative Property: Definition and Examples
-- Distributive Property: Definition and Examples
-- Identity Property: Definition and Examples
-- Inverse Property: Definition and Examples
+III. Key Concepts in History
+- Introduce important concepts, such as cause and effect, continuity and change, and perspective, in understanding history
+- Provide examples of how these concepts can be applied in studying historical events
 
-IV. Operations with Real Numbers
-- Addition and Subtraction: Rules and Examples
-- Multiplication and Division: Rules and Examples
-- Order of Operations: Definition and Examples
-- Simplifying Expressions with Real Numbers
-- Solving Equations with Real Numbers
-- Word Problems involving Real Numbers
+IV. Understanding Different Periods in History
+- Explore different eras in history, such as the Stone Age, Ancient Egypt, Ancient Greece, and the Middle Ages
+- Discuss major events, developments, and figures in each period and their significance
+- Include curated resources that offer an in-depth look into each period, such as academic papers, articles, and documentaries
 
-V. Representation of Real Numbers
-- Number Line: Definition and Examples
-- Absolute Value: Definition and Examples
-- Comparing and Ordering Real Numbers
-- Approximation and Estimation with Real Numbers
-- Scientific Notation: Definition and Examples
-- Standard and Expanded Form of Real Numbers
+V. Interactions and Connections in History
+- Highlight the interconnectedness of historical events and how they have shaped the world we live in today
+- Discuss the global impact of historical events and the exchange of ideas, culture, and goods between different societies
+- Include resources that explore the impact of trade, imperialism, and colonialism in shaping history
 
-VI. Real-Life Applications of Real Numbers
-- Budgeting and Financial Management
-- Measurement and Conversion
-- Distance, Speed, and Time
-- Probability and Statistics
-- Graphing and Data Analysis
-- Geometry and Trigonometry
+VI. Studying History Through Different Perspectives
+- Discuss the importance of considering multiple perspectives when studying history
+- Provide examples of how dominant and marginalized perspectives have influenced historical narratives
+- Include resources that offer diverse perspectives from different social, cultural, and political groups
 
-VII. Additional Resources:
-- Videos:
-1. Introduction to Real Numbers | Math Antics
-2. Properties of Real Numbers | Khan Academy
-3. Addition and Subtraction with Real Numbers | Math is Fun
-4. Multiplication and Division with Real Numbers | Math Antics
-5. Number Line and Absolute Value | Khan Academy
-6. Scientific Notation | Math Antics
-7. Real-Life Applications of Real Numbers | Math Antics
+VII. Application of History in the Present
+- Discuss how knowledge of history can be applied in understanding current issues and events
+- Provide real-world examples of how lessons from history can guide decision-making and problem-solving in today's world
+- Include curated resources that offer practical applications of historical knowledge in different fields, such as politics, economics, and social justice
 
-- Articles:
-1. "Real Numbers: What are They and Why are They Important?" by Mathematics Shed
-2. "5 Important Properties of Real Numbers" by Education World
-3. "How to Use Real Numbers in Everyday Life" by Sciencing
-4. "Real Numbers: From Ancient Roots to a Modern Understanding" by Mathigon
-5. "Real Numbers in Higher Dimensions" by Quanta Magazine
-
-- Academic Papers:
-1. "Understanding Real Numbers through Visual Representation" by Math Learning Center
-2. "The Role of Real Numbers in the Learning of Mathematics" by Oostrum
-3. "Real Numbers: A Bridge between Algebra and Geometry" by Stowers
-
-- Social Media Platforms:
-1. Twitter: #RealNumbers, #Math, #MathHelp, #Montessori 
-2. Reddit: r/math, r/learnmath, r/Mathematics 
-3. LinkedIn: Math Education Group, Montessori Educators Group
-
-VIII. Tips/Insights from Educators and Mathematicians
-- Encourage students to create their own study guides or flashcards using the information provided.
-- Use real-life examples and scenarios to make learning Real Numbers more relatable and engaging.
-- Incorporate hands-on activities, games, and puzzles to reinforce concepts and promote critical thinking skills.
-- Provide opportunities for group work and discussions to encourage peer learning and collaboration.
-- Practice consistently, as understanding and mastery of Real Numbers takes time and effort.
-- Take breaks and review previous topics to ensure a solid foundation before moving on to new concepts.
-- Use online resources and tools, such as Khan Academy, Math Playground, and Math Antics, for additional practice and reinforcement.
+VIII. Discussions and Insights from Social Media
+- Share insights and discussions from social media platforms, such as Twitter, Reddit, and LinkedIn, on the topic of history
+- Discuss practical perspectives and advice from educators, historians, and students on studying history
+- Include links to relevant social media pages and discussions that align with the teaching style and learning needs of 7th grade students
 
 IX. Conclusion
-- Recap of key points and takeaways from the guide on Real Numbers
-- Encourage students to continue exploring and applying Real Numbers in their everyday lives. 
+- Summarize the key points from the guide and emphasize the importance of studying history in understanding the world
+- Encourage students to continue exploring and learning about history through various resources and perspectives
+- Provide additional resources for further reading and learning, such as books, documentaries, and educational websites.

@@ -2,22 +2,32 @@ import React, { useRef, useState, useEffect } from 'react';
 
 const DocumentsPage = () => {
   const [lessonPlans, setLessonPlans] = useState([]);
+  const [activeButton, setActiveButton] = useState(null); // Tracks the active button
+
   const [selectedEssay, setSelectedEssay] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [isEditing, setIsEditing] = useState(false); // New state for edit mode
   const [editableEssay, setEditableEssay] = useState(""); // State for edited text
   const [lessonPlanid, setLessonPlanid] = useState(null);
 
-  const fetchLessonPlans = async () => {
+  const [showButtons, setShowButtons] = useState(false);
+  
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName);
+    fetchLessonPlans(buttonName);
+    // Add your logic for each button click here
+  };
+
+  const fetchLessonPlans = async ( tablename) => {
     try {
       const username = localStorage.getItem('username');
 
-      const response = await fetch(`http://localhost:5000/lesson-plans-list/${username}`);
+      const response = await fetch(`http://localhost:5000/tables_list/${username}/${tablename}`);
       const data = await response.json();
       
       if (data.successful)
       {
-        setLessonPlans(data.lessonplans);
+        setLessonPlans(data.tabledata);
       }
       else
       {
@@ -32,7 +42,7 @@ const DocumentsPage = () => {
 
   const fetchEssay = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/lesson-plan-detail/${id}`);
+      const response = await fetch(`http://localhost:5000/lesson-plan-detail/${id}/${activeButton}`);
       const data = await response.json();
       setSelectedEssay(data.essay);
       setEditableEssay(data.essay); // Initialize editable essay
@@ -62,7 +72,7 @@ const DocumentsPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ lessonplan_id: lessonPlanid, essay: editableEssay }),
+          body: JSON.stringify({ lessonplan_id: lessonPlanid, essay: editableEssay, tablename: activeButton }),
         });
         const data = await response.json();
   
@@ -82,21 +92,45 @@ const DocumentsPage = () => {
     <div style={styles.container}>
        <div style={styles.buttonContainer}>
         <button style={styles.button} onClick={triggerFileInput}>Upload Document</button>
-        <button style={styles.button} onClick={fetchLessonPlans}>View Document</button>
+        <button
+          style={styles.button}
+          onClick={() => setShowButtons((prev) => !prev)}
+        >
+          View Document
+        </button>
+
         <button style={styles.button}>Edit Document</button>
       </div>
       <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleFileUpload} />
-      {lessonPlans.length > 0 && (
+      {showButtons && (
+        <div style={styles.additionalButtonsContainer}>
+          {["LessonPlan", "Assignments", "StudyGuide", "Quiz", "ExampleGenerator"].map(
+            (buttonName) => (
+              <button
+                key={buttonName}
+                style={{
+                  ...styles.additionalButton,
+                  backgroundColor: activeButton === buttonName ? '#007bff' : '#28a745',
+                }}
+                onClick={() => handleButtonClick(buttonName)}
+              >
+                {buttonName}
+              </button>
+            )
+          )}
+        </div>
+      )}
+      {showButtons && lessonPlans.length > 0 && (
         <div style={styles.gridContainer}>
           <div style={styles.gridHeader}>
-            <div style={styles.gridCell}>Lesson Plan ID</div>
-            <div style={styles.gridCell}>Title</div>
+            <div style={styles.gridCell}>ID</div>
+            <div style={styles.gridCell}>Topic</div>
             <div style={styles.gridCell}>Subject</div>
           </div>
           {lessonPlans.map((plan) => (
-            <div key={plan.lesson_id} style={styles.gridRow} onClick={() => fetchEssay(plan.lesson_id)}>
-              <div style={styles.gridCell}>{plan.lesson_id} </div>
-              <div style={styles.gridCell}>{plan.title}</div>
+            <div key={plan.id} style={styles.gridRow} onClick={() => fetchEssay(plan.id)}>
+              <div style={styles.gridCell}>{plan.id} </div>
+              <div style={styles.gridCell}>{plan.topic}</div>
               <div style={styles.gridCell}>{plan.subject}</div>
             </div>
           ))}
@@ -175,6 +209,22 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
     width: '200px', // Fixed width for uniform button size
+  },
+  additionalButtonsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '10px',
+    marginTop: '20px',
+  },
+  additionalButton: {
+    padding: '10px 20px',
+    fontSize: '16px',
+    backgroundColor: '#28a745',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    width: '160px',
   },
   gridContainer: {
     display: "flex",

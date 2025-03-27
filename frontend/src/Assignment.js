@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Modal from "./Modal";
 
@@ -11,7 +11,9 @@ const Assignment = () => {
   const [dueDate, setDueDate] = useState('');
   const [Questions, setQuestions] = useState('');
   const [showInput, setShowInput] = useState(false);
-
+  const [classname, setclassname] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+    
   const [showModal, setShowModal] = useState(false);
   const [essayContent, setEssayContent] = useState("Initializing...");
   const [ititle, setititle] = useState("");
@@ -19,6 +21,8 @@ const Assignment = () => {
   const [keyname, setkeyname] = useState("");
   const [valname, setvalname] = useState("");
   const [keyval, setkeyval] = useState("");
+
+    
   
   const hideModal = () => setShowModal(false);
   
@@ -34,6 +38,7 @@ const Assignment = () => {
         dueDate,
         Questions,
         Standard,
+        class_name: selectedClass
       };
       createAssignment(newAssignment); //Mohsen Code
 
@@ -44,7 +49,8 @@ const Assignment = () => {
       setStandard('');
       setDueDate('');
       setQuestions('');
-      setShowInput(false); // Hide input box after adding
+      setShowInput(false);
+      setSelectedClass(''); // Hide input box after adding
     }
   };
 
@@ -58,6 +64,7 @@ const Assignment = () => {
     dueDate: newAssignment.dueDate,
     Questions: newAssignment.Questions,
     Standard: newAssignment.Standard,
+    class_name: selectedClass,
     prompt: `"Design a detailed and engaging assignment for grade-level students on the topic "${Topic}" within the subject "${Subject}". The assignment should be structured as a "${Type}" and consist of "${Questions}" thoughtfully crafted questions. Ensure that the assignment aligns with the "${Standard}"."`,
     username: localStorage.getItem('username'),
     max_tokens: 2048,
@@ -97,6 +104,14 @@ const Assignment = () => {
     }
   };
   
+  useEffect(() => {
+    fetch("http://localhost:5000/Get_ClassName/"+ localStorage.getItem('username'))  // Backend API URL
+      .then(response => response.json())
+      .then(data => setclassname(data.options))
+      .catch(error => console.error("Error fetching data:", error));
+  }, []);
+  
+
   return (
     <div style={styles.container}>
     
@@ -158,8 +173,20 @@ const Assignment = () => {
             type="text"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            placeholder="Enter due date (MM/DD/YYYY)"
+            placeholder="Enter due date (YYYY-MM-DD)"
           />
+
+          <select id="classcombo" className="input mt-1" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+            <option value="" disabled>Select a ClassName</option>
+              {Array.isArray(classname) && classname.length > 0 ?classname.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              )):(
+                <p>Loading or No items found...</p> // Or null if you don't want anything to show
+              )
+            }
+          </select>
 
           {/* Save Button */}
           <button style={styles.saveButton} onClick={handleAddAssignment}>
@@ -181,6 +208,7 @@ const Assignment = () => {
               <p>Assignment Type: {assignment.Type}</p>
               <p>Academic Standards: {assignment.Standard}</p>             
               <p>Due Date: {assignment.dueDate}</p>
+              <p>Class: {assignment.class_name}</p>
             </div>
           ))}
         </div>

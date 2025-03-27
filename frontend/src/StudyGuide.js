@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Modal from "./Modal";
 
@@ -17,6 +17,9 @@ const StudyGuide = () => {
   const [keyname, setkeyname] = useState("");
   const [valname, setvalname] = useState("");
   const [keyval, setkeyval] = useState("");
+
+  const [classname, setclassname] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
       
   const hideModal = () => setShowModal(false);
 
@@ -29,6 +32,7 @@ const StudyGuide = () => {
         subject,
         topic,
         teachingStyle,
+        selectedClass
       };
       createStudyGuide(newStudyGuide);
 
@@ -38,6 +42,7 @@ const StudyGuide = () => {
       setTopic('');
       setTeachingStyle('');
       setShowInput(false);
+      setSelectedClass('');
     }
   };
 
@@ -48,6 +53,7 @@ const StudyGuide = () => {
     subject: newStudyGuide.subject,
     topic: newStudyGuide.topic,
     teachingStyle: newStudyGuide.teachingStyle,
+    class_name: selectedClass,
     prompt: `"Generate a detailed and structured study guide for the subject "${subject}", focusing on the topic "${topic}". The guide should incorporate curated resources such as academic papers, articles, and relevant study materials, with direct links to each resource. Additionally, include insights and discussions from social media platforms (e.g., Twitter, Reddit, LinkedIn) that offer practical perspectives or advice on the topic. Ensure the content aligns with the teaching style of "${teachingStyle}" and is tailored to the learning needs of "${grade}" students.The guide should offer a balance of theoretical knowledge and practical applications suitable for the grade level."`,
     username: localStorage.getItem('username'),
     max_tokens: 2048,
@@ -83,6 +89,13 @@ const StudyGuide = () => {
       console.error('Error calling backend:', error);
     }
   };
+
+  useEffect(() => {
+      fetch("http://localhost:5000/Get_ClassName/"+ localStorage.getItem('username'))  // Backend API URL
+        .then(response => response.json())
+        .then(data => setclassname(data.options))
+        .catch(error => console.error("Error fetching data:", error));
+    }, []);
 
   return (
     <div style={styles.container}>
@@ -126,6 +139,14 @@ const StudyGuide = () => {
               onChange={(e) => setTeachingStyle(e.target.value)}
               placeholder="Enter Teaching Style"
             />
+            <select id="classcombo"   style={styles.selectBox} className="input mt-1" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+              <option value="" disabled>Select a ClassName</option>
+                {classname.map((option, index) => (
+                  <option key={index} value={option}>
+                  {option}
+              </option>
+              ))}
+            </select>
             <button style={styles.saveButton} onClick={handleAddStudyGuide}>
               Save
             </button>
@@ -145,6 +166,7 @@ const StudyGuide = () => {
             <p><strong>Subject:</strong> {guide.subject}</p>
             <p><strong>Topic:</strong> {guide.topic}</p>
             <p><strong>Teaching Style:</strong> {guide.teachingStyle}</p>
+            <p><strong>Class:</strong> {guide.selectedClass}</p>
           </div>
         ))}
       </div>
@@ -204,6 +226,16 @@ const styles = {
     borderRadius: '5px',
     border: '1px solid #ddd',
   },
+  selectBox: {
+    padding: '10px',
+    margin: '10px 0',
+    fontSize: '14px',
+    width: '100%',
+    maxWidth: '300px',
+    borderRadius: '5px',
+    border: '1px solid #ddd',
+  },
+  
   saveButton: {
     background: '#008CBA',
     color: 'white',

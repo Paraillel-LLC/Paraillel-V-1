@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Modal from "./Modal";
 
@@ -18,6 +18,10 @@ const ExampleGenerator = () => {
   const [keyname, setkeyname] = useState("");
   const [valname, setvalname] = useState("");
   const [keyval, setkeyval] = useState("");
+
+  const [classname, setclassname] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+    
     
   const hideModal = () => setShowModal(false);
     
@@ -59,6 +63,7 @@ const ExampleGenerator = () => {
       learningStyle: newExampleGenerator.learningStyle,
       comprehensionLevel: newExampleGenerator.comprehensionLevel,
       exampleBasis: newExampleGenerator.exampleBasis,
+      class_name: selectedClass,
       prompt: `"Generate examples tailored for a "${grade}" level audience. The subject is "${subject}", and the topic to focus on is "${topic}". Design the examples to align with a "${learningStyle}" learning style and ensure they are appropriate for a comprehension level of "${comprehensionLevel}". Use "${exampleBasis}" as the foundation for creating these examples. The examples should be clear, engaging, and structured to enhance understanding of the topic."`,
       username: localStorage.getItem('username'),
       max_tokens: 2048,
@@ -90,6 +95,14 @@ const ExampleGenerator = () => {
       console.error('Error calling backend:', error);
     }
   }
+
+  useEffect(() => {
+    fetch("http://localhost:5000/Get_ClassName/"+ localStorage.getItem('username'))  // Backend API URL
+      .then(response => response.json())
+      .then(data => setclassname(data.options))
+      .catch(error => console.error("Error fetching data:", error));
+  }, []);
+
 
   return (
     <div style={styles.container}>
@@ -154,6 +167,14 @@ const ExampleGenerator = () => {
             onChange={(e) => setExampleBasis(e.target.value)}
             placeholder="Basis for Example (Context)"
           />
+          <select style={styles.selectBox} id="classcombo" className="input mt-1" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+            <option value="" disabled>Select a ClassName</option>
+              {classname.map((option, index) => (
+                <option key={index} value={option}>
+                {option}
+            </option>
+            ))}
+          </select>
           <button style={styles.generateButton} onClick={handleSubmitPage2}>
             Generate Examples
           </button>
@@ -169,6 +190,7 @@ const ExampleGenerator = () => {
           <p><strong>Learning Style:</strong> {learningStyle}</p>
           <p><strong>Comprehension Level:</strong> {comprehensionLevel}</p>
           <p><strong>Basis for Example:</strong> {exampleBasis}</p>
+          <p><strong>Class:</strong> {selectedClass}</p>
         </div>
       )}
        <Modal

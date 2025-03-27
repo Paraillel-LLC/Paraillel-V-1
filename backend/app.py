@@ -98,7 +98,7 @@ def user_info():
     
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Users WHERE username=%s ", (username))
+    cursor.execute("SELECT * FROM Users inner join Teacher on Users.user_id = Teacher.user_id WHERE username=%s ", (username))
     user = cursor.fetchone()
     cursor.close()
     conn.close() 
@@ -112,7 +112,16 @@ def user_info():
             'firstname' : '',
             'lastname' : '',
             'privacy_contact' : '',
-            'privacy_profile' : ''
+            'privacy_profile' : '',
+            'district_id' : '',
+            'school_id' : '',
+            'teacher_firstname' : '',
+            'teacher_lastname' : '',
+            'profile_pic' : '',
+            'subjects_taught' : '',
+            'Classes' : '',
+            'grade_levels' : '',
+            'bio' : ''
         }
     if user:
         # Assuming the columns in the Users table are id, username, email, etc.
@@ -125,6 +134,15 @@ def user_info():
         user_info['lastname'] = user[8]
         user_info['privacy_contact'] = user[9]
         user_info['privacy_profile'] = user[10]
+        user_info['district_id'] = user[13]
+        user_info['school_id'] = user[12]
+        user_info['teacher_firstname'] = user[14]
+        user_info['teacher_lastname'] = user[15]
+        user_info['profile_pic'] = user[16]
+        user_info['Subjects'] = user[17]
+        user_info['Classes'] = user[20]
+        user_info['grade_levels'] = user[18]
+        user_info['bio'] = user[19]
         
         return jsonify({'successful': True, 'user_info': user_info}), 200
     else:
@@ -166,8 +184,8 @@ def save_settings():
 def update_password():
     conn = get_db_connection()
     data = request.json
-    user_name = data.get('username');
-    password = data.get('password');
+    user_name = data.get('username')
+    password = data.get('password')
     
     try:
         conn = get_db_connection()
@@ -381,24 +399,47 @@ def create_assignment():
     Type = data.get('Type')
     #response = send_request_with_retry(prompt)
     #print(response.json() if response else "Failed to get response")
+    # headers = {
+    #     'Content-Type': 'application/json',
+    #     'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
+    # }
+    # response = requests.post(
+    #     'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions',
+    #     headers=headers,
+    #     json={
+    #         'prompt': prompt,
+    #         'max_tokens': 2048
+    #     }
+    # )
+    
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
     }
+
+# Change 'gpt-4' or 'gpt-4-turbo' depending on the model you want to use
     response = requests.post(
-        'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions',
-        headers=headers,
-        json={
-            'prompt': prompt,
-            'max_tokens': 2048
-        }
+    'https://api.openai.com/v1/chat/completions',
+    headers=headers,
+    json={
+        'model': 'gpt-4o-mini',  # Use 'gpt-4-turbo' if needed
+        'messages': [
+            {'role': 'system', 'content': 'You are a helpful assistant.'},
+            {'role': 'user', 'content': prompt}
+        ],
+        'max_tokens': 4096
+    }
     )
-    #print(os.getenv("OPENAI_API_KEY"))
-    #print(prompt)
-    #print(response.status_code)
+    # result = response.json()
+    # print(result.get("choices", [{}])[0].get("message", {}).get("content", "No content returned"))
+    # print(os.getenv("OPENAI_API_KEY"))
+    # print("prompt")
+    # print(prompt)
+    # print("status code")
+    # print(response.status_code)
     
     if response.status_code == 200:
-        assignment_data = response.json().get('choices', [{}])[0].get('text', '')
+        assignment_data = response.json().get('choices', [{}])[0].get("message", {}).get("content", "No content returned")
         
         with open("output.txt", "w", encoding="utf-8") as file:
             file.write(assignment_data)
@@ -420,6 +461,9 @@ def create_assignment():
         username = data.get('username')
         user_id = Get_user_id(username)
         # max_tokens = data.get('max_tokens')
+
+        class_name = data.get('class_name')
+        
 
         #Mohan Code
         Content = doc.text
@@ -455,12 +499,12 @@ def create_assignment():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO Assignments ( topic, Content, required_materials, Subject, Type_of_Assignment, Number_of_questions, Academic_State_Standard, Due_date, title)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO Assignments ( topic, Content, required_materials, Subject, Type_of_Assignment, Number_of_questions, Academic_State_Standard, Due_date, title, class_name)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( Topic, Content, required_Material, Subject, Type, Questions_number, Standard, dueDate, title))
+                    cursor.execute(insert_query, ( Topic, Content, required_Material, Subject, Type, Questions_number, Standard, dueDate, title, class_name))
                     
                     assignment_id = cursor.lastrowid
 
@@ -501,23 +545,28 @@ def create_quiz():
     #response = send_request_with_retry(prompt)
     #print(response.json() if response else "Failed to get response")
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
     }
+
     response = requests.post(
-        'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions',
-        headers=headers,
-        json={
-            'prompt': prompt,
-            'max_tokens': 2048
-        }
+    'https://api.openai.com/v1/chat/completions',
+    headers=headers,
+    json={
+        'model': 'gpt-4o-mini',  # Use 'gpt-4-turbo' if needed
+        'messages': [
+            {'role': 'system', 'content': 'You are a helpful assistant.'},
+            {'role': 'user', 'content': prompt}
+        ],
+        'max_tokens': 4096
+    }
     )
     #print(os.getenv("OPENAI_API_KEY"))
     #print(prompt)
     #print(response.status_code)
     
     if response.status_code == 200:
-        quiz_data = response.json().get('choices', [{}])[0].get('text', '')
+        quiz_data = response.json().get('choices', [{}])[0].get("message", {}).get("content", "No content returned")
         
         with open("output.txt", "w", encoding="utf-8") as file:
             file.write(quiz_data)
@@ -533,6 +582,10 @@ def create_quiz():
         numQuestions = data.get('numQuestions')
         subject = data.get('subject')
         topic = data.get('topic')
+        due_date = data.get('due_date')
+
+        class_name = data.get('class_name')
+        
         # max_tokens = data.get('max_tokens')
 
         #Mohan Code
@@ -557,12 +610,12 @@ def create_quiz():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO Quiz ( quiz_audience, question_type, num_questions, subject, topic, title, content)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO Quiz ( quiz_audience, question_type, num_questions, subject, topic, title, content, due_date, class_name)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( quizAudience, questionType, numQuestions, subject, topic, title, Content))
+                    cursor.execute(insert_query, ( quizAudience, questionType, numQuestions, subject, topic, title, Content, due_date, class_name))
                     
                     quiz_id = cursor.lastrowid
 
@@ -601,25 +654,30 @@ def create_studyGuide():
     #response = send_request_with_retry(prompt)
     #print(response.json() if response else "Failed to get response")
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
     }
+
     response = requests.post(
-        'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions',
-        headers=headers,
-        json={
-            'prompt': prompt,
-            'max_tokens': 2048
-        }
+    'https://api.openai.com/v1/chat/completions',
+    headers=headers,
+    json={
+        'model': 'gpt-4o-mini',  # Use 'gpt-4-turbo' if needed
+        'messages': [
+            {'role': 'system', 'content': 'You are a helpful assistant.'},
+            {'role': 'user', 'content': prompt}
+        ],
+        'max_tokens': 4096
+    }
     )
     #print(os.getenv("OPENAI_API_KEY"))
     #print(prompt)
     #print(response.status_code)
     
     if response.status_code == 200:
-        studyGuide_data = response.json().get('choices', [{}])[0].get('text', '')
+        studyGuide_data = response.json().get('choices', [{}])[0].get("message", {}).get("content", "No content returned")
         
-        with open("output.txt", "w", encoding="utf-8") as file:
+        with open("output.txt", "w", encoding="utf-8", errors="ignore") as file:
             file.write(studyGuide_data)
         with open("output.txt", "r") as file:
             file_content = file.read()
@@ -641,6 +699,8 @@ def create_studyGuide():
         topic = data.get('topic')
         teachingStyle = data.get('teachingStyle')
 
+        class_name = data.get('class_name')
+
         username = data.get('username')
         user_id = Get_user_id(username)
         
@@ -657,12 +717,12 @@ def create_studyGuide():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO StudyGuide ( grade, subject, topic, teachingStyle, output, created_at, title)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO StudyGuide ( grade, subject, topic, teachingStyle, output, created_at, title, class_name)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( grade, subject, topic, teachingStyle, output, createdDate, title))
+                    cursor.execute(insert_query, ( grade, subject, topic, teachingStyle, output, createdDate, title, class_name))
 
                     studyguide_id = cursor.lastrowid
 
@@ -694,23 +754,28 @@ def create_exampleGenerator():
     #response = send_request_with_retry(prompt)
     #print(response.json() if response else "Failed to get response")
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
     }
+
     response = requests.post(
-        'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions',
-        headers=headers,
-        json={
-            'prompt': prompt,
-            'max_tokens': 2048
-        }
+    'https://api.openai.com/v1/chat/completions',
+    headers=headers,
+    json={
+        'model': 'gpt-4o-mini',  # Use 'gpt-4-turbo' if needed
+        'messages': [
+            {'role': 'system', 'content': 'You are a helpful assistant.'},
+            {'role': 'user', 'content': prompt}
+        ],
+        'max_tokens': 4096
+    }
     )
     #print(os.getenv("OPENAI_API_KEY"))
     #print(prompt)
     #print(response.status_code)
     
     if response.status_code == 200:
-        exampleGenerator_data = response.json().get('choices', [{}])[0].get('text', '')
+        exampleGenerator_data = response.json().get('choices', [{}])[0].get("message", {}).get("content", "No content returned")
         
         with open("output.txt", "w", encoding="utf-8") as file:
             file.write(exampleGenerator_data)
@@ -728,6 +793,8 @@ def create_exampleGenerator():
         comprehensionLevel = data.get('comprehensionLevel')
         exampleBasis = data.get('exampleBasis')
 
+        class_name = data.get('class_name')
+
         username = data.get('username')
         user_id = Get_user_id(username)
         
@@ -744,12 +811,12 @@ def create_exampleGenerator():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO ExampleGenerator (grade, subject, topic, learningStyle, comprehensionLevel, exampleBasis, output, title)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO ExampleGenerator (grade, subject, topic, learningStyle, comprehensionLevel, exampleBasis, output, title, class_name)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
 
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( grade, subject, topic, learningStyle, comprehensionLevel, exampleBasis, output, title))
+                    cursor.execute(insert_query, ( grade, subject, topic, learningStyle, comprehensionLevel, exampleBasis, output, title, class_name))
                     
                     example_id = cursor.lastrowid
 
@@ -781,22 +848,27 @@ def create_plan():
     #response = send_request_with_retry(prompt)
     #print(response.json() if response else "Failed to get response")
     headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {os.getenv("OPENAI_API_KEY")}'
     }
+
     response = requests.post(
-        'https://api.openai.com/v1/engines/gpt-3.5-turbo-instruct/completions',
-        headers=headers,
-        json={
-            'prompt': prompt,
-            'max_tokens': 2048
-        }
+    'https://api.openai.com/v1/chat/completions',
+    headers=headers,
+    json={
+        'model': 'gpt-4o-mini',  # Use 'gpt-4-turbo' if needed
+        'messages': [
+            {'role': 'system', 'content': 'You are a helpful assistant.'},
+            {'role': 'user', 'content': prompt}
+        ],
+        'max_tokens': 4096
+    }
     )
     #print(os.getenv("OPENAI_API_KEY"))
     #print(prompt)
     #print(response.status_code)
     if response.status_code == 200:
-        lesson_data = response.json().get('choices', [{}])[0].get('text', '')
+        lesson_data = response.json().get('choices', [{}])[0].get("message", {}).get("content", "No content returned")
         
         with open("output.txt", "w", encoding="utf-8") as file:
             file.write(lesson_data)
@@ -868,6 +940,7 @@ def create_plan():
         district_id = data.get('district_id')
         school_id = data.get('school_id')
         grade_id = data.get('grade_id')
+        class_name = data.get('class_name')
 
         username = data.get('username')
         user_id = Get_user_id(username)
@@ -878,11 +951,11 @@ def create_plan():
             try:
                 with conn.cursor() as cursor:
                     insert_query = """
-                    INSERT INTO LessonPlan ( district_id, school_id, grade, lesson_title, subject, pedagogy, plan_length, duration, difficulty_level, standard, Theme, start_date, grade_id, learning_outcomes, prerequisites, objective)
-                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    INSERT INTO LessonPlan ( grade, lesson_title, subject, pedagogy, plan_length, duration, difficulty_level, standard, Theme, start_date, grade_id, learning_outcomes, prerequisites, objective, class_name)
+                    VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """
                     # Adjust the values accordingly if you're parsing lesson_data
-                    cursor.execute(insert_query, ( district_id, school_id, grade, lesson_title, subject, pedagogy, plan_length, duration, difficulty_level, standard, theme, start_date, grade_id, temp1, prerequisites, objective))
+                    cursor.execute(insert_query, ( grade, lesson_title, subject, pedagogy, plan_length, duration, difficulty_level, standard, theme, start_date, grade_id, temp1, prerequisites, objective, class_name))
                     
                     last_id = cursor.lastrowid
 
@@ -929,8 +1002,9 @@ def Get_LessonPlan():
 
     data = request.json
     username = data.get('username')
+    class_name = data.get('class_name')
 
-    args = [username]
+    args = [username, class_name]
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -974,8 +1048,9 @@ def Get_Assignment():
 
     data = request.json
     username = data.get('username')
+    class_name = data.get('class_name')
 
-    args = [username]
+    args = [username, class_name]
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -997,7 +1072,8 @@ def Get_Assignment():
                     'Type_of_assign': row[4],
                     'numbers' : row[5],
                     'standards': row[6],
-                    'user_id': row[7]
+                    'user_id': row[7], 
+                    'title': row[8]
                 })
 
             return jsonify({'successful': True, 'assignments': assignments}), 200
@@ -1011,8 +1087,52 @@ def Get_Assignment():
         conn.commit()
         conn.close()
 #-------------------------------------------------------
-@app.route("/tables_list/<username>/<tablename>", methods=["GET"])
-def tables_list(username, tablename):
+@app.route('/Get_Quiz', methods=['POST'])
+def Get_Quiz():
+
+    data = request.json
+    username = data.get('username')
+    class_name = data.get('class_name')
+
+    args = [username, class_name]
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        # Prepare call to stored procedure
+        #param = [10,0]
+        cursor.callproc('select_quiz', args)
+
+        results = cursor.fetchall()
+
+        if results:
+            # If data is returned, format it into a list of dictionaries (or appropriate structure)
+            quizs = []
+            for row in results:
+                quizs.append({
+                    'assignment_id': row[0],
+                    'title': row[1],
+                    'topic': row[2],
+                    'due_date': row[3],
+                    'subject': row[4],
+                    'question_type' : row[5],
+                    'num_questions': row[6],
+                    'user_id': row[7]
+                })
+
+            return jsonify({'successful': True, 'quizs': quizs}), 200
+        else:
+            return jsonify({'successful': False, 'message': 'No quiz found'}), 404
+
+    except Exception as e:
+        return jsonify({'Error': str(e)}), 500
+    finally:
+        
+        conn.commit()
+        conn.close()
+#-------------------------------------------------------
+
+@app.route("/tables_list/<username>/<tablename>/<class_name>", methods=["GET"])
+def tables_list(username, tablename, class_name):
     
     user_id = Get_user_id(username)
     
@@ -1020,16 +1140,17 @@ def tables_list(username, tablename):
     cursor = conn.cursor()
     q = ""
     match tablename:
-        case "Assignments" : q = "select L.assignment_id as id, L.topic as topic, L.Subject as subject from Assignment_users as LU inner join Assignments AS L on L.assignment_id = LU.assignment_id where LU.user_id = %s;"
-        case "ExampleGenerator": q = "select L.id as id, L.topic as topic, L.Subject as subject from example_users as LU inner join ExampleGenerator AS L on L.id = LU.example_id where LU.user_id = %s;"
-        case "LessonPlan": q = "select L.lesson_id as id, L.lesson_title as topic, L.subject as subject from LessonPlan_Users as LU inner join LessonPlan AS L on L.lesson_id = LU.lesson_id where LU.user_id = %s;" 
-        case "Quiz": q = "select L.quiz_id as id, L.topic as topic, L.subject as subject from quiz_users as LU inner join Quiz AS L on L.quiz_id = LU.quiz_id where LU.user_id = %s;"    
-        case "StudyGuide": q = "select L.id as id, L.topic as topic, L.subject as subject from studyguide_users as LU inner join StudyGuide AS L on L.id = LU.studyguide_id where LU.user_id = %s;"
+        case "Assignments" : q = "select L.assignment_id as id, L.title as Title, L.topic as topic, L.Subject as subject from Assignment_users as LU inner join Assignments AS L on L.assignment_id = LU.assignment_id where LU.user_id = %s and L.class_name = %s;"
+        case "ExampleGenerator": q = "select L.id as id,  L.title as Title, L.topic as topic, L.Subject as subject from example_users as LU inner join ExampleGenerator AS L on L.id = LU.example_id where LU.user_id = %s and L.class_name  = %s;"
+        case "LessonPlan": q = "select L.lesson_id as id,  L.lesson_title as Title, L.lesson_title as topic, L.subject as subject from LessonPlan_Users as LU inner join LessonPlan AS L on L.lesson_id = LU.lesson_id where LU.user_id = %s and L.class_name = %s;" 
+        case "Quiz": q = "select L.quiz_id as id,  L.title as Title, L.topic as topic, L.subject as subject from quiz_users as LU inner join Quiz AS L on L.quiz_id = LU.quiz_id where LU.user_id = %s and L.class_name = %s;"    
+        case "StudyGuide": q = "select L.id as id,  L.title as Title, L.topic as topic, L.subject as subject from studyguide_users as LU inner join StudyGuide AS L on L.id = LU.studyguide_id where LU.user_id = %s and L.class_name = %s;"
     
-    cursor.execute(q, (user_id))
+    cursor.execute(q, (user_id, class_name))
 
     lessonplans = {
             'id': 0,
+            'title':'',
             'topic': '',
             'subject': '',
             'content': ''
@@ -1041,8 +1162,9 @@ def tables_list(username, tablename):
         for row in results:
             lessonplans.append({
                     'id': row[0],
-                    'topic': row[1],
-                    'subject': row[2]
+                    'title': row[1],
+                    'topic': row[2],
+                    'subject': row[3]
                 })
         cursor.close()
         conn.close() 
@@ -1174,7 +1296,7 @@ def get_lesson_plan_detail(plan_id, tablename):
     else:
         cursor.close()
         conn.close() 
-        return jsonify({'successful': False, 'message': 'No objective'}), 404
+        return jsonify({'successful': False, 'message': 'No Information'}), 404
 
 @app.route("/update-lessonplan_essay", methods=["POST"])
 def update_lessonplan_essay():
@@ -1217,6 +1339,25 @@ def update_lessonplan_essay():
         cursor.close()
         conn.commit()
         conn.close()
+
+
+@app.route("/Get_ClassName/<string:username>", methods=["GET"])
+def Get_ClassName(username):
+    
+    user_id = Get_user_id(username)
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("select classes from Teacher where user_id = %s", (user_id,))
+    results = cursor.fetchall()
+
+    classnames_str = results[0][0] if results else ""
+    classnames_list = [cls.strip() for cls in classnames_str.split(",")]
+    cursor.close()
+    conn.close()
+
+    return {"options": classnames_list}  # Extract names from query
 
 if __name__ == '__main__':
     app.run(debug=True)

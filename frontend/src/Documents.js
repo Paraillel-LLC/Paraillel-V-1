@@ -10,19 +10,47 @@ const DocumentsPage = () => {
   const [editableEssay, setEditableEssay] = useState(""); // State for edited text
   const [lessonPlanid, setLessonPlanid] = useState(null);
 
+  const [classname, setclassname] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+
+
   const [showButtons, setShowButtons] = useState(false);
   
+ useEffect(() => {
+
+    fetch("http://localhost:5000/Get_ClassName/"+ localStorage.getItem('username'))  // Backend API URL
+    .then(response => response.json())
+    .then(data => setclassname(data.options))
+    .catch(error => console.error("Error fetching data:", error));
+    
+    //const loadEvents = async () => {
+    //  const events1 = await fetchAssignments();
+    //  const events2 = await fetchLessonPlans();
+  
+    
+    //  setEvents([...events1, ...events2]);
+    //};
+  
+    //loadEvents();
+  }, []);
+
   const handleButtonClick = (buttonName) => {
     setActiveButton(buttonName);
-    fetchLessonPlans(buttonName);
+    fetchLessonPlans(buttonName, selectedClass);
     // Add your logic for each button click here
   };
 
-  const fetchLessonPlans = async ( tablename) => {
+  const handleClassChange = async (event) => {
+    setSelectedClass(event.target.value);
+    fetchLessonPlans(activeButton, event.target.value);
+
+  };
+
+  const fetchLessonPlans = async ( tablename, class_name) => {
     try {
       const username = localStorage.getItem('username');
 
-      const response = await fetch(`http://localhost:5000/tables_list/${username}/${tablename}`);
+      const response = await fetch(`http://localhost:5000/tables_list/${username}/${tablename}/${class_name}`);
       const data = await response.json();
       
       if (data.successful)
@@ -31,7 +59,8 @@ const DocumentsPage = () => {
       }
       else
       {
-        alert(data.message);
+        //alert(data.message);
+        setLessonPlans(['No Data'])
       }
 
       
@@ -103,33 +132,43 @@ const DocumentsPage = () => {
       </div>
       <input type="file" ref={fileInputRef} style={{ display: "none" }} onChange={handleFileUpload} />
       {showButtons && (
-        <div style={styles.additionalButtonsContainer}>
-          {["LessonPlan", "Assignments", "StudyGuide", "Quiz", "ExampleGenerator"].map(
-            (buttonName) => (
-              <button
-                key={buttonName}
-                style={{
-                  ...styles.additionalButton,
-                  backgroundColor: activeButton === buttonName ? '#007bff' : '#28a745',
-                }}
-                onClick={() => handleButtonClick(buttonName)}
-              >
-                {buttonName}
-              </button>
-            )
-          )}
-        </div>
+        <><label className="form-label">
+          Class Name:
+          <select id="classcombo" style={styles.selectBox} className="input mt-1" value={selectedClass} onChange={handleClassChange}>
+            {classname.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label><div style={styles.additionalButtonsContainer}>
+            {["LessonPlan", "Assignments", "StudyGuide", "Quiz", "ExampleGenerator"].map(
+              (buttonName) => (
+                <button
+                  key={buttonName}
+                  style={{
+                    ...styles.additionalButton,
+                    backgroundColor: activeButton === buttonName ? '#007bff' : '#28a745',
+                  }}
+                  onClick={() => handleButtonClick(buttonName)}
+                >
+                  {buttonName}
+                </button>
+              )
+            )}
+          </div></>
       )}
       {showButtons && lessonPlans.length > 0 && (
         <div style={styles.gridContainer}>
           <div style={styles.gridHeader}>
-            <div style={styles.gridCell}>ID</div>
+            <div style={styles.gridCell}>Title</div>
             <div style={styles.gridCell}>Topic</div>
             <div style={styles.gridCell}>Subject</div>
           </div>
           {lessonPlans.map((plan) => (
             <div key={plan.id} style={styles.gridRow} onClick={() => fetchEssay(plan.id)}>
-              <div style={styles.gridCell}>{plan.id} </div>
+              <div style={{ display: "none" }}>{plan.id} </div>
+              <div style={styles.gridCell}>{plan.title} </div>
               <div style={styles.gridCell}>{plan.topic}</div>
               <div style={styles.gridCell}>{plan.subject}</div>
             </div>
@@ -316,6 +355,17 @@ const styles = {
     cursor: "pointer",
     
   },
+  
+    selectBox: {
+      padding: '10px',
+      margin: '10px 0',
+      fontSize: '14px',
+      width: '100%',
+      maxWidth: '300px',
+      borderRadius: '5px',
+      border: '1px solid #ddd',
+    },
+  
   
 };
 

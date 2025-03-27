@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Modal from "./Modal";
 
@@ -9,6 +9,11 @@ const QuizGenerator = () => {
   const [numQuestions, setNumQuestions] = useState(''); 
   const [subject, setSubject] = useState('');
   const [topic, setTopic] = useState('');
+  const [due_date, setdue_date] = useState('');
+
+  const [classname, setclassname] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+      
 
   const [showModal, setShowModal] = useState(false);
   const [essayContent, setEssayContent] = useState("Initializing...");
@@ -29,7 +34,9 @@ const QuizGenerator = () => {
         questionType,
         numQuestions,
         subject,
-        topic
+        topic,
+        due_date,
+        selectedClass
       };
       createQuiz(newQuiz); // Call createQuiz with the form data
       setStep(2); // Move to step 2 after submitting the form
@@ -47,6 +54,9 @@ const QuizGenerator = () => {
     numQuestions: newQuiz.numQuestions,
     subject: newQuiz.subject,
     topic: newQuiz.topic,
+    due_date: newQuiz.due_date,
+    class_name: newQuiz.selectedClass,
+
     prompt: `"Create a quiz for the audience of "${quizAudience}", focusing on the subject of "${subject}" and the topic of "${topic}". The quiz should consist of "${numQuestions}" questions and cover the following question type: "${questionType}". Ensure the questions are appropriate for the specified audience and effectively assess their knowledge of the chosen subject and topic."`,
     username: localStorage.getItem('username'),
     max_tokens: 2048,
@@ -81,6 +91,14 @@ const QuizGenerator = () => {
     }
   };
 
+  useEffect(() => {
+    fetch("http://localhost:5000/Get_ClassName/"+ localStorage.getItem('username'))  // Backend API URL
+      .then(response => response.json())
+      .then(data => setclassname(data.options))
+      .catch(error => console.error("Error fetching data:", error));
+  }, []);
+    
+  
   return (
     <div style={styles.container}>
       
@@ -122,6 +140,22 @@ const QuizGenerator = () => {
             onChange={(e) => setTopic(e.target.value)}
             placeholder="Enter Topic"
           />
+           <input
+            style={styles.inputBox}
+            type="text"
+            value={due_date}
+            onChange={(e) => setdue_date(e.target.value)}
+            placeholder="Enter due date (YYYY-MM-DD)"
+          />
+          <select id="classcombo" style={styles.selectBox} lassName="input mt-1" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+            <option value="" disabled>Select a ClassName</option>
+              {classname.map((option, index) => (
+                <option key={index} value={option}>
+                {option}
+            </option>
+            ))}
+          </select>
+          
           <button style={styles.nextButton} onClick={handleNextStep}>
             Next
           </button>
@@ -137,6 +171,8 @@ const QuizGenerator = () => {
           <p><strong>Number of Questions:</strong> {numQuestions}</p>
           <p><strong>Subject:</strong> {subject}</p>
           <p><strong>Topic:</strong> {topic}</p>
+          <p><strong>Due Date:</strong> {due_date}</p>
+          <p><strong>Class:</strong> {selectedClass}</p>
         </div>
       )}
       <Modal
@@ -163,6 +199,15 @@ const styles = {
     alignItems: 'center',
   },
   inputBox: {
+    padding: '10px',
+    margin: '10px 0',
+    fontSize: '14px',
+    width: '100%',
+    maxWidth: '300px',
+    borderRadius: '5px',
+    border: '1px solid #ddd',
+  },
+  selectBox: {
     padding: '10px',
     margin: '10px 0',
     fontSize: '14px',

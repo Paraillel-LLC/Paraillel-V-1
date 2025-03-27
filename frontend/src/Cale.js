@@ -15,16 +15,21 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
+  const [classname, setclassname] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
+
+
  // Function to fetch lesson plans from the backend API
-  const fetchLessonPlans = async () => {
+  const fetchLessonPlans = async (classname) => {
     const username = localStorage.getItem('username');
+    const class_name = classname;
     try {
       const response = await fetch('http://localhost:5000/Get_LessonPlan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: username }),
+        body: JSON.stringify({ username: username, class_name: class_name }),
       });
 
       const data = await response.json();
@@ -39,8 +44,8 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
             title: plan.title,
             start: plan.startdate,           // Use the calculated start date
             end: enddate,               // Use the calculated end date
-            backgroundColor: getColorByLessonId(plan.lesson_id),  // Unique color for each lesson
-            borderColor: getColorByLessonId(plan.lesson_id),
+            backgroundColor: '#ff9f89',  // Unique color for each lesson
+            borderColor: '#ff9f89',
             textColor: '#000000',       // Set text color to black for all events
             allDay: true,  
                       
@@ -60,22 +65,25 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
         return lessonPlans;
       } else {
         console.error('No lesson plans found');
+        return [];
       }
     } catch (error) {
       console.error('Error fetching lesson plans:', error);
     }
   };
 
+
   // Function to fetch Assignments from the backend API
-  const fetchAssignments = async () => {
+  const fetchAssignments = async (classname) => {
     const username = localStorage.getItem('username');
+    const class_name = classname;
     try {
       const response = await fetch('http://localhost:5000/Get_Assignment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: username }),
+        body: JSON.stringify({ username: username, class_name: class_name }),
       });
 
       const data = await response.json();
@@ -85,12 +93,12 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
           
           return {
             assignment_id: plan.assignment_id,  // Reference the correct fields from `plan`
-            title: plan.topic,
+            title: plan.title,
             start: formatDate(new Date(plan.Duedate)),           
             end: formatDate(new Date(plan.Duedate)),     
             
-            backgroundColor: getColorByLessonId(plan.assignment_id),  // Unique color for each lesson
-            borderColor: getColorByLessonId(plan.assignment_id),
+            backgroundColor: '#89cff0',  // Unique color for each lesson
+            borderColor: '#89cff0',
             textColor: '#000000',       // Set text color to black for all events
             allDay: true,               // Full-day event
 
@@ -109,9 +117,60 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
         return assignments;
       } else {
         console.error('No assignments found');
+        return [];
       }
     } catch (error) {
       console.error('Error fetching assignments:', error);
+    }
+  };
+
+  const fetchQuizes = async (classname) => {
+    const username = localStorage.getItem('username');
+    const class_name = classname;
+    try {
+      const response = await fetch('http://localhost:5000/Get_Quiz', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: username, class_name: class_name }),
+      });
+
+      const data = await response.json();
+    
+      if (data.successful) {
+        const Quizes = data.quizs.map((plan) => {
+          
+          return {
+            quiz_id: plan.quiz_id,  // Reference the correct fields from `plan`
+            title: plan.title,
+            start: formatDate(new Date(plan.due_date)),           
+            end: formatDate(new Date(plan.due_date)),     
+            
+            backgroundColor: '#77dd77',  // Unique color for each lesson
+            borderColor: '#77dd77',
+            textColor: '#000000',       // Set text color to black for all events
+            allDay: true,               // Full-day event
+
+            extendedProps: {
+              Subject: plan.subject,
+              topic: plan.topic,
+              question_type: plan.question_type, 
+              num_questions: plan.num_questions,
+              user_id: plan.user_id,
+              eventType: 'quiz',
+            },
+          };
+          
+        });
+
+        return Quizes;
+      } else {
+        console.error('No quiz found');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching quiz:', error);
     }
   };
 
@@ -146,15 +205,21 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
 
   //const events1 = createEventSchedule(lessonTitle, startDate, endDate);
   useEffect(() => {
-    const loadEvents = async () => {
-      const events1 = await fetchAssignments();
-      const events2 = await fetchLessonPlans();
+
+    fetch("http://localhost:5000/Get_ClassName/"+ localStorage.getItem('username'))  // Backend API URL
+    .then(response => response.json())
+    .then(data => setclassname(data.options))
+    .catch(error => console.error("Error fetching data:", error));
+    
+    //const loadEvents = async () => {
+    //  const events1 = await fetchAssignments();
+    //  const events2 = await fetchLessonPlans();
   
-      // Combine events1 and events2 arrays and set the result to state
-      setEvents([...events1, ...events2]);
-    };
+    
+    //  setEvents([...events1, ...events2]);
+    //};
   
-    loadEvents();
+    //loadEvents();
   }, []);
   
   const handleEventMouseEnter = (info) => {
@@ -164,8 +229,10 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
     if(info.event.extendedProps.eventType == 'assignment')
       content = buildassignmentinfo(info);
     else
+    if(info.event.extendedProps.eventType == 'quiz')
+      content = buildquizinfo(info);
+    else
       content = buildlessoninfo(info);
-
     
     setTooltipContent(content);  // Customize content if needed
     setTooltipPosition({ x: info.jsEvent.pageX, y: info.jsEvent.pageY });
@@ -190,15 +257,28 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
 
   function buildassignmentinfo(info)
   {
-    const { Subject, Type_of_assign, numbers, standards, user_id } = info.event.extendedProps;
-
+    const { Subject, topic, Type_of_assign, numbers, standard, user_id } = info.event.extendedProps;
     const content = `
-      <strong>Topic: </strong> ${info.event.title} <br>
+      <strong>Title: </strong> ${info.event.title} <br>
       <strong>Due Date: </strong> ${formatDate(info.event.start)} <br>
       <strong>Subject: </strong> ${Subject} <br>
       <strong>Type of Assignment: </strong> ${Type_of_assign} <br>
       <strong>Number of questions: </strong> ${numbers} <br>
-      <strong>Academic state Standard: </strong> ${standards} 
+      <strong>Academic State Standard: </strong> ${standard} 
+    `;
+    return content;
+  }
+
+  function buildquizinfo(info)
+  {
+    const { topic, subject, Type_of_quiz, numbers, user_id } = info.event.extendedProps;
+
+    const content = `
+      <strong>Title: </strong> ${info.event.title} <br>
+      <strong>Due Date: </strong> ${formatDate(info.event.start)} <br>
+      <strong>Subject: </strong> ${subject} <br>
+      <strong>Type of Assignment: </strong> ${Type_of_quiz} <br>
+      <strong>Number of questions: </strong> ${numbers}  
     `;
     return content;
   }
@@ -215,10 +295,32 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
     console.log("clicked");
   };
 
+  const handleClassChange = async (event) => {
+    setSelectedClass(event.target.value);
+    const events1 = await fetchAssignments(event.target.value);
+    const events2 = await fetchLessonPlans(event.target.value);
+    const events3 = await fetchQuizes(event.target.value);
+  
+      // Combine events1 and events2 arrays and set the result to state
+    setEvents([...events1, ...events2, ...events3]);
+
+  };
+
   return (
     <div style={{ paddingTop: 0 }}>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}></div>
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '80px' }}>
+          <label className="form-label">
+            Class Name: 
+            <select id="classcombo" style={styles.selectBox} className="input mt-1" value={selectedClass} onChange={handleClassChange}>
+              {classname.map((option, index) => (
+                  <option key={index} value={option}>
+                  {option}
+              </option>
+              ))}
+            </select>
+          </label>
+          
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={calendarView}
@@ -236,6 +338,23 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
           eventMouseLeave={handleEventMouseLeave}
           editable={true}
         />
+         {/* Legend */}
+        <div style={{ flex: 1, paddingLeft: "20px" }}>
+        <h3>Legend</h3>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
+            <span style={{ width: "20px", height: "20px", backgroundColor: "#ff9f89", marginRight: "10px", display: "inline-block" }}></span>
+            <span> Lesson Plan</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
+            <span style={{ width: "20px", height: "20px", backgroundColor: "#89cff0", marginRight: "10px", display: "inline-block" }}></span>
+            <span> Assignment</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
+            <span style={{ width: "20px", height: "20px", backgroundColor: "#77dd77", marginRight: "10px", display: "inline-block" }}></span>
+            <span> Quiz</span>
+          </div>
+        </div>
+        
         {tooltipVisible && (
           <div
             className="tooltip"
@@ -257,6 +376,18 @@ const Cale = ({ lessonTitle, startDate, endDate }) => {
       </div>
     </div>
   );
+};
+
+const styles = {
+  selectBox: {
+    padding: '10px',
+    margin: '10px 0',
+    fontSize: '14px',
+    width: '100%',
+    maxWidth: '300px',
+    borderRadius: '5px',
+    border: '1px solid #ddd',
+  },
 };
 
 export default Cale;

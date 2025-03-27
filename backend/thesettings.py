@@ -1,25 +1,59 @@
 from flask import jsonify, request
 
+import mysql.connector
+from mysql.connector import Error
+
+def Get_user_id(conn, username):
+    
+    
+    cursor = conn.cursor()
+    cursor.execute("SELECT user_id FROM Users WHERE username = %s", (username))
+
+    user = cursor.fetchone()
+    cursor.close()
+    
+    user_id = 0
+    if user:
+        user_id = user[0]
+
+    return user_id
+#---------------------------------------------
+
 def insert_teacher(conn, data):
     school_id = data['formData']['School ID']
     district_id = data['formData']['District ID']
-    teacher_name = data['formData']['First Name'] + ' ' + data['formData']['Last Name'] 
+    teacher_firstname = data['formData']['First Name'] 
+    teacher_lastname = data['formData']['Last Name'] 
     teacher_emailid = data['formData']['Email']
     #teacher_contact_number = data['formData']['Phone Number']
     profile_pic = data['formData']['Profile Picture']
-    subjects_taught = ",".join(data['formData']['Subject(s) Taught'])
+
+    if isinstance(data['formData']['Subject(s) Taught'], str) and not isinstance(data['formData']['Subject(s) Taught'], list):
+        subjects_taught = data['formData']['Subject(s) Taught']
+    else:
+        subjects_taught = ",".join(data['formData']['Subject(s) Taught'])
+
+    if isinstance(data['formData']['Classes'], str) and not isinstance(data['formData']['Classes'], list):    
+        classes = data['formData']['Classes']
+    else:
+        classes = ",".join(data['formData']['Classes'])
+        
     grade_levels = data['formData']['Grade Level(s)']
     bio = data['formData']['Bio']
-    args = [school_id, district_id ,teacher_name , teacher_emailid, profile_pic ,subjects_taught,grade_levels,bio, True, '']
+
+    username = data['username']
+    user_id = Get_user_id(conn, username)
+
+    args = [user_id, school_id, district_id ,teacher_firstname, teacher_lastname , teacher_emailid, profile_pic ,subjects_taught,classes, grade_levels,bio, True, '']
     try:
         cursor = conn.cursor()
         # Prepare call to stored procedure
 
-        param = [10,0]
+        #param = [11,0]
         #command = "insert into Teacher (school_id, district_id, teacher_name, profile_pic, subjects_taught, grade_levels, bio) values (6, 2, 'first last', 'cccc', '1,2,3,4,5' , '12', 'bio') "
         #command = " CALL `test_schema`.`InsertTeacher` ("+school_id+","+district_id+" , '"+teacher_name+"', '"+teacher_emailid+"', '"+profile_pic+"', '"+subjects_taught+"', '"+grade_levels+"', '"+bio+"', @success, @result); "
         #cursor.execute(command)
-        cursor.callproc('InsertTeacher', args)
+        cursor.callproc('Insert_Teacher', args)
 
         results = cursor.fetchone()
         if results:
@@ -32,7 +66,7 @@ def insert_teacher(conn, data):
             return jsonify({'successful': False, 'message': message}), 401
         
     except Exception as e:
-        return jsonify({'Error': str(e)}), 500
+         return jsonify({'successful': False,'Error': str(e)}), 500
     finally:
         cursor.close()
         conn.commit()

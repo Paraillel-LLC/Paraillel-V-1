@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "./Modal";
 
@@ -17,6 +17,9 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   const [districtId, setDistrictId] = useState("");
   const [schoolId, setSchoolId] = useState("");
   const [gradeId, setGradeId] = useState(""); 
+
+  const [classname, setclassname] = useState([]);
+  const [selectedClass, setSelectedClass] = useState("");
   
   const [showModal, setShowModal] = useState(false);
   const [essayContent, setEssayContent] = useState("Initializing...");
@@ -112,6 +115,7 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
     district_id: districtId,
     school_id: schoolId,
     grade_id: gradeId,
+    class_name: selectedClass,
     prompt: `As a seasoned expert in pedagogy, you are tasked to devise a comprehensive and engaging lesson plan for students in grade ${grade} studying ${subject} with a lesson titled "${lessonTitle}" based on a ${teachingStyle} pedagogical approach. The lesson plan should be suitable for a ${duration} period and compliant with the ${stateAcademicStandard} curriculum. The theme of the lesson is "${theme}" and is designed to have a difficulty level of "${difficultyLevel}". Please start by listing the relevant state academic standards, complete with their codes and descriptions, and then proceed with the lesson plan. As much as possible, try to factor in the ${teachingStyle} of the students. The first class will be on ${startDate}. Your output should be factual, impartial, thorough, and definitive.`,
     username: localStorage.getItem('username'),
     max_tokens: 1024
@@ -173,7 +177,13 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
   };
 
   //const closeModal = () => setModalVisible(false);
-
+  useEffect(() => {
+    fetch("http://localhost:5000/Get_ClassName/"+ localStorage.getItem('username'))  // Backend API URL
+      .then(response => response.json())
+      .then(data => setclassname(data.options))
+      .catch(error => console.error("Error fetching data:", error));
+  }, []);
+  
   return (
     <div className="min-h-screen flex-center bg-gray-100 p-4">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
@@ -301,6 +311,17 @@ const ChatGPT = ({ setCurrentPage, onGenerate }) => {
               onChange={(e) => setGradeId(e.target.value)}
               placeholder="Enter Grade ID"
             />
+          </label>
+          <label className="form-label">
+            Class Name: 
+            <select id="classcombo" className="input mt-1" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+              <option value="" disabled>Select a ClassName</option>
+                {classname.map((option, index) => (
+                  <option key={index} value={option}>
+                  {option}
+              </option>
+              ))}
+            </select>
           </label>
           <div className="space-y-4">
             <button

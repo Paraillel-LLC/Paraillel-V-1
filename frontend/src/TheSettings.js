@@ -15,6 +15,7 @@ const profileDetails = {
     "Email", //Should be removed
     "Profile Picture",
     "Subject(s) Taught",
+    "Classes",
     "Grade Level(s)",
     "Bio",
     "District ID",
@@ -63,6 +64,7 @@ const TheSettings = () => {
   const [selectedSchool, setSelectedSchool] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [subjects, setSubjects] = useState([""]); // Default one subject field
+  const [classes, setClasses] = useState([""]); // Default one class field
   const [districtSchoolMapping, setDistrictSchoolMapping] = useState({});
   const [selectedPrivacyContact, setSelectedPrivacyContact] = useState('Only Me');
   const [selectedPrivacyProfile, setSelectedPrivacyProfile] = useState('Only Me');
@@ -90,9 +92,19 @@ const TheSettings = () => {
         console.error('Error:', error);
       });
       // Fetch the user information to pre-fill form fields
-    //getUserInfo(setFormData);
+  
       getUserInfo((userData) => {
       setFormData(userData);
+
+      const temp = userData.Classes ? userData.Classes.split(',') : [];
+      setClasses([...temp]);
+      
+      const temp1 = userData["Subject(s) Taught"] ? userData["Subject(s) Taught"].split(',') : [];
+      setSubjects([...temp1]);
+
+      setSelectedDistrict(userData["District ID"]);
+      setSelectedSchool(userData["School ID"]);
+
       setEmail(userData.Email);
       setSelectedPrivacyContact(userData.Privacy_Contact);
       setSelectedPrivacyProfile(userData.Privacy_Profile);
@@ -142,7 +154,15 @@ const TheSettings = () => {
     setSelectedProfile(event.target.value);
     setFormData({});
     getUserInfo(setFormData);
-
+    
+    const temp = setFormData.Classes ?setFormData.Classes.split(',') : [];
+      setClasses([...temp]);
+    
+    const temp1 = setFormData["Subject(s) Taught"] ? setFormData["Subject(s) Taught"].split(',') : []; 
+    setSubjects(temp1);
+      
+    setSelectedDistrict(setFormData["District ID"]);
+    setSelectedSchool(setFormData["School ID"]);
 
   };
 
@@ -163,29 +183,9 @@ const TheSettings = () => {
       "School ID": Object.keys(districtSchoolMapping[districtId].schools)[0] // Default to the first school ID
     });
     setSelectedSchool(Object.keys(districtSchoolMapping[districtId].schools)[0]);
-  
-
-
-    /*const district = event.target.value;
-    setSelectedDistrict(district);
-    setFormData({
-      ...formData,
-      "District ID": district,
-      "School ID": districtSchoolMapping[district][0]
-    });
-    setSelectedSchool(districtSchoolMapping[district][0]);
-    */
   };
 
   const handleSchoolChange = (event) => {
-    /*const school = event.target.value;
-    setSelectedSchool(school);
-    setFormData({
-      ...formData,
-      "School ID": school
-    });
-    */
-
     const schoolId = event.target.value;
     setSelectedSchool(schoolId);
     setFormData({
@@ -199,6 +199,11 @@ const TheSettings = () => {
     setSubjects([...subjects, ""]);
   };
 
+
+  const handleAddClass = () => {
+    setClasses([...classes, ""]);
+  };
+
   const handleRemoveSubject = (index) => {
     if (subjects.length > 1) { // Ensure at least one subject field remains
       const newSubjects = subjects.filter((_, idx) => idx !== index);
@@ -206,6 +211,17 @@ const TheSettings = () => {
       setFormData({
         ...formData,
         "Subject(s) Taught": newSubjects
+      });
+    }
+  };
+
+  const handleRemoveClass = (index) => {
+    if (classes.length > 1) { // Ensure at least one class field remains
+      const newClasses = classes.filter((_, idx) => idx !== index);
+      setClasses(newClasses);
+      setFormData({
+        ...formData,
+        "Classes": newClasses
       });
     }
   };
@@ -220,6 +236,16 @@ const TheSettings = () => {
     });
   };
 
+  const handleClassChange = (index, value) => {
+    const newClasses = [...classes];
+    newClasses[index] = value;
+    setClasses(newClasses);
+    setFormData({
+      ...formData,
+      "Classes": newClasses
+    });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     fetch('http://localhost:5000/save_settings', {
@@ -228,7 +254,7 @@ const TheSettings = () => {
         'Content-Type': 'application/json'
       },
       
-      body: JSON.stringify({'selectedProfile' : selectedProfile, 'formData' : formData})
+      body: JSON.stringify({'selectedProfile' : selectedProfile, 'formData' : formData, 'username' : localStorage.getItem('username')})
     })
     .then(response => response.json())
     .then(data => {
@@ -345,7 +371,7 @@ const TheSettings = () => {
                     >
                       <option value="">Select School</option>
                       {selectedDistrict && Object.keys(districtSchoolMapping[selectedDistrict].schools).map((schoolId, idx) => (
-                        <option key={idx} value={schoolId}>{districtSchoolMapping[selectedDistrict].schools[schoolId]}</option>
+                        <option key={idx} value={schoolId} selected={selectedSchool === schoolId} >{districtSchoolMapping[selectedDistrict].schools[schoolId]}</option>
                       ))}
                     </select>
                   </div>
@@ -383,7 +409,41 @@ const TheSettings = () => {
                         )}
                       </div>
                     </div>
-                ) : (
+                ) : detail === "Classes" ? (
+                  <div key={index} className="form-group">
+                    <label>{detail}</label>
+                    <div className="classes-container">
+                      {classes.map((subject, idx) => (
+                        <div key={idx} className="class-entry">
+                          <input 
+                            type="text" 
+                            value={subject} 
+                            onChange={(e) => handleClassChange(idx, e.target.value)}
+                            disabled={!isEditing}
+                          />
+                          {isEditing && (
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveClass(idx)}
+                              className="remove-class-button"
+                            >
+                              −
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                      {isEditing && (
+                        <button 
+                          type="button" 
+                          onClick={handleAddClass}
+                          className="add-class-button"
+                        >
+                          +
+                        </button>
+                      )}
+                    </div>
+                  </div>
+              ) : (
                   <div key={index} className="form-group">
                     <label>{detail}</label>
                     <input 
@@ -479,7 +539,15 @@ function getUserInfo(setFormData) {
           'Email': data.user_info.email,
           'Privacy_Contact': data.user_info.privacy_contact,
           'Privacy_Profile': data.user_info.privacy_profile,
+          'Classes': data.user_info.Classes,
+          'Subject(s) Taught': data.user_info.Subjects,
+          "Profile Picture" : data.user_info.profile_pic,
+          "Grade Level(s)" : data.user_info.grade_levels,
+          "Bio" : data.user_info.bio,
+          "District ID" : data.user_info.district_id,
+          "School ID" : data.user_info.school_id
         });
+        
       } else {
         console.error('Error fetching user info:', data.message);
       }
